@@ -27,13 +27,14 @@
   .page.active{display:block}
 
   /* HERO */
-  .hero{background:linear-gradient(135deg,#f5f5f5 0%,#ececec 100%);min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
-  .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ccc' stroke-width='0.5'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3C/g%3E%3C/svg%3E") center/60px repeat;opacity:0.3}
-  .hero-content{position:relative;z-index:1}
-  .hero-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-bottom:1.2rem}
-  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;letter-spacing:0.04em;line-height:1.15;color:#1a1a1a;margin-bottom:1.2rem}
-  .hero h1 em{font-style:italic;color:#555}
-  .hero p{font-family:'Helvetica Neue',sans-serif;font-size:1rem;color:#666;max-width:440px;margin:0 auto 2.5rem;line-height:1.7}
+  .hero{background:#1a1a1a;min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background-image:var(--hero-img);background-size:cover;background-position:center 30%;opacity:0.72}
+  .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.25) 40%,rgba(0,0,0,0.55) 100%)}
+  .hero-content{position:relative;z-index:2}
+  .hero-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:1.2rem}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;letter-spacing:0.04em;line-height:1.15;color:#fff;margin-bottom:1.2rem;text-shadow:0 2px 24px rgba(0,0,0,0.25)}
+  .hero h1 em{font-style:italic;color:rgba(255,255,255,0.82)}
+  .hero p{font-family:'Helvetica Neue',sans-serif;font-size:1rem;color:rgba(255,255,255,0.75);max-width:440px;margin:0 auto 2.5rem;line-height:1.7}
   .btn{display:inline-block;padding:0.85rem 2.5rem;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:none}
   .btn-dark{background:#1a1a1a;color:#fff}
   .btn-dark:hover{background:#333}
@@ -157,7 +158,8 @@
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
-  <div class="hero">
+  <div class="hero" id="heroSection">
+    <div class="hero-bg" id="heroBg"></div>
     <div class="hero-content">
       <div class="hero-tag">New Collection 2026</div>
       <h1>Where <em>elegance</em><br>meets artistry</h1>
@@ -429,6 +431,16 @@ function showToast(msg){
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
+
+// Hero image — paste your image URL or base64 here
+const heroImg = "hero.png";
+(function setHero(){
+  const bg = document.getElementById('heroBg');
+  const img = new Image();
+  img.onload = () => { bg.style.backgroundImage = `url('${heroImg}')`; };
+  img.onerror = () => { document.getElementById('heroSection').style.background = '#1a1a1a'; };
+  img.src = heroImg;
+})();
 
 // Populate featured grid
 document.getElementById('featured-grid').innerHTML=[products[0],products[3],products[5],products[7]].map(p=>prodCard(p)).join('');
