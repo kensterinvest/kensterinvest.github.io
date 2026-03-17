@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aynnor's Jewelry</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Georgia',serif;background:#fff;color:#1a1a1a;min-height:100vh}
+  :root{--silver:#c0c0c0;--light:#f8f8f8;--mid:#e8e8e8;--dark:#2a2a2a;--accent:#888}
+  a{text-decoration:none;color:inherit;cursor:pointer}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);border-bottom:1px solid #e0e0e0;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-size:1.4rem;letter-spacing:0.12em;font-weight:400;color:#1a1a1a}
+  .brand span{color:#888;font-style:italic}
+  .nav-links{display:flex;gap:2rem;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase}
+  .nav-links a{color:#555;transition:color 0.2s}
+  .nav-links a:hover{color:#1a1a1a}
+  .nav-icons{display:flex;gap:1.2rem;align-items:center}
+  .nav-icon-btn{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#555;position:relative;transition:color 0.2s}
+  .nav-icon-btn:hover{color:#1a1a1a}
+  .cart-badge{position:absolute;top:-6px;right:-8px;background:#1a1a1a;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-family:sans-serif;display:flex;align-items:center;justify-content:center}
+
+  /* PAGES */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#f5f5f5 0%,#ececec 100%);min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ccc' stroke-width='0.5'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3C/g%3E%3C/svg%3E") center/60px repeat;opacity:0.3}
+  .hero-content{position:relative;z-index:1}
+  .hero-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-bottom:1.2rem}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;letter-spacing:0.04em;line-height:1.15;color:#1a1a1a;margin-bottom:1.2rem}
+  .hero h1 em{font-style:italic;color:#555}
+  .hero p{font-family:'Helvetica Neue',sans-serif;font-size:1rem;color:#666;max-width:440px;margin:0 auto 2.5rem;line-height:1.7}
+  .btn{display:inline-block;padding:0.85rem 2.5rem;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:none}
+  .btn-dark{background:#1a1a1a;color:#fff}
+  .btn-dark:hover{background:#333}
+  .btn-outline{background:transparent;color:#1a1a1a;border:1px solid #1a1a1a}
+  .btn-outline:hover{background:#1a1a1a;color:#fff}
+
+  /* CATEGORIES */
+  .section{padding:5rem 2rem}
+  .section-title{text-align:center;font-size:1.8rem;font-weight:300;letter-spacing:0.06em;margin-bottom:0.5rem}
+  .section-sub{text-align:center;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem}
+  .cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
+  .cat-card{aspect-ratio:3/4;background:var(--light);border:1px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:1.5rem;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
+  .cat-card:hover{border-color:#aaa;transform:translateY(-3px)}
+  .cat-icon{font-size:3rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);opacity:0.15}
+  .cat-name{font-size:1rem;letter-spacing:0.08em;font-weight:400;margin-bottom:0.3rem;position:relative;z-index:1}
+  .cat-count{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;color:#888;letter-spacing:0.05em;position:relative;z-index:1}
+
+  /* PRODUCTS */
+  .shop-header{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto 2rem;padding:0 0.5rem}
+  .shop-header h2{font-size:1.5rem;font-weight:300;letter-spacing:0.06em}
+  .breadcrumb{font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;color:#888;cursor:pointer}
+  .breadcrumb:hover{color:#1a1a1a}
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+  .prod-card{cursor:pointer;transition:all 0.25s}
+  .prod-card:hover .prod-img{filter:brightness(0.95)}
+  .prod-img{width:100%;aspect-ratio:1;background:#f2f2f2;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:0.8rem;transition:all 0.25s}
+  .prod-name{font-size:0.95rem;letter-spacing:0.04em;margin-bottom:0.25rem}
+  .prod-material{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;color:#888;margin-bottom:0.4rem}
+  .prod-price{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;letter-spacing:0.05em}
+
+  /* PRODUCT DETAIL */
+  .detail-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:0 1rem}
+  .detail-img{width:100%;aspect-ratio:1;background:#f2f2f2;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:8rem}
+  .detail-info{padding:1rem 0}
+  .detail-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:0.7rem}
+  .detail-name{font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:0.5rem;line-height:1.3}
+  .detail-price{font-family:'Helvetica Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:1.5rem;color:#1a1a1a}
+  .detail-desc{font-family:'Helvetica Neue',sans-serif;font-size:0.88rem;color:#555;line-height:1.8;margin-bottom:1.5rem}
+  .option-label{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:0.6rem}
+  .option-btns{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+  .opt-btn{padding:0.4rem 1rem;border:1px solid #ccc;background:none;cursor:pointer;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;transition:all 0.2s}
+  .opt-btn.selected,.opt-btn:hover{border-color:#1a1a1a;background:#1a1a1a;color:#fff}
+  .add-cart-btn{width:100%;padding:1rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.25s;margin-bottom:0.8rem}
+  .add-cart-btn:hover{background:#333}
+  .wishlist-btn{width:100%;padding:0.9rem;background:transparent;color:#1a1a1a;border:1px solid #1a1a1a;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
+  .divider{border:none;border-top:1px solid #e8e8e8;margin:1.5rem 0}
+
+  /* CART PANEL */
+  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;display:none}
+  .cart-overlay.open{display:block}
+  .cart-panel{position:fixed;top:0;right:0;width:420px;max-width:100%;height:100%;background:#fff;z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s ease;border-left:1px solid #e0e0e0}
+  .cart-panel.open{transform:translateX(0)}
+  .cart-head{display:flex;align-items:center;justify-content:space-between;padding:1.5rem;border-bottom:1px solid #e8e8e8}
+  .cart-head h3{font-size:1.1rem;font-weight:400;letter-spacing:0.08em}
+  .close-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#555;line-height:1}
+  .cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem}
+  .cart-empty{text-align:center;color:#aaa;font-family:'Helvetica Neue',sans-serif;font-size:0.88rem;margin-top:3rem}
+  .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid #f0f0f0}
+  .cart-item-img{width:64px;height:64px;background:#f5f5f5;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+  .cart-item-info{flex:1}
+  .cart-item-name{font-size:0.9rem;margin-bottom:0.2rem}
+  .cart-item-meta{font-family:'Helvetica Neue',sans-serif;font-size:0.78rem;color:#888}
+  .cart-item-price{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem}
+  .cart-item-remove{background:none;border:none;color:#aaa;cursor:pointer;font-size:1rem;align-self:flex-start}
+  .cart-foot{padding:1.5rem;border-top:1px solid #e8e8e8}
+  .cart-total{display:flex;justify-content:space-between;font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;margin-bottom:1rem}
+  .checkout-btn{width:100%;padding:1rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
+
+  /* AUTH MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:none;align-items:center;justify-content:center;min-height:400px}
+  .modal-overlay.open{display:flex}
+  .modal{background:#fff;width:420px;max-width:95%;padding:2.5rem;position:relative;border:1px solid #e0e0e0}
+  .modal h2{font-size:1.4rem;font-weight:300;letter-spacing:0.06em;margin-bottom:0.4rem}
+  .modal-sub{font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;color:#888;margin-bottom:2rem}
+  .form-group{margin-bottom:1.2rem}
+  .form-group label{display:block;font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#666;margin-bottom:0.4rem}
+  .form-group input{width:100%;padding:0.7rem 0.9rem;border:1px solid #ddd;font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s}
+  .form-group input:focus{border-color:#888}
+  .modal-btn{width:100%;padding:0.9rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-top:0.5rem}
+  .modal-switch{font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;text-align:center;margin-top:1.2rem;color:#888}
+  .modal-switch a{color:#1a1a1a;text-decoration:underline;cursor:pointer}
+  .modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888}
+
+  /* FOOTER */
+  footer{background:#f5f5f5;border-top:1px solid #e0e0e0;padding:3rem 2rem;text-align:center}
+  .footer-brand{font-size:1.2rem;letter-spacing:0.1em;margin-bottom:0.5rem}
+  .footer-brand span{color:#888;font-style:italic}
+  footer p{font-family:'Helvetica Neue',sans-serif;font-size:0.78rem;color:#aaa;letter-spacing:0.05em}
+
+  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:0.7rem 1.8rem;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;letter-spacing:0.06em;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  @media(max-width:700px){
+    .detail-wrap{grid-template-columns:1fr;gap:2rem}
+    .nav-links{display:none}
+    .cat-grid{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand" onclick="showPage('home')" style="cursor:pointer">Aynnor's <span>Jewelry</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showShop(null)">Shop</a>
+    <a onclick="showShop('Rings')">Rings</a>
+    <a onclick="showShop('Necklaces')">Necklaces</a>
+    <a onclick="showShop('Earrings')">Earrings</a>
+  </div>
+  <div class="nav-icons">
+    <button class="nav-icon-btn" onclick="openAuth()" title="Account">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </button>
+    <button class="nav-icon-btn" onclick="openCart()" title="Cart">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">New Collection 2026</div>
+      <h1>Where <em>elegance</em><br>meets artistry</h1>
+      <p>Discover handcrafted jewelry pieces designed to tell your unique story. Each piece, a testament to timeless beauty.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-dark" onclick="showShop(null)">Explore Collection</button>
+        <button class="btn btn-outline" onclick="showShop('Rings')">Shop Rings</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background:#fff">
+    <div class="section-title">Shop by Category</div>
+    <div class="section-sub">Explore our collections</div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="showShop('Rings')">
+        <div class="cat-icon">💍</div>
+        <div class="cat-name">Rings</div>
+        <div class="cat-count">12 pieces</div>
+      </div>
+      <div class="cat-card" onclick="showShop('Necklaces')">
+        <div class="cat-icon">📿</div>
+        <div class="cat-name">Necklaces</div>
+        <div class="cat-count">8 pieces</div>
+      </div>
+      <div class="cat-card" onclick="showShop('Earrings')">
+        <div class="cat-icon">✨</div>
+        <div class="cat-name">Earrings</div>
+        <div class="cat-count">15 pieces</div>
+      </div>
+      <div class="cat-card" onclick="showShop('Bracelets')">
+        <div class="cat-icon">⌚</div>
+        <div class="cat-name">Bracelets</div>
+        <div class="cat-count">10 pieces</div>
+      </div>
+      <div class="cat-card" onclick="showShop('Anklets')">
+        <div class="cat-icon">🦶</div>
+        <div class="cat-name">Anklets</div>
+        <div class="cat-count">6 pieces</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background:#f8f8f8">
+    <div class="section-title">Featured Pieces</div>
+    <div class="section-sub">Handpicked for you</div>
+    <div class="product-grid" id="featured-grid"></div>
+  </div>
+
+  <div style="background:#1a1a1a;color:#fff;text-align:center;padding:5rem 2rem">
+    <div style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#aaa;margin-bottom:1rem">Our Promise</div>
+    <div style="font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:1rem">Crafted with intention.<br><em style="font-style:italic;color:#ccc">Worn with love.</em></div>
+    <p style="font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;color:#999;max-width:480px;margin:0 auto 2rem;line-height:1.8">Every piece in our collection is thoughtfully crafted to celebrate the women who wear them. Quality materials, timeless designs.</p>
+    <button class="btn" style="background:transparent;border:1px solid #555;color:#ddd;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;padding:0.85rem 2.5rem" onclick="showShop(null)">View All Jewelry</button>
+  </div>
+
+  <footer>
+    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
+    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <div class="section">
+    <div class="shop-header">
+      <div>
+        <div class="breadcrumb" onclick="showPage('home')" style="margin-bottom:0.4rem">← Home</div>
+        <h2 id="shop-title">All Jewelry</h2>
+      </div>
+      <div id="cat-filter" style="display:flex;gap:0.5rem;flex-wrap:wrap"></div>
+    </div>
+    <div class="product-grid" id="shop-grid"></div>
+  </div>
+  <footer>
+    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
+    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="section">
+    <div style="max-width:1100px;margin:0 auto 1.5rem;padding:0 0.5rem">
+      <span class="breadcrumb" id="detail-back">← Back</span>
+    </div>
+    <div class="detail-wrap">
+      <div class="detail-img" id="detail-img"></div>
+      <div class="detail-info">
+        <div class="detail-tag" id="detail-cat"></div>
+        <div class="detail-name" id="detail-name"></div>
+        <div class="detail-price" id="detail-price"></div>
+        <div class="detail-desc" id="detail-desc"></div>
+        <div class="option-label">Metal</div>
+        <div class="option-btns" id="metal-opts"></div>
+        <div class="option-label">Size</div>
+        <div class="option-btns" id="size-opts"></div>
+        <hr class="divider">
+        <button class="add-cart-btn" id="add-to-cart-btn">Add to Cart</button>
+        <button class="wishlist-btn">♡ Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
+    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-head">
+    <h3>Your Cart</h3>
+    <button class="close-btn" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">Your cart is empty</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Subtotal</span><span id="cartTotal">£0.00</span></div>
+    <button class="checkout-btn" onclick="showToast('Checkout coming soon!')">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAuth()">×</button>
+    <div id="loginForm">
+      <h2>Welcome back</h2>
+      <div class="modal-sub">Sign in to your account</div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="modal-btn" onclick="fakeLogin()">Sign In</button>
+      <div class="modal-switch">Don't have an account? <a onclick="switchAuth()">Create one</a></div>
+    </div>
+    <div id="registerForm" style="display:none">
+      <h2>Join Aynnor's</h2>
+      <div class="modal-sub">Create your account</div>
+      <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a password"></div>
+      <button class="modal-btn" onclick="fakeLogin()">Create Account</button>
+      <div class="modal-switch">Already have an account? <a onclick="switchAuth()">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const products=[
+  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,material:'Sterling Silver',desc:'A delicate halo of cubic zirconia stones surrounding a central moonstone. Inspired by the night sky, this ring brings a celestial glow to any occasion.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9']},
+  {id:2,cat:'Rings',name:'Infinity Band',price:145,material:'Sterling Silver',desc:'A sleek, modern infinity band with micro-pavé diamond accents. Perfect for stacking or wearing alone as a statement of timeless love.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10']},
+  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,material:'White Gold Plated',desc:'An artisan-crafted floral signet featuring hand-engraved petals. A wearable piece of art that blends vintage charm with modern sophistication.',icon:'💍',metals:['White Gold','Silver'],sizes:['6','7','8']},
+  {id:4,cat:'Necklaces',name:'Dainty Star Pendant',price:95,material:'Sterling Silver',desc:'A minimalist sterling silver star pendant on a delicate 18" chain. Effortlessly beautiful, perfect for everyday wear.',icon:'⭐',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
+  {id:5,cat:'Necklaces',name:'Pearl Choker',price:165,material:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker. A timeless classic reimagined for the modern woman.',icon:'📿',metals:['Silver','Gold'],sizes:['14"','16"']},
+  {id:6,cat:'Earrings',name:'Crystal Drop Earrings',price:110,material:'Sterling Silver',desc:'Elegant drop earrings featuring faceted crystal drops that catch the light beautifully. Ideal for evening events or special occasions.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:7,cat:'Earrings',name:'Hoop Earrings',price:88,material:'Sterling Silver',desc:'Classic polished hoops with a modern twist — a subtle hammered texture that adds depth and dimension.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
+  {id:8,cat:'Bracelets',name:'Tennis Bracelet',price:245,material:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones set in sterling silver. The quintessential jewelry piece for every collection.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
+  {id:9,cat:'Bracelets',name:'Charm Bracelet',price:130,material:'Sterling Silver',desc:'A personalised sterling silver charm bracelet featuring delicate botanical charms. Add your own charms to make it uniquely yours.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
+  {id:10,cat:'Anklets',name:'Delicate Chain Anklet',price:72,material:'Sterling Silver',desc:'A feather-light sterling silver chain anklet with a tiny star charm. Subtle, elegant, and perfect for any season.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
+  {id:11,cat:'Anklets',name:'Beaded Anklet',price:68,material:'Silver & Gemstone',desc:'Handstrung with iridescent freshwater pearls and silver beads on a durable nylon thread. A bohemian-meets-minimal aesthetic.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
+  {id:12,cat:'Earrings',name:'Stud Pearl Earrings',price:95,material:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting. A wardrobe staple that pairs perfectly with anything.',icon:'🔵',metals:['Silver','White Gold'],sizes:['One Size']},
+];
+
+let cart=[];
+let currentCat=null;
+let currentProduct=null;
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showShop(cat){
+  currentCat=cat;
+  const filtered=cat?products.filter(p=>p.cat===cat):products;
+  document.getElementById('shop-title').textContent=cat||'All Jewelry';
+  const grid=document.getElementById('shop-grid');
+  grid.innerHTML=filtered.map(p=>prodCard(p)).join('');
+  const cats=['All','Rings','Necklaces','Earrings','Bracelets','Anklets'];
+  document.getElementById('cat-filter').innerHTML=cats.map(c=>`<button onclick="showShop(${c==='All'?'null':'"'+c+'"'})" style="padding:0.35rem 1rem;border:1px solid ${(!cat&&c==='All')||(cat===c)?'#1a1a1a':'#ccc'};background:${(!cat&&c==='All')||(cat===c)?'#1a1a1a':'transparent'};color:${(!cat&&c==='All')||(cat===c)?'#fff':'#555'};font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.08em;cursor:pointer">${c}</button>`).join('');
+  showPage('shop');
+}
+
+function prodCard(p){
+  return `<div class="prod-card" onclick="showDetail(${p.id})">
+    <div class="prod-img">${p.icon}</div>
+    <div class="prod-name">${p.name}</div>
+    <div class="prod-material">${p.material}</div>
+    <div class="prod-price">£${p.price.toFixed(2)}</div>
+  </div>`;
+}
+
+function showDetail(id){
+  const p=products.find(x=>x.id===id);
+  currentProduct=p;
+  document.getElementById('detail-img').textContent=p.icon;
+  document.getElementById('detail-cat').textContent=p.cat;
+  document.getElementById('detail-name').textContent=p.name;
+  document.getElementById('detail-price').textContent='£'+p.price.toFixed(2);
+  document.getElementById('detail-desc').textContent=p.desc;
+  document.getElementById('detail-back').onclick=()=>showShop(p.cat);
+  document.getElementById('metal-opts').innerHTML=p.metals.map((m,i)=>`<button class="opt-btn${i===0?' selected':''}" onclick="selectOpt(this,'metal')">${m}</button>`).join('');
+  document.getElementById('size-opts').innerHTML=p.sizes.map((s,i)=>`<button class="opt-btn${i===0?' selected':''}" onclick="selectOpt(this,'size')">${s}</button>`).join('');
+  document.getElementById('add-to-cart-btn').onclick=()=>addToCart(p);
+  showPage('detail');
+}
+
+function selectOpt(btn,group){
+  btn.closest('.option-btns').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function addToCart(p){
+  const metal=document.querySelector('#metal-opts .selected')?.textContent||p.metals[0];
+  const size=document.querySelector('#size-opts .selected')?.textContent||p.sizes[0];
+  cart.push({...p,metal,size,uid:Date.now()});
+  updateCartUI();
+  openCart();
+}
+
+function updateCartUI(){
+  const badge=document.getElementById('cartBadge');
+  badge.textContent=cart.length;
+  badge.style.display=cart.length>0?'flex':'none';
+  const container=document.getElementById('cartItems');
+  const empty=document.getElementById('cartEmpty');
+  if(cart.length===0){empty.style.display='block';container.querySelectorAll('.cart-item').forEach(e=>e.remove());document.getElementById('cartTotal').textContent='£0.00';return;}
+  empty.style.display='none';
+  container.querySelectorAll('.cart-item').forEach(e=>e.remove());
+  let total=0;
+  cart.forEach(item=>{
+    total+=item.price;
+    const div=document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`<div class="cart-item-img">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-meta">${item.metal} · ${item.size}</div>
+      </div>
+      <div class="cart-item-price">£${item.price.toFixed(2)}</div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.uid})">×</button>`;
+    container.appendChild(div);
+  });
+  document.getElementById('cartTotal').textContent='£'+total.toFixed(2);
+}
+
+function removeFromCart(uid){
+  cart=cart.filter(i=>i.uid!==uid);
+  updateCartUI();
+}
+
+function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartPanel').classList.add('open')}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartPanel').classList.remove('open')}
+function openAuth(){document.getElementById('authModal').classList.add('open')}
+function closeAuth(){document.getElementById('authModal').classList.remove('open')}
+function switchAuth(){
+  const l=document.getElementById('loginForm'),r=document.getElementById('registerForm');
+  l.style.display=l.style.display==='none'?'block':'none';
+  r.style.display=r.style.display==='none'?'block':'none';
+}
+function fakeLogin(){closeAuth();showToast('Welcome to Aynnor\'s Jewelry!')}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// Populate featured grid
+document.getElementById('featured-grid').innerHTML=[products[0],products[3],products[5],products[7]].map(p=>prodCard(p)).join('');
+</script>
+</body>
+</html>
