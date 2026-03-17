@@ -5,445 +5,595 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aynnor's Jewelry</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Georgia',serif;background:#fff;color:#1a1a1a;min-height:100vh}
-  :root{--silver:#c0c0c0;--light:#f8f8f8;--mid:#e8e8e8;--dark:#2a2a2a;--accent:#888}
-  a{text-decoration:none;color:inherit;cursor:pointer}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#0d0d0d;--chalk:#fafaf8;--silver:#b8b8b0;--mist:#f0f0ec;--accent:#8a7f6e;--serif:'Georgia',serif;--sans:'Helvetica Neue',Arial,sans-serif}
+body{font-family:var(--sans);background:var(--chalk);color:var(--ink);overflow-x:hidden}
+button{cursor:pointer;font-family:var(--sans)}
 
-  /* NAV */
-  nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);border-bottom:1px solid #e0e0e0;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{font-size:1.4rem;letter-spacing:0.12em;font-weight:400;color:#1a1a1a}
-  .brand span{color:#888;font-style:italic}
-  .nav-links{display:flex;gap:2rem;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase}
-  .nav-links a{color:#555;transition:color 0.2s}
-  .nav-links a:hover{color:#1a1a1a}
-  .nav-icons{display:flex;gap:1.2rem;align-items:center}
-  .nav-icon-btn{background:none;border:none;cursor:pointer;font-size:1.1rem;color:#555;position:relative;transition:color 0.2s}
-  .nav-icon-btn:hover{color:#1a1a1a}
-  .cart-badge{position:absolute;top:-6px;right:-8px;background:#1a1a1a;color:#fff;border-radius:50%;width:16px;height:16px;font-size:10px;font-family:sans-serif;display:flex;align-items:center;justify-content:center}
+/* ── NAVBAR ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(250,250,248,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,0.07)}
+.nav-logo{font-family:var(--serif);font-size:1.15rem;font-weight:400;letter-spacing:0.08em;cursor:pointer}
+.nav-logo sup{font-size:0.55rem;letter-spacing:0.2em;vertical-align:super;color:var(--accent);text-transform:uppercase}
+.nav-center{display:flex;gap:2.5rem}
+.nav-center a{font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:color 0.2s;cursor:pointer}
+.nav-center a:hover{color:var(--ink)}
+.nav-right{display:flex;align-items:center;gap:1.2rem}
+.icon-btn{background:none;border:none;color:var(--accent);display:flex;align-items:center;justify-content:center;width:36px;height:36px;transition:color 0.2s;position:relative}
+.icon-btn:hover{color:var(--ink)}
+.badge{position:absolute;top:2px;right:2px;width:14px;height:14px;background:var(--ink);color:#fff;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;font-family:var(--sans)}
 
-  /* PAGES */
-  .page{display:none}
-  .page.active{display:block}
+/* ── PAGES ── */
+.page{display:none;padding-top:60px}
+.page.active{display:block}
 
-  /* HERO */
-  .hero{background:#1a1a1a;min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
-  .hero-bg{position:absolute;inset:0;background-image:var(--hero-img);background-size:cover;background-position:center 30%;opacity:0.72}
-  .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.25) 40%,rgba(0,0,0,0.55) 100%)}
-  .hero-content{position:relative;z-index:2}
-  .hero-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.75);margin-bottom:1.2rem}
-  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;letter-spacing:0.04em;line-height:1.15;color:#fff;margin-bottom:1.2rem;text-shadow:0 2px 24px rgba(0,0,0,0.25)}
-  .hero h1 em{font-style:italic;color:rgba(255,255,255,0.82)}
-  .hero p{font-family:'Helvetica Neue',sans-serif;font-size:1rem;color:rgba(255,255,255,0.75);max-width:440px;margin:0 auto 2.5rem;line-height:1.7}
-  .btn{display:inline-block;padding:0.85rem 2.5rem;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.25s;border:none}
-  .btn-dark{background:#1a1a1a;color:#fff}
-  .btn-dark:hover{background:#333}
-  .btn-outline{background:transparent;color:#1a1a1a;border:1px solid #1a1a1a}
-  .btn-outline:hover{background:#1a1a1a;color:#fff}
+/* ── HOME HERO: split asymmetric ── */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 60px)}
+.hero-left{background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:4rem 3rem;position:relative;overflow:hidden}
+.hero-left-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.45;transition:opacity 0.5s}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:1.5rem;position:relative;z-index:1}
+.hero-headline{font-family:var(--serif);font-size:clamp(2.8rem,5vw,5rem);font-weight:400;line-height:1.05;color:#fff;position:relative;z-index:1;margin-bottom:2rem}
+.hero-headline em{font-style:italic;color:rgba(255,255,255,0.55)}
+.hero-cta{display:inline-flex;align-items:center;gap:0.8rem;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:#fff;border:none;background:none;padding:0;position:relative;z-index:1;transition:gap 0.2s}
+.hero-cta:hover{gap:1.4rem}
+.hero-cta-line{width:32px;height:1px;background:#fff;transition:width 0.2s}
+.hero-cta:hover .hero-cta-line{width:48px}
 
-  /* CATEGORIES */
-  .section{padding:5rem 2rem}
-  .section-title{text-align:center;font-size:1.8rem;font-weight:300;letter-spacing:0.06em;margin-bottom:0.5rem}
-  .section-sub{text-align:center;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;color:#888;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem}
-  .cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto}
-  .cat-card{aspect-ratio:3/4;background:var(--light);border:1px solid #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:1.5rem;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
-  .cat-card:hover{border-color:#aaa;transform:translateY(-3px)}
-  .cat-icon{font-size:3rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);opacity:0.15}
-  .cat-name{font-size:1rem;letter-spacing:0.08em;font-weight:400;margin-bottom:0.3rem;position:relative;z-index:1}
-  .cat-count{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;color:#888;letter-spacing:0.05em;position:relative;z-index:1}
+.hero-right{background:var(--mist);display:flex;flex-direction:column;justify-content:space-between;padding:3rem 2.5rem}
+.hero-right-top{display:flex;justify-content:flex-end}
+.hero-scroll-hint{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);writing-mode:vertical-rl;align-self:flex-end}
+.hero-cats{display:flex;flex-direction:column;gap:0}
+.hero-cat-row{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-top:1px solid rgba(0,0,0,0.1);cursor:pointer;transition:all 0.2s;group:true}
+.hero-cat-row:last-child{border-bottom:1px solid rgba(0,0,0,0.1)}
+.hero-cat-row:hover{padding-left:0.8rem}
+.hero-cat-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;transition:color 0.2s}
+.hero-cat-row:hover .hero-cat-name{color:var(--accent)}
+.hero-cat-meta{font-size:0.7rem;letter-spacing:0.1em;color:var(--silver);text-transform:uppercase}
+.hero-cat-arrow{font-size:1.2rem;color:var(--silver);transition:transform 0.2s;transform:translateX(0)}
+.hero-cat-row:hover .hero-cat-arrow{transform:translateX(6px);color:var(--ink)}
 
-  /* PRODUCTS */
-  .shop-header{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto 2rem;padding:0 0.5rem}
-  .shop-header h2{font-size:1.5rem;font-weight:300;letter-spacing:0.06em}
-  .breadcrumb{font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;color:#888;cursor:pointer}
-  .breadcrumb:hover{color:#1a1a1a}
-  .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
-  .prod-card{cursor:pointer;transition:all 0.25s}
-  .prod-card:hover .prod-img{filter:brightness(0.95)}
-  .prod-img{width:100%;aspect-ratio:1;background:#f2f2f2;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:0.8rem;transition:all 0.25s}
-  .prod-name{font-size:0.95rem;letter-spacing:0.04em;margin-bottom:0.25rem}
-  .prod-material{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;color:#888;margin-bottom:0.4rem}
-  .prod-price{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;letter-spacing:0.05em}
+/* ── MARQUEE ── */
+.marquee-wrap{overflow:hidden;background:var(--ink);padding:0.75rem 0;white-space:nowrap}
+.marquee-track{display:inline-block;animation:marquee 22s linear infinite}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-item{display:inline-block;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);padding:0 3rem}
+.marquee-dot{color:rgba(255,255,255,0.2)}
 
-  /* PRODUCT DETAIL */
-  .detail-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:0 1rem}
-  .detail-img{width:100%;aspect-ratio:1;background:#f2f2f2;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:8rem}
-  .detail-info{padding:1rem 0}
-  .detail-tag{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:#888;margin-bottom:0.7rem}
-  .detail-name{font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:0.5rem;line-height:1.3}
-  .detail-price{font-family:'Helvetica Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:1.5rem;color:#1a1a1a}
-  .detail-desc{font-family:'Helvetica Neue',sans-serif;font-size:0.88rem;color:#555;line-height:1.8;margin-bottom:1.5rem}
-  .option-label{font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:0.6rem}
-  .option-btns{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
-  .opt-btn{padding:0.4rem 1rem;border:1px solid #ccc;background:none;cursor:pointer;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;transition:all 0.2s}
-  .opt-btn.selected,.opt-btn:hover{border-color:#1a1a1a;background:#1a1a1a;color:#fff}
-  .add-cart-btn{width:100%;padding:1rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.25s;margin-bottom:0.8rem}
-  .add-cart-btn:hover{background:#333}
-  .wishlist-btn{width:100%;padding:0.9rem;background:transparent;color:#1a1a1a;border:1px solid #1a1a1a;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
-  .divider{border:none;border-top:1px solid #e8e8e8;margin:1.5rem 0}
+/* ── FEATURED SPLIT ── */
+.featured{display:grid;grid-template-columns:5fr 7fr;min-height:70vh}
+.featured-label{background:var(--mist);display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem}
+.featured-label-tag{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:1.5rem}
+.featured-label h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3.5rem);font-weight:400;line-height:1.1;margin-bottom:2rem}
+.featured-label p{font-size:0.85rem;color:var(--accent);line-height:1.8;max-width:280px;margin-bottom:2.5rem}
+.see-all-btn{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:0.85rem 1.8rem;transition:background 0.2s}
+.see-all-btn:hover{background:#333}
+.featured-grid{background:#fff;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:rgba(0,0,0,0.07)}
+.feat-card{background:var(--chalk);display:flex;flex-direction:column;padding:1.5rem;cursor:pointer;transition:background 0.25s;position:relative;overflow:hidden}
+.feat-card:hover{background:#fff}
+.feat-card:first-child{grid-row:span 2;padding:2rem}
+.feat-icon{font-size:clamp(2.5rem,5vw,4.5rem);margin-bottom:auto;padding-bottom:1.5rem;display:block}
+.feat-card:first-child .feat-icon{font-size:clamp(4rem,8vw,7rem)}
+.feat-name{font-family:var(--serif);font-size:0.95rem;margin-bottom:0.25rem}
+.feat-card:first-child .feat-name{font-size:1.3rem}
+.feat-price{font-size:0.78rem;color:var(--accent);letter-spacing:0.05em}
+.feat-hover-btn{position:absolute;bottom:-40px;right:1.5rem;background:var(--ink);color:#fff;border:none;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1rem;transition:bottom 0.25s}
+.feat-card:hover .feat-hover-btn{bottom:1.5rem}
 
-  /* CART PANEL */
-  .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;display:none}
-  .cart-overlay.open{display:block}
-  .cart-panel{position:fixed;top:0;right:0;width:420px;max-width:100%;height:100%;background:#fff;z-index:201;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s ease;border-left:1px solid #e0e0e0}
-  .cart-panel.open{transform:translateX(0)}
-  .cart-head{display:flex;align-items:center;justify-content:space-between;padding:1.5rem;border-bottom:1px solid #e8e8e8}
-  .cart-head h3{font-size:1.1rem;font-weight:400;letter-spacing:0.08em}
-  .close-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#555;line-height:1}
-  .cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem}
-  .cart-empty{text-align:center;color:#aaa;font-family:'Helvetica Neue',sans-serif;font-size:0.88rem;margin-top:3rem}
-  .cart-item{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid #f0f0f0}
-  .cart-item-img{width:64px;height:64px;background:#f5f5f5;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
-  .cart-item-info{flex:1}
-  .cart-item-name{font-size:0.9rem;margin-bottom:0.2rem}
-  .cart-item-meta{font-family:'Helvetica Neue',sans-serif;font-size:0.78rem;color:#888}
-  .cart-item-price{font-family:'Helvetica Neue',sans-serif;font-size:0.9rem}
-  .cart-item-remove{background:none;border:none;color:#aaa;cursor:pointer;font-size:1rem;align-self:flex-start}
-  .cart-foot{padding:1.5rem;border-top:1px solid #e8e8e8}
-  .cart-total{display:flex;justify-content:space-between;font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;margin-bottom:1rem}
-  .checkout-btn{width:100%;padding:1rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
+/* ── SHOP PAGE ── */
+.shop-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
+.shop-sidebar{background:var(--mist);padding:3rem 2rem;border-right:1px solid rgba(0,0,0,0.07);position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.sidebar-title{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:2rem}
+.sidebar-cats{display:flex;flex-direction:column;gap:0}
+.sidebar-cat{padding:0.9rem 0;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--serif);font-size:1.05rem;font-weight:400;transition:all 0.2s}
+.sidebar-cat:hover,.sidebar-cat.active{color:var(--accent);padding-left:0.5rem}
+.sidebar-cat-count{font-family:var(--sans);font-size:0.7rem;color:var(--silver)}
+.shop-main{padding:3rem}
+.shop-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(0,0,0,0.08)}
+.shop-title-area h2{font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:0.3rem}
+.shop-title-area p{font-size:0.75rem;color:var(--silver);letter-spacing:0.05em}
+.sort-select{font-size:0.72rem;letter-spacing:0.08em;border:1px solid rgba(0,0,0,0.15);background:none;padding:0.5rem 1rem;color:var(--ink);outline:none}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;background:rgba(0,0,0,0.07)}
+.prod-card{background:var(--chalk);padding:1.5rem;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
+.prod-card:hover{background:#fff}
+.prod-img-wrap{aspect-ratio:1;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin-bottom:1.2rem;position:relative;overflow:hidden}
+.prod-quick{position:absolute;bottom:-36px;left:0;right:0;background:rgba(13,13,13,0.85);color:#fff;border:none;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.6rem;transition:bottom 0.25s;width:100%}
+.prod-card:hover .prod-quick{bottom:0}
+.prod-cat-tag{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--silver);margin-bottom:0.35rem}
+.prod-name{font-family:var(--serif);font-size:0.95rem;margin-bottom:0.25rem}
+.prod-price{font-size:0.82rem;color:var(--ink);letter-spacing:0.04em}
 
-  /* AUTH MODAL */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:300;display:none;align-items:center;justify-content:center;min-height:400px}
-  .modal-overlay.open{display:flex}
-  .modal{background:#fff;width:420px;max-width:95%;padding:2.5rem;position:relative;border:1px solid #e0e0e0}
-  .modal h2{font-size:1.4rem;font-weight:300;letter-spacing:0.06em;margin-bottom:0.4rem}
-  .modal-sub{font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;color:#888;margin-bottom:2rem}
-  .form-group{margin-bottom:1.2rem}
-  .form-group label{display:block;font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:#666;margin-bottom:0.4rem}
-  .form-group input{width:100%;padding:0.7rem 0.9rem;border:1px solid #ddd;font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s}
-  .form-group input:focus{border-color:#888}
-  .modal-btn{width:100%;padding:0.9rem;background:#1a1a1a;color:#fff;border:none;font-family:'Helvetica Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-top:0.5rem}
-  .modal-switch{font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;text-align:center;margin-top:1.2rem;color:#888}
-  .modal-switch a{color:#1a1a1a;text-decoration:underline;cursor:pointer}
-  .modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888}
+/* ── DETAIL PAGE ── */
+.detail-layout{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 60px)}
+.detail-visual{background:var(--mist);display:flex;flex-direction:column;position:sticky;top:60px;height:calc(100vh - 60px)}
+.detail-main-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:10rem}
+.detail-thumbs{display:flex;gap:1px;background:rgba(0,0,0,0.07);height:90px}
+.detail-thumb{flex:1;background:var(--chalk);display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;transition:background 0.2s}
+.detail-thumb:hover,.detail-thumb.active{background:#fff}
+.detail-info{padding:4rem 3.5rem;overflow-y:auto}
+.detail-breadcrumb{font-size:0.68rem;letter-spacing:0.12em;color:var(--silver);margin-bottom:2rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem}
+.detail-breadcrumb:hover{color:var(--ink)}
+.detail-tag{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.detail-name{font-family:var(--serif);font-size:2.4rem;font-weight:400;line-height:1.15;margin-bottom:0.8rem}
+.detail-price{font-size:1.4rem;letter-spacing:0.04em;margin-bottom:1.8rem;color:var(--ink)}
+.detail-desc{font-size:0.85rem;line-height:1.9;color:var(--accent);margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)}
+.opt-section{margin-bottom:1.5rem}
+.opt-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);margin-bottom:0.7rem;display:flex;justify-content:space-between}
+.opt-label span{color:var(--ink);font-weight:normal}
+.opts{display:flex;gap:0.5rem;flex-wrap:wrap}
+.opt{padding:0.45rem 1.1rem;border:1px solid rgba(0,0,0,0.15);background:none;font-size:0.78rem;color:var(--ink);transition:all 0.2s}
+.opt:hover{border-color:var(--ink)}
+.opt.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.detail-actions{display:flex;flex-direction:column;gap:0.8rem;margin-top:2rem}
+.btn-primary{padding:1.05rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.2s}
+.btn-primary:hover{background:#333}
+.btn-secondary{padding:1rem;background:none;color:var(--ink);border:1px solid rgba(0,0,0,0.2);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.2s}
+.btn-secondary:hover{border-color:var(--ink)}
+.detail-meta{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:0.6rem}
+.detail-meta-row{display:flex;gap:1rem;font-size:0.78rem}
+.detail-meta-row strong{color:var(--silver);font-weight:400;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;min-width:80px}
 
-  /* FOOTER */
-  footer{background:#f5f5f5;border-top:1px solid #e0e0e0;padding:3rem 2rem;text-align:center}
-  .footer-brand{font-size:1.2rem;letter-spacing:0.1em;margin-bottom:0.5rem}
-  .footer-brand span{color:#888;font-style:italic}
-  footer p{font-family:'Helvetica Neue',sans-serif;font-size:0.78rem;color:#aaa;letter-spacing:0.05em}
+/* ── CART DRAWER ── */
+.drawer-mask{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.drawer-mask.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:0;width:400px;max-width:100%;height:100%;background:var(--chalk);z-index:301;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1)}
+.drawer.open{transform:translateX(0)}
+.drawer-head{padding:1.5rem 2rem;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;justify-content:space-between;align-items:center}
+.drawer-head h3{font-family:var(--serif);font-size:1.1rem;font-weight:400}
+.drawer-close{background:none;border:none;font-size:1.6rem;color:var(--silver);line-height:1;transition:color 0.2s}
+.drawer-close:hover{color:var(--ink)}
+.drawer-body{flex:1;overflow-y:auto;padding:1.5rem 2rem}
+.drawer-empty{text-align:center;color:var(--silver);font-size:0.82rem;padding:3rem 0}
+.cart-line{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+.cart-line-img{width:60px;height:60px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.cart-line-info{flex:1;min-width:0}
+.cart-line-name{font-family:var(--serif);font-size:0.9rem;margin-bottom:0.2rem}
+.cart-line-meta{font-size:0.72rem;color:var(--silver)}
+.cart-line-price{font-size:0.85rem;white-space:nowrap}
+.cart-line-rm{background:none;border:none;color:var(--silver);font-size:1.1rem;align-self:flex-start;padding:0;line-height:1;transition:color 0.2s}
+.cart-line-rm:hover{color:var(--ink)}
+.drawer-foot{padding:1.5rem 2rem;border-top:1px solid rgba(0,0,0,0.08)}
+.drawer-subtotal{display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:1rem}
+.drawer-subtotal strong{font-weight:400;letter-spacing:0.05em}
+.checkout-btn{width:100%;padding:1rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.2s}
+.checkout-btn:hover{background:#333}
 
-  .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:0.7rem 1.8rem;font-family:'Helvetica Neue',sans-serif;font-size:0.82rem;letter-spacing:0.06em;z-index:500;opacity:0;transition:opacity 0.3s;pointer-events:none}
-  .toast.show{opacity:1}
+/* ── AUTH MODAL ── */
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:400;display:none;align-items:center;justify-content:center}
+.modal-mask.open{display:flex}
+.modal-box{background:var(--chalk);width:460px;max-width:95%;padding:3rem;position:relative}
+.modal-box h2{font-family:var(--serif);font-size:1.8rem;font-weight:400;margin-bottom:0.4rem}
+.modal-sub{font-size:0.78rem;color:var(--silver);margin-bottom:2rem;letter-spacing:0.05em}
+.field{margin-bottom:1.2rem}
+.field label{display:block;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--silver);margin-bottom:0.5rem}
+.field input{width:100%;padding:0.75rem 0;border:none;border-bottom:1px solid rgba(0,0,0,0.18);background:transparent;font-size:0.9rem;outline:none;font-family:var(--sans);color:var(--ink);transition:border-color 0.2s}
+.field input:focus{border-color:var(--ink)}
+.modal-submit{width:100%;margin-top:1.5rem;padding:1rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase}
+.modal-toggle{font-size:0.78rem;color:var(--silver);text-align:center;margin-top:1.2rem}
+.modal-toggle a{color:var(--ink);text-decoration:underline;cursor:pointer}
+.modal-x{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;color:var(--silver)}
 
-  @media(max-width:700px){
-    .detail-wrap{grid-template-columns:1fr;gap:2rem}
-    .nav-links{display:none}
-    .cat-grid{grid-template-columns:repeat(2,1fr)}
-  }
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:0.75rem 2rem;font-size:0.75rem;letter-spacing:0.12em;z-index:600;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .featured{grid-template-columns:1fr}
+  .shop-layout{grid-template-columns:1fr}
+  .shop-sidebar{position:static;height:auto}
+  .detail-layout{grid-template-columns:1fr}
+  .detail-visual{position:static;height:auto}
+  .nav-center{display:none}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="brand" onclick="showPage('home')" style="cursor:pointer">Aynnor's <span>Jewelry</span></div>
-  <div class="nav-links">
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showPage('home')">Aynnor's<sup>jewelry</sup></div>
+  <div class="nav-center">
     <a onclick="showPage('home')">Home</a>
-    <a onclick="showShop(null)">Shop</a>
+    <a onclick="showShop(null)">Collection</a>
     <a onclick="showShop('Rings')">Rings</a>
     <a onclick="showShop('Necklaces')">Necklaces</a>
     <a onclick="showShop('Earrings')">Earrings</a>
   </div>
-  <div class="nav-icons">
-    <button class="nav-icon-btn" onclick="openAuth()" title="Account">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+  <div class="nav-right">
+    <button class="icon-btn" onclick="openAuth()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     </button>
-    <button class="nav-icon-btn" onclick="openCart()" title="Cart">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+    <button class="icon-btn" onclick="openCart()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="badge" id="cartBadge">0</span>
     </button>
   </div>
 </nav>
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
-  <div class="hero" id="heroSection">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-content">
-      <div class="hero-tag">New Collection 2026</div>
-      <h1>Where <em>elegance</em><br>meets artistry</h1>
-      <p>Discover handcrafted jewelry pieces designed to tell your unique story. Each piece, a testament to timeless beauty.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <button class="btn btn-dark" onclick="showShop(null)">Explore Collection</button>
-        <button class="btn btn-outline" onclick="showShop('Rings')">Shop Rings</button>
+  <div class="hero">
+    <div class="hero-left" id="heroLeft">
+      <div class="hero-left-img" id="heroBg"></div>
+      <div class="hero-eyebrow">Aynnor's Jewelry — New Collection 2026</div>
+      <h1 class="hero-headline">Where<br><em>elegance</em><br>meets artistry</h1>
+      <button class="hero-cta" onclick="showShop(null)">
+        <span class="hero-cta-line"></span>
+        <span>Explore Collection</span>
+      </button>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-top">
+        <div class="hero-scroll-hint">Scroll to explore</div>
+      </div>
+      <div style="padding:1rem 0">
+        <div style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:1.5rem">Shop by Category</div>
+        <div class="hero-cats" id="heroCats"></div>
       </div>
     </div>
   </div>
 
-  <div class="section" style="background:#fff">
-    <div class="section-title">Shop by Category</div>
-    <div class="section-sub">Explore our collections</div>
-    <div class="cat-grid">
-      <div class="cat-card" onclick="showShop('Rings')">
-        <div class="cat-icon">💍</div>
-        <div class="cat-name">Rings</div>
-        <div class="cat-count">12 pieces</div>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Handcrafted Jewelry</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Sterling Silver</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Diamond Collection</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Free UK Shipping</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Lifetime Guarantee</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Handcrafted Jewelry</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Sterling Silver</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Diamond Collection</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Free UK Shipping</span><span class="marquee-dot">✦</span>
+      <span class="marquee-item">Lifetime Guarantee</span><span class="marquee-dot">✦</span>
+    </div>
+  </div>
+
+  <div class="featured">
+    <div class="featured-label">
+      <div class="featured-label-tag">Curated for you</div>
+      <h2>Featured<br>Pieces</h2>
+      <p>Each piece is thoughtfully crafted to celebrate the women who wear them.</p>
+      <button class="see-all-btn" onclick="showShop(null)">View All →</button>
+    </div>
+    <div class="featured-grid" id="featuredGrid"></div>
+  </div>
+
+  <div style="background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:50vh">
+    <div style="padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:1.5rem">Our Promise</div>
+      <div style="font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.1;margin-bottom:1.5rem">Crafted with<br><em style="color:rgba(255,255,255,0.45)">intention.</em></div>
+      <p style="font-size:0.83rem;color:rgba(255,255,255,0.45);line-height:1.9;max-width:320px">Quality materials, timeless designs. Every Aynnor's piece is made to last a lifetime and tell your unique story.</p>
+    </div>
+    <div style="display:grid;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)">
+      <div style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;background:#111">
+        <div style="font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem">200+</div>
+        <div style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Unique Designs</div>
       </div>
-      <div class="cat-card" onclick="showShop('Necklaces')">
-        <div class="cat-icon">📿</div>
-        <div class="cat-name">Necklaces</div>
-        <div class="cat-count">8 pieces</div>
-      </div>
-      <div class="cat-card" onclick="showShop('Earrings')">
-        <div class="cat-icon">✨</div>
-        <div class="cat-name">Earrings</div>
-        <div class="cat-count">15 pieces</div>
-      </div>
-      <div class="cat-card" onclick="showShop('Bracelets')">
-        <div class="cat-icon">⌚</div>
-        <div class="cat-name">Bracelets</div>
-        <div class="cat-count">10 pieces</div>
-      </div>
-      <div class="cat-card" onclick="showShop('Anklets')">
-        <div class="cat-icon">🦶</div>
-        <div class="cat-name">Anklets</div>
-        <div class="cat-count">6 pieces</div>
+      <div style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;background:#0f0f0f">
+        <div style="font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem">5,000+</div>
+        <div style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Happy Customers</div>
       </div>
     </div>
   </div>
 
-  <div class="section" style="background:#f8f8f8">
-    <div class="section-title">Featured Pieces</div>
-    <div class="section-sub">Handpicked for you</div>
-    <div class="product-grid" id="featured-grid"></div>
-  </div>
-
-  <div style="background:#1a1a1a;color:#fff;text-align:center;padding:5rem 2rem">
-    <div style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:#aaa;margin-bottom:1rem">Our Promise</div>
-    <div style="font-size:2rem;font-weight:300;letter-spacing:0.04em;margin-bottom:1rem">Crafted with intention.<br><em style="font-style:italic;color:#ccc">Worn with love.</em></div>
-    <p style="font-family:'Helvetica Neue',sans-serif;font-size:0.9rem;color:#999;max-width:480px;margin:0 auto 2rem;line-height:1.8">Every piece in our collection is thoughtfully crafted to celebrate the women who wear them. Quality materials, timeless designs.</p>
-    <button class="btn" style="background:transparent;border:1px solid #555;color:#ddd;letter-spacing:0.12em;text-transform:uppercase;font-family:'Helvetica Neue',sans-serif;font-size:0.8rem;padding:0.85rem 2.5rem" onclick="showShop(null)">View All Jewelry</button>
-  </div>
-
-  <footer>
-    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
-    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
+  <footer style="background:var(--mist);padding:3rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(0,0,0,0.07)">
+    <div style="font-family:var(--serif);font-size:1.1rem;letter-spacing:0.06em">Aynnor's<sup style="font-size:0.5rem;letter-spacing:0.2em;vertical-align:super;color:var(--accent);text-transform:uppercase"> jewelry</sup></div>
+    <div style="font-size:0.7rem;color:var(--silver);letter-spacing:0.08em">© 2026 Aynnor's Jewelry. All rights reserved.</div>
+    <div style="display:flex;gap:1.5rem;font-size:0.7rem;color:var(--accent);letter-spacing:0.08em">
+      <span style="cursor:pointer">Instagram</span>
+      <span style="cursor:pointer">Pinterest</span>
+      <span style="cursor:pointer">Contact</span>
+    </div>
   </footer>
 </div>
 
 <!-- SHOP PAGE -->
 <div class="page" id="page-shop">
-  <div class="section">
-    <div class="shop-header">
-      <div>
-        <div class="breadcrumb" onclick="showPage('home')" style="margin-bottom:0.4rem">← Home</div>
-        <h2 id="shop-title">All Jewelry</h2>
+  <div class="shop-layout">
+    <aside class="shop-sidebar">
+      <div class="sidebar-title">Collections</div>
+      <div class="sidebar-cats" id="sidebarCats"></div>
+    </aside>
+    <main class="shop-main">
+      <div class="shop-top">
+        <div class="shop-title-area">
+          <h2 id="shopTitle">All Jewelry</h2>
+          <p id="shopCount"></p>
+        </div>
+        <select class="sort-select" id="sortSelect" onchange="renderShopGrid()">
+          <option value="default">Sort: Featured</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
       </div>
-      <div id="cat-filter" style="display:flex;gap:0.5rem;flex-wrap:wrap"></div>
-    </div>
-    <div class="product-grid" id="shop-grid"></div>
+      <div class="prod-grid" id="shopGrid"></div>
+    </main>
   </div>
-  <footer>
-    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
-    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
-  </footer>
 </div>
 
 <!-- DETAIL PAGE -->
 <div class="page" id="page-detail">
-  <div class="section">
-    <div style="max-width:1100px;margin:0 auto 1.5rem;padding:0 0.5rem">
-      <span class="breadcrumb" id="detail-back">← Back</span>
+  <div class="detail-layout">
+    <div class="detail-visual">
+      <div class="detail-main-img" id="detailImg"></div>
+      <div class="detail-thumbs" id="detailThumbs"></div>
     </div>
-    <div class="detail-wrap">
-      <div class="detail-img" id="detail-img"></div>
-      <div class="detail-info">
-        <div class="detail-tag" id="detail-cat"></div>
-        <div class="detail-name" id="detail-name"></div>
-        <div class="detail-price" id="detail-price"></div>
-        <div class="detail-desc" id="detail-desc"></div>
-        <div class="option-label">Metal</div>
-        <div class="option-btns" id="metal-opts"></div>
-        <div class="option-label">Size</div>
-        <div class="option-btns" id="size-opts"></div>
-        <hr class="divider">
-        <button class="add-cart-btn" id="add-to-cart-btn">Add to Cart</button>
-        <button class="wishlist-btn">♡ Add to Wishlist</button>
+    <div class="detail-info">
+      <div class="detail-breadcrumb" id="detailBack">← Back to collection</div>
+      <div class="detail-tag" id="detailCat"></div>
+      <div class="detail-name" id="detailName"></div>
+      <div class="detail-price" id="detailPrice"></div>
+      <div class="detail-desc" id="detailDesc"></div>
+      <div class="opt-section">
+        <div class="opt-label">Metal <span id="metalSelected"></span></div>
+        <div class="opts" id="metalOpts"></div>
       </div>
+      <div class="opt-section">
+        <div class="opt-label">Size <span id="sizeSelected"></span></div>
+        <div class="opts" id="sizeOpts"></div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-primary" id="addCartBtn">Add to Cart</button>
+        <button class="btn-secondary">♡ Add to Wishlist</button>
+      </div>
+      <div class="detail-meta" id="detailMeta"></div>
     </div>
   </div>
-  <footer>
-    <div class="footer-brand">Aynnor's <span>Jewelry</span></div>
-    <p style="margin-top:0.5rem">© 2026 Aynnor's Jewelry. All rights reserved.</p>
-  </footer>
 </div>
 
-<!-- CART PANEL -->
-<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-head">
-    <h3>Your Cart</h3>
-    <button class="close-btn" onclick="closeCart()">×</button>
+<!-- CART DRAWER -->
+<div class="drawer-mask" id="drawerMask" onclick="closeCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3>Shopping Cart</h3>
+    <button class="drawer-close" onclick="closeCart()">×</button>
   </div>
-  <div class="cart-items" id="cartItems">
-    <div class="cart-empty" id="cartEmpty">Your cart is empty</div>
+  <div class="drawer-body" id="drawerBody">
+    <div class="drawer-empty">Your cart is empty</div>
   </div>
-  <div class="cart-foot">
-    <div class="cart-total"><span>Subtotal</span><span id="cartTotal">£0.00</span></div>
-    <button class="checkout-btn" onclick="showToast('Checkout coming soon!')">Proceed to Checkout</button>
+  <div class="drawer-foot">
+    <div class="drawer-subtotal"><strong>Subtotal</strong><span id="drawerTotal">£0.00</span></div>
+    <button class="checkout-btn" onclick="toast('Checkout coming soon!')">Proceed to Checkout</button>
   </div>
 </div>
 
 <!-- AUTH MODAL -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeAuth()">×</button>
-    <div id="loginForm">
+<div class="modal-mask" id="authMask">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeAuth()">×</button>
+    <div id="authLogin">
       <h2>Welcome back</h2>
-      <div class="modal-sub">Sign in to your account</div>
-      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
-      <button class="modal-btn" onclick="fakeLogin()">Sign In</button>
-      <div class="modal-switch">Don't have an account? <a onclick="switchAuth()">Create one</a></div>
+      <div class="modal-sub">Sign in to your Aynnor's account</div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="modal-submit" onclick="doAuth()">Sign In</button>
+      <div class="modal-toggle">New here? <a onclick="toggleAuth()">Create an account</a></div>
     </div>
-    <div id="registerForm" style="display:none">
-      <h2>Join Aynnor's</h2>
-      <div class="modal-sub">Create your account</div>
-      <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
-      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a password"></div>
-      <button class="modal-btn" onclick="fakeLogin()">Create Account</button>
-      <div class="modal-switch">Already have an account? <a onclick="switchAuth()">Sign in</a></div>
+    <div id="authRegister" style="display:none">
+      <h2>Create account</h2>
+      <div class="modal-sub">Join Aynnor's Jewelry</div>
+      <div class="field"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+      <div class="field"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="Choose a password"></div>
+      <button class="modal-submit" onclick="doAuth()">Create Account</button>
+      <div class="modal-toggle">Already have an account? <a onclick="toggleAuth()">Sign in</a></div>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toastEl"></div>
 
 <script>
-const products=[
+const CATS = ['Rings','Necklaces','Earrings','Bracelets','Anklets'];
+const PRODUCTS = [
   {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,material:'Sterling Silver',desc:'A delicate halo of cubic zirconia stones surrounding a central moonstone. Inspired by the night sky, this ring brings a celestial glow to any occasion.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9']},
   {id:2,cat:'Rings',name:'Infinity Band',price:145,material:'Sterling Silver',desc:'A sleek, modern infinity band with micro-pavé diamond accents. Perfect for stacking or wearing alone as a statement of timeless love.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10']},
   {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,material:'White Gold Plated',desc:'An artisan-crafted floral signet featuring hand-engraved petals. A wearable piece of art that blends vintage charm with modern sophistication.',icon:'💍',metals:['White Gold','Silver'],sizes:['6','7','8']},
   {id:4,cat:'Necklaces',name:'Dainty Star Pendant',price:95,material:'Sterling Silver',desc:'A minimalist sterling silver star pendant on a delicate 18" chain. Effortlessly beautiful, perfect for everyday wear.',icon:'⭐',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
   {id:5,cat:'Necklaces',name:'Pearl Choker',price:165,material:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker. A timeless classic reimagined for the modern woman.',icon:'📿',metals:['Silver','Gold'],sizes:['14"','16"']},
-  {id:6,cat:'Earrings',name:'Crystal Drop Earrings',price:110,material:'Sterling Silver',desc:'Elegant drop earrings featuring faceted crystal drops that catch the light beautifully. Ideal for evening events or special occasions.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:7,cat:'Earrings',name:'Hoop Earrings',price:88,material:'Sterling Silver',desc:'Classic polished hoops with a modern twist — a subtle hammered texture that adds depth and dimension.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
-  {id:8,cat:'Bracelets',name:'Tennis Bracelet',price:245,material:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones set in sterling silver. The quintessential jewelry piece for every collection.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
-  {id:9,cat:'Bracelets',name:'Charm Bracelet',price:130,material:'Sterling Silver',desc:'A personalised sterling silver charm bracelet featuring delicate botanical charms. Add your own charms to make it uniquely yours.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
-  {id:10,cat:'Anklets',name:'Delicate Chain Anklet',price:72,material:'Sterling Silver',desc:'A feather-light sterling silver chain anklet with a tiny star charm. Subtle, elegant, and perfect for any season.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
-  {id:11,cat:'Anklets',name:'Beaded Anklet',price:68,material:'Silver & Gemstone',desc:'Handstrung with iridescent freshwater pearls and silver beads on a durable nylon thread. A bohemian-meets-minimal aesthetic.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
-  {id:12,cat:'Earrings',name:'Stud Pearl Earrings',price:95,material:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting. A wardrobe staple that pairs perfectly with anything.',icon:'🔵',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:6,cat:'Earrings',name:'Crystal Drop Earrings',price:110,material:'Sterling Silver',desc:'Elegant drop earrings featuring faceted crystal drops that catch the light beautifully.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:7,cat:'Earrings',name:'Hammered Hoops',price:88,material:'Sterling Silver',desc:'Classic polished hoops with a subtle hammered texture that adds depth and dimension.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
+  {id:8,cat:'Bracelets',name:'Tennis Bracelet',price:245,material:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones set in sterling silver. The quintessential piece for every collection.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
+  {id:9,cat:'Bracelets',name:'Charm Bracelet',price:130,material:'Sterling Silver',desc:'A personalised sterling silver charm bracelet with delicate botanical charms.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
+  {id:10,cat:'Anklets',name:'Delicate Chain Anklet',price:72,material:'Sterling Silver',desc:'A feather-light sterling silver chain anklet with a tiny star charm.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
+  {id:11,cat:'Anklets',name:'Beaded Anklet',price:68,material:'Silver & Gemstone',desc:'Handstrung with iridescent freshwater pearls and silver beads.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
+  {id:12,cat:'Earrings',name:'Pearl Studs',price:95,material:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting. A wardrobe staple that pairs with anything.',icon:'🔵',metals:['Silver','White Gold'],sizes:['One Size']},
 ];
 
-let cart=[];
-let currentCat=null;
-let currentProduct=null;
+let cart = [];
+let currentCat = null;
+let currentProduct = null;
+let selectedMetal = '';
+let selectedSize = '';
 
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+// ── INIT ──
+CATS.forEach(c => {
+  const count = PRODUCTS.filter(p => p.cat === c).length;
+  document.getElementById('heroCats').innerHTML +=
+    `<div class="hero-cat-row" onclick="showShop('${c}')">
+      <span class="hero-cat-name">${c}</span>
+      <span class="hero-cat-meta">${count} pieces</span>
+      <span class="hero-cat-arrow">→</span>
+    </div>`;
+});
+
+// Featured grid
+const featured = [PRODUCTS[0], PRODUCTS[3], PRODUCTS[5], PRODUCTS[7]];
+document.getElementById('featuredGrid').innerHTML = featured.map((p, i) =>
+  `<div class="feat-card" onclick="showDetail(${p.id})">
+    <span class="feat-icon">${p.icon}</span>
+    <div class="feat-name">${p.name}</div>
+    <div class="feat-price">£${p.price.toFixed(2)}</div>
+    <button class="feat-hover-btn">View →</button>
+  </div>`
+).join('');
+
+// Sidebar cats
+function buildSidebar() {
+  document.getElementById('sidebarCats').innerHTML =
+    `<div class="sidebar-cat ${!currentCat?'active':''}" onclick="showShop(null)">
+      <span>All Jewelry</span><span class="sidebar-cat-count">${PRODUCTS.length}</span>
+    </div>` +
+    CATS.map(c => {
+      const n = PRODUCTS.filter(p => p.cat === c).length;
+      return `<div class="sidebar-cat ${currentCat===c?'active':''}" onclick="showShop('${c}')">
+        <span>${c}</span><span class="sidebar-cat-count">${n}</span>
+      </div>`;
+    }).join('');
 }
 
-function showShop(cat){
-  currentCat=cat;
-  const filtered=cat?products.filter(p=>p.cat===cat):products;
-  document.getElementById('shop-title').textContent=cat||'All Jewelry';
-  const grid=document.getElementById('shop-grid');
-  grid.innerHTML=filtered.map(p=>prodCard(p)).join('');
-  const cats=['All','Rings','Necklaces','Earrings','Bracelets','Anklets'];
-  document.getElementById('cat-filter').innerHTML=cats.map(c=>`<button onclick="showShop(${c==='All'?'null':'"'+c+'"'})" style="padding:0.35rem 1rem;border:1px solid ${(!cat&&c==='All')||(cat===c)?'#1a1a1a':'#ccc'};background:${(!cat&&c==='All')||(cat===c)?'#1a1a1a':'transparent'};color:${(!cat&&c==='All')||(cat===c)?'#fff':'#555'};font-family:'Helvetica Neue',sans-serif;font-size:0.75rem;letter-spacing:0.08em;cursor:pointer">${c}</button>`).join('');
+// ── SHOP ──
+function showShop(cat) {
+  currentCat = cat;
+  document.getElementById('shopTitle').textContent = cat || 'All Jewelry';
+  buildSidebar();
+  renderShopGrid();
   showPage('shop');
 }
 
-function prodCard(p){
-  return `<div class="prod-card" onclick="showDetail(${p.id})">
-    <div class="prod-img">${p.icon}</div>
-    <div class="prod-name">${p.name}</div>
-    <div class="prod-material">${p.material}</div>
-    <div class="prod-price">£${p.price.toFixed(2)}</div>
-  </div>`;
+function renderShopGrid() {
+  let list = currentCat ? PRODUCTS.filter(p => p.cat === currentCat) : [...PRODUCTS];
+  const sort = document.getElementById('sortSelect').value;
+  if (sort === 'asc') list.sort((a, b) => a.price - b.price);
+  if (sort === 'desc') list.sort((a, b) => b.price - a.price);
+  document.getElementById('shopCount').textContent = `${list.length} piece${list.length !== 1 ? 's' : ''}`;
+  document.getElementById('shopGrid').innerHTML = list.map(p =>
+    `<div class="prod-card" onclick="showDetail(${p.id})">
+      <div class="prod-img-wrap">
+        ${p.icon}
+        <button class="prod-quick" onclick="event.stopPropagation();quickAdd(${p.id})">Quick Add →</button>
+      </div>
+      <div class="prod-cat-tag">${p.cat}</div>
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-price">£${p.price.toFixed(2)}</div>
+    </div>`
+  ).join('');
 }
 
-function showDetail(id){
-  const p=products.find(x=>x.id===id);
-  currentProduct=p;
-  document.getElementById('detail-img').textContent=p.icon;
-  document.getElementById('detail-cat').textContent=p.cat;
-  document.getElementById('detail-name').textContent=p.name;
-  document.getElementById('detail-price').textContent='£'+p.price.toFixed(2);
-  document.getElementById('detail-desc').textContent=p.desc;
-  document.getElementById('detail-back').onclick=()=>showShop(p.cat);
-  document.getElementById('metal-opts').innerHTML=p.metals.map((m,i)=>`<button class="opt-btn${i===0?' selected':''}" onclick="selectOpt(this,'metal')">${m}</button>`).join('');
-  document.getElementById('size-opts').innerHTML=p.sizes.map((s,i)=>`<button class="opt-btn${i===0?' selected':''}" onclick="selectOpt(this,'size')">${s}</button>`).join('');
-  document.getElementById('add-to-cart-btn').onclick=()=>addToCart(p);
+// ── DETAIL ──
+function showDetail(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  currentProduct = p;
+  selectedMetal = p.metals[0];
+  selectedSize = p.sizes[0];
+
+  document.getElementById('detailImg').textContent = p.icon;
+  document.getElementById('detailCat').textContent = p.cat;
+  document.getElementById('detailName').textContent = p.name;
+  document.getElementById('detailPrice').textContent = '£' + p.price.toFixed(2);
+  document.getElementById('detailDesc').textContent = p.desc;
+  document.getElementById('detailBack').onclick = () => showShop(p.cat);
+
+  // Thumbnails
+  document.getElementById('detailThumbs').innerHTML = [p.icon, p.icon, p.icon].map((ic, i) =>
+    `<div class="detail-thumb ${i===0?'active':''}" onclick="selectThumb(this,'${ic}')">${ic}</div>`
+  ).join('');
+
+  // Metal options — FIX: proper active toggling
+  document.getElementById('metalSelected').textContent = selectedMetal;
+  document.getElementById('metalOpts').innerHTML = p.metals.map(m =>
+    `<button class="opt ${m === selectedMetal ? 'active' : ''}" onclick="selectOpt(this,'metal','${m}')">${m}</button>`
+  ).join('');
+
+  // Size options — FIX: proper active toggling
+  document.getElementById('sizeSelected').textContent = selectedSize;
+  document.getElementById('sizeOpts').innerHTML = p.sizes.map(s =>
+    `<button class="opt ${s === selectedSize ? 'active' : ''}" onclick="selectOpt(this,'size','${s}')">${s}</button>`
+  ).join('');
+
+  document.getElementById('detailMeta').innerHTML =
+    `<div class="detail-meta-row"><strong>Material</strong><span>${p.material}</span></div>
+     <div class="detail-meta-row"><strong>Category</strong><span>${p.cat}</span></div>
+     <div class="detail-meta-row"><strong>Shipping</strong><span>Free UK delivery, 3–5 days</span></div>`;
+
+  document.getElementById('addCartBtn').onclick = () => addToCart(p);
   showPage('detail');
 }
 
-function selectOpt(btn,group){
-  btn.closest('.option-btns').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
+function selectOpt(btn, type, val) {
+  // Remove active from siblings
+  btn.closest('.opts').querySelectorAll('.opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (type === 'metal') { selectedMetal = val; document.getElementById('metalSelected').textContent = val; }
+  if (type === 'size')  { selectedSize  = val; document.getElementById('sizeSelected').textContent  = val; }
 }
 
-function addToCart(p){
-  const metal=document.querySelector('#metal-opts .selected')?.textContent||p.metals[0];
-  const size=document.querySelector('#size-opts .selected')?.textContent||p.sizes[0];
-  cart.push({...p,metal,size,uid:Date.now()});
-  updateCartUI();
+function selectThumb(el, icon) {
+  document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('detailImg').textContent = icon;
+}
+
+// ── CART ──
+function addToCart(p) {
+  cart.push({ ...p, metal: selectedMetal, size: selectedSize, uid: Date.now() + Math.random() });
+  updateCart();
   openCart();
+  toast(`${p.name} added to cart`);
 }
 
-function updateCartUI(){
-  const badge=document.getElementById('cartBadge');
-  badge.textContent=cart.length;
-  badge.style.display=cart.length>0?'flex':'none';
-  const container=document.getElementById('cartItems');
-  const empty=document.getElementById('cartEmpty');
-  if(cart.length===0){empty.style.display='block';container.querySelectorAll('.cart-item').forEach(e=>e.remove());document.getElementById('cartTotal').textContent='£0.00';return;}
-  empty.style.display='none';
-  container.querySelectorAll('.cart-item').forEach(e=>e.remove());
-  let total=0;
-  cart.forEach(item=>{
-    total+=item.price;
-    const div=document.createElement('div');
-    div.className='cart-item';
-    div.innerHTML=`<div class="cart-item-img">${item.icon}</div>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-meta">${item.metal} · ${item.size}</div>
+function quickAdd(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  cart.push({ ...p, metal: p.metals[0], size: p.sizes[0], uid: Date.now() + Math.random() });
+  updateCart();
+  toast(`${p.name} added to cart`);
+}
+
+function removeFromCart(uid) {
+  cart = cart.filter(i => i.uid !== uid);
+  updateCart();
+}
+
+function updateCart() {
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = cart.length;
+  badge.style.display = cart.length ? 'flex' : 'none';
+
+  const body = document.getElementById('drawerBody');
+  if (!cart.length) { body.innerHTML = '<div class="drawer-empty">Your cart is empty</div>'; document.getElementById('drawerTotal').textContent = '£0.00'; return; }
+
+  let total = 0;
+  body.innerHTML = cart.map(item => {
+    total += item.price;
+    return `<div class="cart-line">
+      <div class="cart-line-img">${item.icon}</div>
+      <div class="cart-line-info">
+        <div class="cart-line-name">${item.name}</div>
+        <div class="cart-line-meta">${item.metal} · ${item.size}</div>
       </div>
-      <div class="cart-item-price">£${item.price.toFixed(2)}</div>
-      <button class="cart-item-remove" onclick="removeFromCart(${item.uid})">×</button>`;
-    container.appendChild(div);
-  });
-  document.getElementById('cartTotal').textContent='£'+total.toFixed(2);
+      <div class="cart-line-price">£${item.price.toFixed(2)}</div>
+      <button class="cart-line-rm" onclick="removeFromCart(${item.uid})">×</button>
+    </div>`;
+  }).join('');
+  document.getElementById('drawerTotal').textContent = '£' + total.toFixed(2);
 }
 
-function removeFromCart(uid){
-  cart=cart.filter(i=>i.uid!==uid);
-  updateCartUI();
+function openCart()  { document.getElementById('drawerMask').classList.add('open'); document.getElementById('drawer').classList.add('open'); }
+function closeCart() { document.getElementById('drawerMask').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
+function openAuth()  { document.getElementById('authMask').classList.add('open'); }
+function closeAuth() { document.getElementById('authMask').classList.remove('open'); }
+function toggleAuth(){ document.getElementById('authLogin').style.display = document.getElementById('authLogin').style.display==='none'?'block':'none'; document.getElementById('authRegister').style.display = document.getElementById('authRegister').style.display==='none'?'block':'none'; }
+function doAuth()    { closeAuth(); toast('Welcome to Aynnor\'s Jewelry!'); }
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function openCart(){document.getElementById('cartOverlay').classList.add('open');document.getElementById('cartPanel').classList.add('open')}
-function closeCart(){document.getElementById('cartOverlay').classList.remove('open');document.getElementById('cartPanel').classList.remove('open')}
-function openAuth(){document.getElementById('authModal').classList.add('open')}
-function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function switchAuth(){
-  const l=document.getElementById('loginForm'),r=document.getElementById('registerForm');
-  l.style.display=l.style.display==='none'?'block':'none';
-  r.style.display=r.style.display==='none'?'block':'none';
-}
-function fakeLogin(){closeAuth();showToast('Welcome to Aynnor\'s Jewelry!')}
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+function toast(msg) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-// Hero image — paste your image URL or base64 here
-const heroImg = "hero.png";
-(function setHero(){
+// Hero image
+(function(){
   const bg = document.getElementById('heroBg');
-  const img = new Image();
-  img.onload = () => { bg.style.backgroundImage = `url('${heroImg}')`; };
-  img.onerror = () => { document.getElementById('heroSection').style.background = '#1a1a1a'; };
-  img.src = heroImg;
+  bg.style.backgroundImage = "url('hero.png')";
+  bg.style.backgroundSize = 'cover';
+  bg.style.backgroundPosition = 'center';
 })();
-
-// Populate featured grid
-document.getElementById('featured-grid').innerHTML=[products[0],products[3],products[5],products[7]].map(p=>prodCard(p)).join('');
 </script>
 </body>
 </html>
