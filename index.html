@@ -6,59 +6,57 @@
 <title>Aynnor's Jewelry</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--ink:#0d0d0d;--chalk:#fafaf8;--silver:#b8b8b0;--mist:#f0f0ec;--accent:#8a7f6e;--serif:'Georgia',serif;--sans:'Helvetica Neue',Arial,sans-serif}
+:root{--ink:#1a0e00;--chalk:#fdf8f0;--silver:#c9a96e;--mist:#f5ede0;--accent:#a07840;--gold:#c9952a;--deep:#2a1800;--serif:'Georgia',serif;--sans:'Helvetica Neue',Arial,sans-serif}
 body{font-family:var(--sans);background:var(--chalk);color:var(--ink);overflow-x:hidden}
 button{cursor:pointer;font-family:var(--sans)}
 
-/* ── NAVBAR ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(250,250,248,0.95);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,0,0,0.07)}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(250,250,248,0.97);border-bottom:1px solid rgba(0,0,0,0.07)}
 .nav-logo{font-family:var(--serif);font-size:1.15rem;font-weight:400;letter-spacing:0.08em;cursor:pointer}
 .nav-logo sup{font-size:0.55rem;letter-spacing:0.2em;vertical-align:super;color:var(--accent);text-transform:uppercase}
 .nav-center{display:flex;gap:2.5rem}
-.nav-center a{font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:color 0.2s;cursor:pointer}
+.nav-center a{font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);text-decoration:none;cursor:pointer;transition:color 0.2s}
 .nav-center a:hover{color:var(--ink)}
 .nav-right{display:flex;align-items:center;gap:1.2rem}
 .icon-btn{background:none;border:none;color:var(--accent);display:flex;align-items:center;justify-content:center;width:36px;height:36px;transition:color 0.2s;position:relative}
 .icon-btn:hover{color:var(--ink)}
-.badge{position:absolute;top:2px;right:2px;width:14px;height:14px;background:var(--ink);color:#fff;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;font-family:var(--sans)}
+.badge{position:absolute;top:2px;right:2px;width:14px;height:14px;background:var(--ink);color:#fff;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center}
 
-/* ── PAGES ── */
+/* PAGES */
 .page{display:none;padding-top:60px}
 .page.active{display:block}
 
-/* ── HOME HERO: split asymmetric ── */
-.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 60px)}
-.hero-left{background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:4rem 3rem;position:relative;overflow:hidden}
-.hero-left-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.45;transition:opacity 0.5s}
-.hero-eyebrow{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:1.5rem;position:relative;z-index:1}
+/* HOME HERO */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
+.hero-left{background:var(--deep);display:flex;flex-direction:column;justify-content:flex-end;padding:4rem 3rem;position:relative;overflow:hidden}
+.hero-left-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.5}
+.hero-left::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,8,0,0.85) 0%,rgba(26,8,0,0.2) 60%,transparent 100%)}
+.hero-eyebrow{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,149,42,0.7);margin-bottom:1.5rem;position:relative;z-index:1}
 .hero-headline{font-family:var(--serif);font-size:clamp(2.8rem,5vw,5rem);font-weight:400;line-height:1.05;color:#fff;position:relative;z-index:1;margin-bottom:2rem}
-.hero-headline em{font-style:italic;color:rgba(255,255,255,0.55)}
-.hero-cta{display:inline-flex;align-items:center;gap:0.8rem;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:#fff;border:none;background:none;padding:0;position:relative;z-index:1;transition:gap 0.2s}
+.hero-headline em{font-style:italic;color:#e8c46a}
+.hero-cta{display:inline-flex;align-items:center;gap:0.8rem;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:#e8c46a;border:none;background:none;padding:0;position:relative;z-index:1;transition:gap 0.2s}
 .hero-cta:hover{gap:1.4rem}
-.hero-cta-line{width:32px;height:1px;background:#fff;transition:width 0.2s}
+.hero-cta-line{width:32px;height:1px;background:#e8c46a;transition:width 0.2s}
 .hero-cta:hover .hero-cta-line{width:48px}
-
-.hero-right{background:var(--mist);display:flex;flex-direction:column;justify-content:space-between;padding:3rem 2.5rem}
-.hero-right-top{display:flex;justify-content:flex-end}
+.hero-right{background:var(--mist);display:flex;flex-direction:column;justify-content:space-between;padding:3rem 2.5rem;background:linear-gradient(135deg,#fdf3e3 0%,#f5e6c8 100%)}
 .hero-scroll-hint{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);writing-mode:vertical-rl;align-self:flex-end}
-.hero-cats{display:flex;flex-direction:column;gap:0}
-.hero-cat-row{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-top:1px solid rgba(0,0,0,0.1);cursor:pointer;transition:all 0.2s;group:true}
-.hero-cat-row:last-child{border-bottom:1px solid rgba(0,0,0,0.1)}
+.hero-cat-row{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;border-top:1px solid rgba(160,120,64,0.18);cursor:pointer;transition:all 0.2s}
+.hero-cat-row:last-child{border-bottom:1px solid rgba(160,120,64,0.18)}
 .hero-cat-row:hover{padding-left:0.8rem}
-.hero-cat-name{font-family:var(--serif);font-size:1.5rem;font-weight:400;transition:color 0.2s}
-.hero-cat-row:hover .hero-cat-name{color:var(--accent)}
+.hero-cat-name{font-family:var(--serif);font-size:1.5rem;transition:color 0.2s;color:var(--ink)}
+.hero-cat-row:hover .hero-cat-name{color:var(--gold)}
 .hero-cat-meta{font-size:0.7rem;letter-spacing:0.1em;color:var(--silver);text-transform:uppercase}
-.hero-cat-arrow{font-size:1.2rem;color:var(--silver);transition:transform 0.2s;transform:translateX(0)}
-.hero-cat-row:hover .hero-cat-arrow{transform:translateX(6px);color:var(--ink)}
+.hero-cat-arrow{font-size:1.2rem;color:var(--silver);transition:transform 0.2s}
+.hero-cat-row:hover .hero-cat-arrow{transform:translateX(6px);color:var(--gold)}
 
-/* ── MARQUEE ── */
+/* MARQUEE */
 .marquee-wrap{overflow:hidden;background:var(--ink);padding:0.75rem 0;white-space:nowrap}
 .marquee-track{display:inline-block;animation:marquee 22s linear infinite}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .marquee-item{display:inline-block;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);padding:0 3rem}
 .marquee-dot{color:rgba(255,255,255,0.2)}
 
-/* ── FEATURED SPLIT ── */
+/* FEATURED */
 .featured{display:grid;grid-template-columns:5fr 7fr;min-height:70vh}
 .featured-label{background:var(--mist);display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem}
 .featured-label-tag{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:1.5rem}
@@ -66,124 +64,167 @@ button{cursor:pointer;font-family:var(--sans)}
 .featured-label p{font-size:0.85rem;color:var(--accent);line-height:1.8;max-width:280px;margin-bottom:2.5rem}
 .see-all-btn{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--ink);color:#fff;border:none;padding:0.85rem 1.8rem;transition:background 0.2s}
 .see-all-btn:hover{background:#333}
-.featured-grid{background:#fff;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;background:rgba(0,0,0,0.07)}
+.feat-grid{background:rgba(0,0,0,0.07);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px}
 .feat-card{background:var(--chalk);display:flex;flex-direction:column;padding:1.5rem;cursor:pointer;transition:background 0.25s;position:relative;overflow:hidden}
 .feat-card:hover{background:#fff}
 .feat-card:first-child{grid-row:span 2;padding:2rem}
 .feat-icon{font-size:clamp(2.5rem,5vw,4.5rem);margin-bottom:auto;padding-bottom:1.5rem;display:block}
 .feat-card:first-child .feat-icon{font-size:clamp(4rem,8vw,7rem)}
-.feat-name{font-family:var(--serif);font-size:0.95rem;margin-bottom:0.25rem}
+.feat-name{font-family:var(--serif);font-size:0.95rem;margin-bottom:0.2rem}
 .feat-card:first-child .feat-name{font-size:1.3rem}
-.feat-price{font-size:0.78rem;color:var(--accent);letter-spacing:0.05em}
+.feat-price{font-size:0.78rem;color:var(--accent)}
 .feat-hover-btn{position:absolute;bottom:-40px;right:1.5rem;background:var(--ink);color:#fff;border:none;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1rem;transition:bottom 0.25s}
 .feat-card:hover .feat-hover-btn{bottom:1.5rem}
 
-/* ── SHOP PAGE ── */
-.shop-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
-.shop-sidebar{background:var(--mist);padding:3rem 2rem;border-right:1px solid rgba(0,0,0,0.07);position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.sidebar-title{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:2rem}
-.sidebar-cats{display:flex;flex-direction:column;gap:0}
-.sidebar-cat{padding:0.9rem 0;border-bottom:1px solid rgba(0,0,0,0.07);display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--serif);font-size:1.05rem;font-weight:400;transition:all 0.2s}
-.sidebar-cat:hover,.sidebar-cat.active{color:var(--accent);padding-left:0.5rem}
-.sidebar-cat-count{font-family:var(--sans);font-size:0.7rem;color:var(--silver)}
-.shop-main{padding:3rem}
-.shop-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(0,0,0,0.08)}
-.shop-title-area h2{font-family:var(--serif);font-size:2rem;font-weight:400;margin-bottom:0.3rem}
-.shop-title-area p{font-size:0.75rem;color:var(--silver);letter-spacing:0.05em}
-.sort-select{font-size:0.72rem;letter-spacing:0.08em;border:1px solid rgba(0,0,0,0.15);background:none;padding:0.5rem 1rem;color:var(--ink);outline:none}
-.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2px;background:rgba(0,0,0,0.07)}
-.prod-card{background:var(--chalk);padding:1.5rem;cursor:pointer;transition:background 0.2s;position:relative;overflow:hidden}
-.prod-card:hover{background:#fff}
-.prod-img-wrap{aspect-ratio:1;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:3.5rem;margin-bottom:1.2rem;position:relative;overflow:hidden}
-.prod-quick{position:absolute;bottom:-36px;left:0;right:0;background:rgba(13,13,13,0.85);color:#fff;border:none;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.6rem;transition:bottom 0.25s;width:100%}
-.prod-card:hover .prod-quick{bottom:0}
-.prod-cat-tag{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--silver);margin-bottom:0.35rem}
-.prod-name{font-family:var(--serif);font-size:0.95rem;margin-bottom:0.25rem}
-.prod-price{font-size:0.82rem;color:var(--ink);letter-spacing:0.04em}
+/* PROMISE SECTION */
+.promise{background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:50vh}
+.promise-left{padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center}
+.promise-tag{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:1.5rem}
+.promise-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.1;margin-bottom:1.5rem}
+.promise-title em{color:rgba(255,255,255,0.45)}
+.promise-body{font-size:0.83rem;color:rgba(255,255,255,0.45);line-height:1.9;max-width:320px}
+.promise-right{display:grid;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)}
+.stat-box{padding:2.5rem;display:flex;flex-direction:column;justify-content:center}
+.stat-box:first-child{background:#111}
+.stat-box:last-child{background:#0f0f0f}
+.stat-num{font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem}
+.stat-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
 
-/* ── DETAIL PAGE ── */
+/* SHOP PAGE */
+.shop-hero{background:var(--ink);padding:4rem 3rem 3rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.shop-hero-title{font-family:var(--serif);font-size:clamp(3rem,7vw,6rem);font-weight:400;color:#fff;line-height:1}
+.shop-hero-title em{font-style:italic;color:rgba(255,255,255,0.35)}
+.cat-pills{display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end}
+.cat-pill{padding:0.5rem 1.2rem;border:1px solid rgba(255,255,255,0.2);background:none;color:rgba(255,255,255,0.5);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s}
+.cat-pill:hover{border-color:rgba(255,255,255,0.6);color:#fff}
+.cat-pill.active{background:#fff;color:var(--ink);border-color:#fff}
+.shop-toolbar{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 3rem;border-bottom:1px solid rgba(0,0,0,0.08);flex-wrap:wrap;gap:0.5rem}
+.toolbar-count{font-size:0.72rem;color:var(--silver)}
+.toolbar-right{display:flex;align-items:center;gap:1rem}
+.view-toggle{display:flex;gap:0.3rem}
+.view-btn{background:none;border:1px solid rgba(0,0,0,0.12);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--silver);transition:all 0.2s}
+.view-btn.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.sort-sel{font-size:0.72rem;border:1px solid rgba(0,0,0,0.12);background:none;padding:0.4rem 0.8rem;color:var(--ink);outline:none}
+
+/* MASONRY GRID */
+.masonry-wrap{padding:2px;background:rgba(0,0,0,0.06)}
+.masonry{columns:4;column-gap:2px}
+@media(max-width:1100px){.masonry{columns:3}}
+@media(max-width:700px){.masonry{columns:2}}
+.m-card{break-inside:avoid;margin-bottom:2px;background:var(--chalk);cursor:pointer;position:relative;overflow:hidden}
+.m-card:hover .m-overlay{opacity:1}
+.m-img{width:100%;display:flex;align-items:center;justify-content:center;background:var(--mist);font-size:4rem;transition:transform 0.4s}
+.m-img.tall{min-height:300px}
+.m-img.short{min-height:180px}
+.m-card:hover .m-img{transform:scale(1.03)}
+.m-overlay{position:absolute;inset:0;background:rgba(13,13,13,0.62);opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem}
+.m-overlay-name{font-family:var(--serif);font-size:1rem;color:#fff;margin-bottom:0.25rem}
+.m-overlay-price{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-bottom:0.8rem}
+.m-overlay-btn{padding:0.4rem 0.9rem;border:1px solid rgba(255,255,255,0.5);color:#fff;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;background:none;cursor:pointer;width:fit-content;transition:all 0.2s}
+.m-overlay-btn:hover{background:#fff;color:var(--ink)}
+.m-info{padding:0.85rem 1rem}
+.m-cat{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--silver);margin-bottom:0.2rem}
+.m-name{font-family:var(--serif);font-size:0.88rem;margin-bottom:0.15rem}
+.m-price{font-size:0.78rem;color:var(--ink)}
+
+/* LIST VIEW */
+.list-view{display:none}
+.l-row{display:grid;grid-template-columns:80px 1fr auto auto;align-items:center;gap:2rem;padding:1.2rem 3rem;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;transition:background 0.2s}
+.l-row:hover{background:var(--mist)}
+.l-icon{width:80px;height:80px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.l-cat{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+.l-name{font-family:var(--serif);font-size:1.1rem;margin-bottom:0.2rem}
+.l-meta{font-size:0.72rem;color:var(--silver)}
+.l-price{font-size:1rem;white-space:nowrap}
+.l-add{padding:0.5rem 1.2rem;background:var(--ink);color:#fff;border:none;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.2s}
+.l-add:hover{background:#333}
+
+/* DETAIL */
 .detail-layout{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 60px)}
 .detail-visual{background:var(--mist);display:flex;flex-direction:column;position:sticky;top:60px;height:calc(100vh - 60px)}
-.detail-main-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:10rem}
-.detail-thumbs{display:flex;gap:1px;background:rgba(0,0,0,0.07);height:90px}
+.detail-main-img{flex:1;display:flex;align-items:center;justify-content:center;font-size:9rem}
+.detail-thumbs{display:flex;gap:1px;background:rgba(0,0,0,0.07);height:88px}
 .detail-thumb{flex:1;background:var(--chalk);display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;transition:background 0.2s}
 .detail-thumb:hover,.detail-thumb.active{background:#fff}
 .detail-info{padding:4rem 3.5rem;overflow-y:auto}
-.detail-breadcrumb{font-size:0.68rem;letter-spacing:0.12em;color:var(--silver);margin-bottom:2rem;cursor:pointer;display:flex;align-items:center;gap:0.5rem}
-.detail-breadcrumb:hover{color:var(--ink)}
-.detail-tag{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
-.detail-name{font-family:var(--serif);font-size:2.4rem;font-weight:400;line-height:1.15;margin-bottom:0.8rem}
-.detail-price{font-size:1.4rem;letter-spacing:0.04em;margin-bottom:1.8rem;color:var(--ink)}
-.detail-desc{font-size:0.85rem;line-height:1.9;color:var(--accent);margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)}
-.opt-section{margin-bottom:1.5rem}
+.d-back{font-size:0.68rem;letter-spacing:0.12em;color:var(--silver);margin-bottom:2rem;cursor:pointer;display:inline-block}
+.d-back:hover{color:var(--ink)}
+.d-cat{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.d-name{font-family:var(--serif);font-size:2.4rem;font-weight:400;line-height:1.15;margin-bottom:0.8rem}
+.d-price{font-size:1.4rem;letter-spacing:0.04em;margin-bottom:1.8rem}
+.d-desc{font-size:0.85rem;line-height:1.9;color:var(--accent);margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)}
+.opt-group{margin-bottom:1.5rem}
 .opt-label{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);margin-bottom:0.7rem;display:flex;justify-content:space-between}
-.opt-label span{color:var(--ink);font-weight:normal}
+.opt-label span{color:var(--ink)}
 .opts{display:flex;gap:0.5rem;flex-wrap:wrap}
 .opt{padding:0.45rem 1.1rem;border:1px solid rgba(0,0,0,0.15);background:none;font-size:0.78rem;color:var(--ink);transition:all 0.2s}
 .opt:hover{border-color:var(--ink)}
 .opt.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.detail-actions{display:flex;flex-direction:column;gap:0.8rem;margin-top:2rem}
-.btn-primary{padding:1.05rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.2s}
-.btn-primary:hover{background:#333}
-.btn-secondary{padding:1rem;background:none;color:var(--ink);border:1px solid rgba(0,0,0,0.2);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.2s}
-.btn-secondary:hover{border-color:var(--ink)}
-.detail-meta{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:0.6rem}
-.detail-meta-row{display:flex;gap:1rem;font-size:0.78rem}
-.detail-meta-row strong{color:var(--silver);font-weight:400;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;min-width:80px}
+.d-actions{display:flex;flex-direction:column;gap:0.8rem;margin-top:2rem}
+.btn-dark{padding:1.05rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.2s}
+.btn-dark:hover{background:#333}
+.btn-outline{padding:1rem;background:none;color:var(--ink);border:1px solid rgba(0,0,0,0.2);font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:border-color 0.2s}
+.btn-outline:hover{border-color:var(--ink)}
+.d-meta{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:0.6rem}
+.d-meta-row{display:flex;gap:1rem;font-size:0.78rem}
+.d-meta-row strong{color:var(--silver);font-weight:400;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;min-width:80px}
 
-/* ── CART DRAWER ── */
-.drawer-mask{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s}
-.drawer-mask.open{opacity:1;pointer-events:all}
+/* CART DRAWER */
+.mask{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.mask.open{opacity:1;pointer-events:all}
 .drawer{position:fixed;top:0;right:0;width:400px;max-width:100%;height:100%;background:var(--chalk);z-index:301;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1)}
 .drawer.open{transform:translateX(0)}
 .drawer-head{padding:1.5rem 2rem;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;justify-content:space-between;align-items:center}
 .drawer-head h3{font-family:var(--serif);font-size:1.1rem;font-weight:400}
-.drawer-close{background:none;border:none;font-size:1.6rem;color:var(--silver);line-height:1;transition:color 0.2s}
-.drawer-close:hover{color:var(--ink)}
+.drawer-close{background:none;border:none;font-size:1.6rem;color:var(--silver);line-height:1}
 .drawer-body{flex:1;overflow-y:auto;padding:1.5rem 2rem}
 .drawer-empty{text-align:center;color:var(--silver);font-size:0.82rem;padding:3rem 0}
-.cart-line{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,0.06)}
-.cart-line-img{width:60px;height:60px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
-.cart-line-info{flex:1;min-width:0}
-.cart-line-name{font-family:var(--serif);font-size:0.9rem;margin-bottom:0.2rem}
-.cart-line-meta{font-size:0.72rem;color:var(--silver)}
-.cart-line-price{font-size:0.85rem;white-space:nowrap}
-.cart-line-rm{background:none;border:none;color:var(--silver);font-size:1.1rem;align-self:flex-start;padding:0;line-height:1;transition:color 0.2s}
-.cart-line-rm:hover{color:var(--ink)}
+.c-line{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+.c-img{width:60px;height:60px;background:var(--mist);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-name{font-family:var(--serif);font-size:0.9rem;margin-bottom:0.2rem}
+.c-meta{font-size:0.72rem;color:var(--silver)}
+.c-price{font-size:0.85rem;white-space:nowrap}
+.c-rm{background:none;border:none;color:var(--silver);font-size:1.1rem;align-self:flex-start;padding:0;line-height:1}
+.c-rm:hover{color:var(--ink)}
 .drawer-foot{padding:1.5rem 2rem;border-top:1px solid rgba(0,0,0,0.08)}
-.drawer-subtotal{display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:1rem}
-.drawer-subtotal strong{font-weight:400;letter-spacing:0.05em}
-.checkout-btn{width:100%;padding:1rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.2s}
+.drawer-total{display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:1rem}
+.checkout-btn{width:100%;padding:1rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase}
 .checkout-btn:hover{background:#333}
 
-/* ── AUTH MODAL ── */
+/* AUTH MODAL */
 .modal-mask{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:400;display:none;align-items:center;justify-content:center}
 .modal-mask.open{display:flex}
 .modal-box{background:var(--chalk);width:460px;max-width:95%;padding:3rem;position:relative}
 .modal-box h2{font-family:var(--serif);font-size:1.8rem;font-weight:400;margin-bottom:0.4rem}
-.modal-sub{font-size:0.78rem;color:var(--silver);margin-bottom:2rem;letter-spacing:0.05em}
+.modal-sub{font-size:0.78rem;color:var(--silver);margin-bottom:2rem}
 .field{margin-bottom:1.2rem}
 .field label{display:block;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--silver);margin-bottom:0.5rem}
-.field input{width:100%;padding:0.75rem 0;border:none;border-bottom:1px solid rgba(0,0,0,0.18);background:transparent;font-size:0.9rem;outline:none;font-family:var(--sans);color:var(--ink);transition:border-color 0.2s}
+.field input{width:100%;padding:0.75rem 0;border:none;border-bottom:1px solid rgba(0,0,0,0.18);background:transparent;font-size:0.9rem;outline:none;color:var(--ink);transition:border-color 0.2s}
 .field input:focus{border-color:var(--ink)}
 .modal-submit{width:100%;margin-top:1.5rem;padding:1rem;background:var(--ink);color:#fff;border:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase}
 .modal-toggle{font-size:0.78rem;color:var(--silver);text-align:center;margin-top:1.2rem}
 .modal-toggle a{color:var(--ink);text-decoration:underline;cursor:pointer}
-.modal-x{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;color:var(--silver)}
+.modal-x{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;color:var(--silver);cursor:pointer}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:0.75rem 2rem;font-size:0.75rem;letter-spacing:0.12em;z-index:600;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+/* FOOTER */
+.footer{background:var(--mist);padding:3rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(0,0,0,0.07)}
+.footer-logo{font-family:var(--serif);font-size:1.1rem;letter-spacing:0.06em}
+.footer-logo sup{font-size:0.5rem;letter-spacing:0.2em;vertical-align:super;color:var(--accent);text-transform:uppercase}
+.footer-copy{font-size:0.7rem;color:var(--silver)}
+.footer-links{display:flex;gap:1.5rem;font-size:0.7rem;color:var(--accent)}
+.footer-links span{cursor:pointer}
+
+/* TOAST */
+.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:0.75rem 2rem;font-size:0.75rem;letter-spacing:0.1em;z-index:600;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 
 @media(max-width:768px){
-  .hero{grid-template-columns:1fr}
-  .hero-right{display:none}
-  .featured{grid-template-columns:1fr}
-  .shop-layout{grid-template-columns:1fr}
-  .shop-sidebar{position:static;height:auto}
-  .detail-layout{grid-template-columns:1fr}
-  .detail-visual{position:static;height:auto}
+  .hero,.featured,.promise,.detail-layout{grid-template-columns:1fr}
+  .hero-right,.detail-visual{display:none}
   .nav-center{display:none}
+  .l-row{grid-template-columns:60px 1fr auto;gap:1rem;padding:1rem 1.5rem}
+  .l-add{display:none}
 }
 </style>
 </head>
@@ -191,7 +232,7 @@ button{cursor:pointer;font-family:var(--sans)}
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo" onclick="showPage('home')">Aynnor's<sup>jewelry</sup></div>
+  <div class="nav-logo" onclick="showPage('home')"><img src="logo.png" alt="Aynnor's Jewelry" id="logoImg"></div>
   <div class="nav-center">
     <a onclick="showPage('home')">Home</a>
     <a onclick="showShop(null)">Collection</a>
@@ -210,25 +251,24 @@ button{cursor:pointer;font-family:var(--sans)}
   </div>
 </nav>
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 <div class="page active" id="page-home">
   <div class="hero">
-    <div class="hero-left" id="heroLeft">
+    <div class="hero-left">
       <div class="hero-left-img" id="heroBg"></div>
       <div class="hero-eyebrow">Aynnor's Jewelry — New Collection 2026</div>
       <h1 class="hero-headline">Where<br><em>elegance</em><br>meets artistry</h1>
       <button class="hero-cta" onclick="showShop(null)">
-        <span class="hero-cta-line"></span>
-        <span>Explore Collection</span>
+        <span class="hero-cta-line"></span><span>Explore Collection</span>
       </button>
     </div>
     <div class="hero-right">
-      <div class="hero-right-top">
+      <div style="display:flex;justify-content:flex-end">
         <div class="hero-scroll-hint">Scroll to explore</div>
       </div>
       <div style="padding:1rem 0">
         <div style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:1.5rem">Shop by Category</div>
-        <div class="hero-cats" id="heroCats"></div>
+        <div id="heroCats"></div>
       </div>
     </div>
   </div>
@@ -252,112 +292,114 @@ button{cursor:pointer;font-family:var(--sans)}
     <div class="featured-label">
       <div class="featured-label-tag">Curated for you</div>
       <h2>Featured<br>Pieces</h2>
-      <p>Each piece is thoughtfully crafted to celebrate the women who wear them.</p>
+      <p>Each piece thoughtfully crafted to celebrate the women who wear them.</p>
       <button class="see-all-btn" onclick="showShop(null)">View All →</button>
     </div>
-    <div class="featured-grid" id="featuredGrid"></div>
+    <div class="feat-grid" id="featuredGrid"></div>
   </div>
 
-  <div style="background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:50vh">
-    <div style="padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center">
-      <div style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:1.5rem">Our Promise</div>
-      <div style="font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.1;margin-bottom:1.5rem">Crafted with<br><em style="color:rgba(255,255,255,0.45)">intention.</em></div>
-      <p style="font-size:0.83rem;color:rgba(255,255,255,0.45);line-height:1.9;max-width:320px">Quality materials, timeless designs. Every Aynnor's piece is made to last a lifetime and tell your unique story.</p>
+  <div class="promise">
+    <div class="promise-left">
+      <div class="promise-tag">Our Promise</div>
+      <div class="promise-title">Crafted with<br><em>intention.</em></div>
+      <p class="promise-body">Quality materials, timeless designs. Every Aynnor's piece is made to last a lifetime and tell your unique story.</p>
     </div>
-    <div style="display:grid;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)">
-      <div style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;background:#111">
-        <div style="font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem">200+</div>
-        <div style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Unique Designs</div>
-      </div>
-      <div style="padding:2.5rem;display:flex;flex-direction:column;justify-content:center;background:#0f0f0f">
-        <div style="font-family:var(--serif);font-size:2.5rem;margin-bottom:0.5rem">5,000+</div>
-        <div style="font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Happy Customers</div>
-      </div>
+    <div class="promise-right">
+      <div class="stat-box"><div class="stat-num">200+</div><div class="stat-label">Unique Designs</div></div>
+      <div class="stat-box"><div class="stat-num">5,000+</div><div class="stat-label">Happy Customers</div></div>
     </div>
   </div>
 
-  <footer style="background:var(--mist);padding:3rem 2.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;border-top:1px solid rgba(0,0,0,0.07)">
-    <div style="font-family:var(--serif);font-size:1.1rem;letter-spacing:0.06em">Aynnor's<sup style="font-size:0.5rem;letter-spacing:0.2em;vertical-align:super;color:var(--accent);text-transform:uppercase"> jewelry</sup></div>
-    <div style="font-size:0.7rem;color:var(--silver);letter-spacing:0.08em">© 2026 Aynnor's Jewelry. All rights reserved.</div>
-    <div style="display:flex;gap:1.5rem;font-size:0.7rem;color:var(--accent);letter-spacing:0.08em">
-      <span style="cursor:pointer">Instagram</span>
-      <span style="cursor:pointer">Pinterest</span>
-      <span style="cursor:pointer">Contact</span>
+  <footer class="footer">
+    <div class="footer-logo">Aynnor's<sup> jewelry</sup></div>
+    <div class="footer-copy">© 2026 Aynnor's Jewelry. All rights reserved.</div>
+    <div class="footer-links">
+      <span>Instagram</span><span>Pinterest</span><span>Contact</span>
     </div>
   </footer>
 </div>
 
-<!-- SHOP PAGE -->
+<!-- SHOP -->
 <div class="page" id="page-shop">
-  <div class="shop-layout">
-    <aside class="shop-sidebar">
-      <div class="sidebar-title">Collections</div>
-      <div class="sidebar-cats" id="sidebarCats"></div>
-    </aside>
-    <main class="shop-main">
-      <div class="shop-top">
-        <div class="shop-title-area">
-          <h2 id="shopTitle">All Jewelry</h2>
-          <p id="shopCount"></p>
-        </div>
-        <select class="sort-select" id="sortSelect" onchange="renderShopGrid()">
-          <option value="default">Sort: Featured</option>
-          <option value="asc">Price: Low to High</option>
-          <option value="desc">Price: High to Low</option>
-        </select>
-      </div>
-      <div class="prod-grid" id="shopGrid"></div>
-    </main>
+  <div class="shop-hero">
+    <div>
+      <div style="font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem">Aynnor's Jewelry</div>
+      <div class="shop-hero-title" id="shopTitle">The<br><em>Collection</em></div>
+    </div>
+    <div class="cat-pills" id="catPills"></div>
   </div>
+  <div class="shop-toolbar">
+    <div class="toolbar-count" id="shopCount">— pieces</div>
+    <div class="toolbar-right">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btnGrid" onclick="setView('grid')" title="Grid">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="0" y="0" width="6" height="6"/><rect x="8" y="0" width="6" height="6"/><rect x="0" y="8" width="6" height="6"/><rect x="8" y="8" width="6" height="6"/></svg>
+        </button>
+        <button class="view-btn" id="btnList" onclick="setView('list')" title="List">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="0" y="1" width="14" height="2"/><rect x="0" y="6" width="14" height="2"/><rect x="0" y="11" width="14" height="2"/></svg>
+        </button>
+      </div>
+      <select class="sort-sel" id="sortSel" onchange="renderShop()">
+        <option value="default">Featured</option>
+        <option value="asc">Price: Low → High</option>
+        <option value="desc">Price: High → Low</option>
+        <option value="az">Name: A → Z</option>
+      </select>
+    </div>
+  </div>
+  <div class="masonry-wrap" id="gridWrap">
+    <div class="masonry" id="shopGrid"></div>
+  </div>
+  <div class="list-view" id="listView"></div>
+  <footer class="footer">
+    <div class="footer-logo">Aynnor's<sup> jewelry</sup></div>
+    <div class="footer-copy">© 2026 Aynnor's Jewelry. All rights reserved.</div>
+    <div class="footer-links"><span>Instagram</span><span>Pinterest</span><span>Contact</span></div>
+  </footer>
 </div>
 
-<!-- DETAIL PAGE -->
+<!-- DETAIL -->
 <div class="page" id="page-detail">
   <div class="detail-layout">
     <div class="detail-visual">
-      <div class="detail-main-img" id="detailImg"></div>
-      <div class="detail-thumbs" id="detailThumbs"></div>
+      <div class="detail-main-img" id="dImg"></div>
+      <div class="detail-thumbs" id="dThumbs"></div>
     </div>
     <div class="detail-info">
-      <div class="detail-breadcrumb" id="detailBack">← Back to collection</div>
-      <div class="detail-tag" id="detailCat"></div>
-      <div class="detail-name" id="detailName"></div>
-      <div class="detail-price" id="detailPrice"></div>
-      <div class="detail-desc" id="detailDesc"></div>
-      <div class="opt-section">
-        <div class="opt-label">Metal <span id="metalSelected"></span></div>
+      <div class="d-back" id="dBack">← Back to collection</div>
+      <div class="d-cat" id="dCat"></div>
+      <div class="d-name" id="dName"></div>
+      <div class="d-price" id="dPrice"></div>
+      <div class="d-desc" id="dDesc"></div>
+      <div class="opt-group">
+        <div class="opt-label">Metal <span id="selMetal"></span></div>
         <div class="opts" id="metalOpts"></div>
       </div>
-      <div class="opt-section">
-        <div class="opt-label">Size <span id="sizeSelected"></span></div>
+      <div class="opt-group">
+        <div class="opt-label">Size <span id="selSize"></span></div>
         <div class="opts" id="sizeOpts"></div>
       </div>
-      <div class="detail-actions">
-        <button class="btn-primary" id="addCartBtn">Add to Cart</button>
-        <button class="btn-secondary">♡ Add to Wishlist</button>
+      <div class="d-actions">
+        <button class="btn-dark" id="addBtn">Add to Cart</button>
+        <button class="btn-outline">♡ Add to Wishlist</button>
       </div>
-      <div class="detail-meta" id="detailMeta"></div>
+      <div class="d-meta" id="dMeta"></div>
     </div>
   </div>
 </div>
 
-<!-- CART DRAWER -->
-<div class="drawer-mask" id="drawerMask" onclick="closeCart()"></div>
-<div class="drawer" id="drawer">
-  <div class="drawer-head">
-    <h3>Shopping Cart</h3>
-    <button class="drawer-close" onclick="closeCart()">×</button>
-  </div>
-  <div class="drawer-body" id="drawerBody">
-    <div class="drawer-empty">Your cart is empty</div>
-  </div>
+<!-- CART -->
+<div class="mask" id="cartMask" onclick="closeCart()"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3>Shopping Cart</h3><button class="drawer-close" onclick="closeCart()">×</button></div>
+  <div class="drawer-body" id="cartBody"><div class="drawer-empty">Your cart is empty</div></div>
   <div class="drawer-foot">
-    <div class="drawer-subtotal"><strong>Subtotal</strong><span id="drawerTotal">£0.00</span></div>
-    <button class="checkout-btn" onclick="toast('Checkout coming soon!')">Proceed to Checkout</button>
+    <div class="drawer-total"><strong>Subtotal</strong><span id="cartTotal">£0.00</span></div>
+    <button class="checkout-btn" onclick="showToast('Checkout coming soon!')">Proceed to Checkout</button>
   </div>
 </div>
 
-<!-- AUTH MODAL -->
+<!-- AUTH -->
 <div class="modal-mask" id="authMask">
   <div class="modal-box">
     <button class="modal-x" onclick="closeAuth()">×</button>
@@ -369,7 +411,7 @@ button{cursor:pointer;font-family:var(--sans)}
       <button class="modal-submit" onclick="doAuth()">Sign In</button>
       <div class="modal-toggle">New here? <a onclick="toggleAuth()">Create an account</a></div>
     </div>
-    <div id="authRegister" style="display:none">
+    <div id="authReg" style="display:none">
       <h2>Create account</h2>
       <div class="modal-sub">Join Aynnor's Jewelry</div>
       <div class="field"><label>Full Name</label><input type="text" placeholder="Your name"></div>
@@ -385,215 +427,244 @@ button{cursor:pointer;font-family:var(--sans)}
 
 <script>
 const CATS = ['Rings','Necklaces','Earrings','Bracelets','Anklets'];
-const PRODUCTS = [
-  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,material:'Sterling Silver',desc:'A delicate halo of cubic zirconia stones surrounding a central moonstone. Inspired by the night sky, this ring brings a celestial glow to any occasion.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9']},
-  {id:2,cat:'Rings',name:'Infinity Band',price:145,material:'Sterling Silver',desc:'A sleek, modern infinity band with micro-pavé diamond accents. Perfect for stacking or wearing alone as a statement of timeless love.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10']},
-  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,material:'White Gold Plated',desc:'An artisan-crafted floral signet featuring hand-engraved petals. A wearable piece of art that blends vintage charm with modern sophistication.',icon:'💍',metals:['White Gold','Silver'],sizes:['6','7','8']},
-  {id:4,cat:'Necklaces',name:'Dainty Star Pendant',price:95,material:'Sterling Silver',desc:'A minimalist sterling silver star pendant on a delicate 18" chain. Effortlessly beautiful, perfect for everyday wear.',icon:'⭐',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
-  {id:5,cat:'Necklaces',name:'Pearl Choker',price:165,material:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker. A timeless classic reimagined for the modern woman.',icon:'📿',metals:['Silver','Gold'],sizes:['14"','16"']},
-  {id:6,cat:'Earrings',name:'Crystal Drop Earrings',price:110,material:'Sterling Silver',desc:'Elegant drop earrings featuring faceted crystal drops that catch the light beautifully.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:7,cat:'Earrings',name:'Hammered Hoops',price:88,material:'Sterling Silver',desc:'Classic polished hoops with a subtle hammered texture that adds depth and dimension.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
-  {id:8,cat:'Bracelets',name:'Tennis Bracelet',price:245,material:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones set in sterling silver. The quintessential piece for every collection.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
-  {id:9,cat:'Bracelets',name:'Charm Bracelet',price:130,material:'Sterling Silver',desc:'A personalised sterling silver charm bracelet with delicate botanical charms.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
-  {id:10,cat:'Anklets',name:'Delicate Chain Anklet',price:72,material:'Sterling Silver',desc:'A feather-light sterling silver chain anklet with a tiny star charm.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
-  {id:11,cat:'Anklets',name:'Beaded Anklet',price:68,material:'Silver & Gemstone',desc:'Handstrung with iridescent freshwater pearls and silver beads.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
-  {id:12,cat:'Earrings',name:'Pearl Studs',price:95,material:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting. A wardrobe staple that pairs with anything.',icon:'🔵',metals:['Silver','White Gold'],sizes:['One Size']},
+const H = ['tall','short','tall','short','short','tall','short','tall'];
+
+const P = [
+  // Rings (8)
+  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,mat:'Sterling Silver',desc:'A delicate halo of cubic zirconia surrounding a central moonstone. Inspired by the night sky.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9']},
+  {id:2,cat:'Rings',name:'Infinity Band',price:145,mat:'Sterling Silver',desc:'Sleek infinity band with micro-pavé diamond accents. Perfect alone or stacked.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10']},
+  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,mat:'White Gold Plated',desc:'Artisan-crafted floral signet with hand-engraved petals. Vintage charm meets modern design.',icon:'💍',metals:['White Gold','Silver'],sizes:['6','7','8']},
+  {id:4,cat:'Rings',name:'Moonstone Solitaire',price:265,mat:'Sterling Silver',desc:'Luminous moonstone set in a delicate four-prong sterling silver band.',icon:'💍',metals:['Silver','White Gold'],sizes:['5','6','7','8']},
+  {id:5,cat:'Rings',name:'Art Deco Cocktail Ring',price:310,mat:'Rhodium Plated',desc:'Bold geometric art deco design with sparkling pavé stones. Made to be noticed.',icon:'💍',metals:['Silver','White Gold'],sizes:['6','7','8','9']},
+  {id:6,cat:'Rings',name:'Eternity Band',price:240,mat:'Sterling Silver',desc:'A full circle of matched brilliant-cut stones for everlasting sparkle.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9','10']},
+  {id:7,cat:'Rings',name:'Rose Quartz Ring',price:155,mat:'Sterling Silver',desc:'Soft rose quartz cabochon wrapped in a delicate silver bezel. Gentle and feminine.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8']},
+  {id:8,cat:'Rings',name:'Sapphire Halo Ring',price:285,mat:'White Gold Plated',desc:'Deep blue lab-grown sapphire surrounded by a sparkling diamond halo.',icon:'💍',metals:['White Gold','Platinum'],sizes:['5','6','7','8','9']},
+
+  // Necklaces (8)
+  {id:9,cat:'Necklaces',name:'Dainty Star Pendant',price:95,mat:'Sterling Silver',desc:'Minimalist sterling silver star pendant on a delicate 18" chain.',icon:'⭐',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
+  {id:10,cat:'Necklaces',name:'Pearl Choker',price:165,mat:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker. A timeless classic.',icon:'📿',metals:['Silver','Gold'],sizes:['14"','16"']},
+  {id:11,cat:'Necklaces',name:'Crescent Moon Pendant',price:108,mat:'Sterling Silver',desc:'Slender crescent moon with a dusting of pavé stones on a fine chain.',icon:'🌙',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
+  {id:12,cat:'Necklaces',name:'Diamond Bar Necklace',price:198,mat:'White Gold Plated',desc:'Horizontal bar set with brilliant-cut diamonds. Clean and contemporary.',icon:'💎',metals:['White Gold','Silver'],sizes:['16"','18"']},
+  {id:13,cat:'Necklaces',name:'Heart Locket',price:168,mat:'Sterling Silver',desc:'Polished heart locket that opens to hold two tiny photographs.',icon:'💝',metals:['Silver','Rose Gold'],sizes:['16"','18"']},
+  {id:14,cat:'Necklaces',name:'Tennis Necklace',price:345,mat:'White Gold Plated',desc:'Continuous line of matched brilliant stones — the pinnacle of luxury.',icon:'💎',metals:['White Gold','Silver'],sizes:['14"','16"','18"']},
+  {id:15,cat:'Necklaces',name:'Opal Pendant',price:198,mat:'Sterling Silver',desc:'Fiery Australian-style opal doublet in a delicate silver frame.',icon:'🌈',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
+  {id:16,cat:'Necklaces',name:'Layered Lariat',price:148,mat:'Sterling Silver',desc:'Elegant Y-lariat necklace with an adjustable double-layer chain.',icon:'✨',metals:['Silver','Gold'],sizes:['18"','20"','24"']},
+
+  // Earrings (8)
+  {id:17,cat:'Earrings',name:'Crystal Drop Earrings',price:110,mat:'Sterling Silver',desc:'Faceted crystal drops that catch the light beautifully. Ideal for evenings.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:18,cat:'Earrings',name:'Hammered Hoops',price:88,mat:'Sterling Silver',desc:'Classic hoops with a subtle hammered texture that adds depth.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
+  {id:19,cat:'Earrings',name:'Pearl Studs',price:95,mat:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting. A wardrobe essential.',icon:'⚪',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:20,cat:'Earrings',name:'Chandelier Earrings',price:165,mat:'White Gold Plated',desc:'Multi-tier chandelier drops dripping with pavé stones. Show-stopping glamour.',icon:'🕯️',metals:['White Gold','Silver'],sizes:['One Size']},
+  {id:21,cat:'Earrings',name:'Ear Climbers',price:118,mat:'Sterling Silver',desc:'Curved climber that follows the natural curve of the ear beautifully.',icon:'👂',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:22,cat:'Earrings',name:'Baroque Pearl Drops',price:145,mat:'Sterling Silver',desc:'Irregular baroque pearls on a delicate drop wire for organic elegance.',icon:'⚪',metals:['Silver'],sizes:['One Size']},
+  {id:23,cat:'Earrings',name:'Mismatched Moon & Star',price:88,mat:'Sterling Silver',desc:'One moon, one star — an intentionally mismatched pair full of charm.',icon:'🌟',metals:['Silver','White Gold'],sizes:['One Size']},
+  {id:24,cat:'Earrings',name:'Cluster Drop Earrings',price:155,mat:'White Gold Plated',desc:'Multi-stone cluster drops for effortless evening glamour.',icon:'💠',metals:['White Gold','Silver'],sizes:['One Size']},
+
+  // Bracelets (8)
+  {id:25,cat:'Bracelets',name:'Tennis Bracelet',price:245,mat:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones in sterling silver.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
+  {id:26,cat:'Bracelets',name:'Charm Bracelet',price:130,mat:'Sterling Silver',desc:'Personalised sterling silver charm bracelet with delicate botanical charms.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
+  {id:27,cat:'Bracelets',name:'Pearl Strand Bracelet',price:155,mat:'Freshwater Pearl',desc:'Single strand of matched freshwater pearls with a silver lobster clasp.',icon:'⚪',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"']},
+  {id:28,cat:'Bracelets',name:'Cuff Bangle',price:168,mat:'Sterling Silver',desc:'Open-ended solid cuff with a hammered texture. Bold, minimal, effortless.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
+  {id:29,cat:'Bracelets',name:'Pavé Bangle',price:195,mat:'White Gold Plated',desc:'Full pavé-set bangle — pure sparkle all the way around.',icon:'💍',metals:['White Gold','Silver'],sizes:['Small','Medium','Large']},
+  {id:30,cat:'Bracelets',name:'Herringbone Bracelet',price:178,mat:'Sterling Silver',desc:'Flat herringbone weave sits flush against the wrist. Fluid and elegant.',icon:'〰️',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"']},
+  {id:31,cat:'Bracelets',name:'Moon Phase Bracelet',price:148,mat:'Sterling Silver',desc:'Seven moon phases etched on a fine silver bar bracelet.',icon:'🌙',metals:['Silver'],sizes:['Adjustable']},
+  {id:32,cat:'Bracelets',name:'Opal Inlay Bangle',price:278,mat:'Sterling Silver',desc:'Polished bangle with stunning inlaid opal segments.',icon:'🌈',metals:['Silver'],sizes:['Small','Medium','Large']},
+
+  // Anklets (8)
+  {id:33,cat:'Anklets',name:'Delicate Chain Anklet',price:72,mat:'Sterling Silver',desc:'Feather-light sterling silver chain with a tiny star charm.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
+  {id:34,cat:'Anklets',name:'Beaded Anklet',price:68,mat:'Silver & Gemstone',desc:'Iridescent freshwater pearls and silver beads on durable nylon.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
+  {id:35,cat:'Anklets',name:'Butterfly Anklet',price:85,mat:'Sterling Silver',desc:'Tiny pavé butterfly charm floats delicately on a trace chain.',icon:'🦋',metals:['Silver','White Gold'],sizes:['9"','10"']},
+  {id:36,cat:'Anklets',name:'Pearl Drop Anklet',price:110,mat:'Freshwater Pearl',desc:'Three freshwater pearl drops spaced on a fine anklet chain.',icon:'⚪',metals:['Silver'],sizes:['9"','10"','10.5"']},
+  {id:37,cat:'Anklets',name:'Moon & Stars Anklet',price:88,mat:'Sterling Silver',desc:'Crescent moon and star charms scattered along a delicate chain.',icon:'🌙',metals:['Silver','White Gold'],sizes:['9"','10"']},
+  {id:38,cat:'Anklets',name:'Gold Vermeil Anklet',price:135,mat:'Gold Vermeil',desc:'Thick gold vermeil on sterling silver for lasting warmth and colour.',icon:'🌟',metals:['Gold'],sizes:['9"','10"']},
+  {id:39,cat:'Anklets',name:'Charm Cluster Anklet',price:115,mat:'Sterling Silver',desc:'Five mixed charms — star, moon, heart, flower, key — on one chain.',icon:'🔑',metals:['Silver'],sizes:['9"','10"','Adjustable']},
+  {id:40,cat:'Anklets',name:'Layered Double Anklet',price:105,mat:'Sterling Silver',desc:'Two fine chains of slightly different lengths for an effortless layered look.',icon:'⛓️',metals:['Silver','Gold'],sizes:['Adjustable']},
 ];
 
-let cart = [];
-let currentCat = null;
-let currentProduct = null;
-let selectedMetal = '';
-let selectedSize = '';
+let cart=[], curCat=null, curP=null, selMetal='', selSize='', curView='grid';
 
-// ── INIT ──
-CATS.forEach(c => {
-  const count = PRODUCTS.filter(p => p.cat === c).length;
-  document.getElementById('heroCats').innerHTML +=
-    `<div class="hero-cat-row" onclick="showShop('${c}')">
+// helpers
+const g = id => document.getElementById(id);
+const sh = (id, html) => { const e=g(id); if(e) e.innerHTML=html; };
+const st = (id, txt)  => { const e=g(id); if(e) e.textContent=txt; };
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const t=g('page-'+id); if(t) t.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── BOOT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  // Hero cats
+  sh('heroCats', CATS.map(c=>{
+    const n=P.filter(p=>p.cat===c).length;
+    return `<div class="hero-cat-row" onclick="showShop('${c}')">
       <span class="hero-cat-name">${c}</span>
-      <span class="hero-cat-meta">${count} pieces</span>
+      <span class="hero-cat-meta">${n} pieces</span>
       <span class="hero-cat-arrow">→</span>
     </div>`;
+  }).join(''));
+
+  // Featured
+  sh('featuredGrid',[P[0],P[8],P[16],P[24]].map(p=>
+    `<div class="feat-card" onclick="showDetail(${p.id})">
+      <span class="feat-icon">${p.icon}</span>
+      <div class="feat-name">${p.name}</div>
+      <div class="feat-price">£${p.price.toFixed(2)}</div>
+      <button class="feat-hover-btn">View →</button>
+    </div>`
+  ).join(''));
+
+  // Hero image
+  const bg=g('heroBg');
+  if(bg) bg.style.cssText="background-image:url('hero.png');background-size:cover;background-position:center";
 });
-
-// Featured grid
-const featured = [PRODUCTS[0], PRODUCTS[3], PRODUCTS[5], PRODUCTS[7]];
-document.getElementById('featuredGrid').innerHTML = featured.map((p, i) =>
-  `<div class="feat-card" onclick="showDetail(${p.id})">
-    <span class="feat-icon">${p.icon}</span>
-    <div class="feat-name">${p.name}</div>
-    <div class="feat-price">£${p.price.toFixed(2)}</div>
-    <button class="feat-hover-btn">View →</button>
-  </div>`
-).join('');
-
-// Sidebar cats
-function buildSidebar() {
-  document.getElementById('sidebarCats').innerHTML =
-    `<div class="sidebar-cat ${!currentCat?'active':''}" onclick="showShop(null)">
-      <span>All Jewelry</span><span class="sidebar-cat-count">${PRODUCTS.length}</span>
-    </div>` +
-    CATS.map(c => {
-      const n = PRODUCTS.filter(p => p.cat === c).length;
-      return `<div class="sidebar-cat ${currentCat===c?'active':''}" onclick="showShop('${c}')">
-        <span>${c}</span><span class="sidebar-cat-count">${n}</span>
-      </div>`;
-    }).join('');
-}
 
 // ── SHOP ──
 function showShop(cat) {
-  currentCat = cat;
-  document.getElementById('shopTitle').textContent = cat || 'All Jewelry';
-  buildSidebar();
-  renderShopGrid();
+  curCat=cat;
   showPage('shop');
+  sh('catPills',['All',...CATS].map(c=>
+    `<button class="cat-pill ${(!cat&&c==='All')||cat===c?'active':''}" onclick="showShop(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
+  ).join(''));
+  sh('shopTitle', cat?`${cat}<br><em>Collection</em>`:`The<br><em>Collection</em>`);
+  renderShop();
 }
 
-function renderShopGrid() {
-  let list = currentCat ? PRODUCTS.filter(p => p.cat === currentCat) : [...PRODUCTS];
-  const sort = document.getElementById('sortSelect').value;
-  if (sort === 'asc') list.sort((a, b) => a.price - b.price);
-  if (sort === 'desc') list.sort((a, b) => b.price - a.price);
-  document.getElementById('shopCount').textContent = `${list.length} piece${list.length !== 1 ? 's' : ''}`;
-  document.getElementById('shopGrid').innerHTML = list.map(p =>
-    `<div class="prod-card" onclick="showDetail(${p.id})">
-      <div class="prod-img-wrap">
-        ${p.icon}
-        <button class="prod-quick" onclick="event.stopPropagation();quickAdd(${p.id})">Quick Add →</button>
+function setView(v) {
+  curView=v;
+  g('btnGrid')?.classList.toggle('active',v==='grid');
+  g('btnList')?.classList.toggle('active',v==='list');
+  const gw=g('gridWrap'), lv=g('listView');
+  if(gw) gw.style.display=v==='grid'?'block':'none';
+  if(lv) lv.style.display=v==='list'?'block':'none';
+}
+
+function renderShop() {
+  let list=curCat?P.filter(p=>p.cat===curCat):[...P];
+  const s=g('sortSel')?.value||'default';
+  if(s==='asc')  list.sort((a,b)=>a.price-b.price);
+  if(s==='desc') list.sort((a,b)=>b.price-a.price);
+  if(s==='az')   list.sort((a,b)=>a.name.localeCompare(b.name));
+
+  st('shopCount',`${list.length} piece${list.length!==1?'s':''}`);
+
+  sh('shopGrid', list.map((p,i)=>
+    `<div class="m-card" onclick="showDetail(${p.id})">
+      <div class="m-img ${H[i%H.length]}">${p.icon}</div>
+      <div class="m-overlay">
+        <div class="m-overlay-name">${p.name}</div>
+        <div class="m-overlay-price">£${p.price.toFixed(2)}</div>
+        <button class="m-overlay-btn" onclick="event.stopPropagation();quickAdd(${p.id})">Quick Add →</button>
       </div>
-      <div class="prod-cat-tag">${p.cat}</div>
-      <div class="prod-name">${p.name}</div>
-      <div class="prod-price">£${p.price.toFixed(2)}</div>
+      <div class="m-info">
+        <div class="m-cat">${p.cat}</div>
+        <div class="m-name">${p.name}</div>
+        <div class="m-price">£${p.price.toFixed(2)}</div>
+      </div>
     </div>`
-  ).join('');
+  ).join(''));
+
+  sh('listView', list.map(p=>
+    `<div class="l-row" onclick="showDetail(${p.id})">
+      <div class="l-icon">${p.icon}</div>
+      <div>
+        <div class="l-cat">${p.cat}</div>
+        <div class="l-name">${p.name}</div>
+        <div class="l-meta">${p.mat} · ${p.metals.join(', ')}</div>
+      </div>
+      <div class="l-price">£${p.price.toFixed(2)}</div>
+      <button class="l-add" onclick="event.stopPropagation();quickAdd(${p.id})">Add to Cart</button>
+    </div>`
+  ).join(''));
 }
 
 // ── DETAIL ──
 function showDetail(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  currentProduct = p;
-  selectedMetal = p.metals[0];
-  selectedSize = p.sizes[0];
-
-  document.getElementById('detailImg').textContent = p.icon;
-  document.getElementById('detailCat').textContent = p.cat;
-  document.getElementById('detailName').textContent = p.name;
-  document.getElementById('detailPrice').textContent = '£' + p.price.toFixed(2);
-  document.getElementById('detailDesc').textContent = p.desc;
-  document.getElementById('detailBack').onclick = () => showShop(p.cat);
-
-  // Thumbnails
-  document.getElementById('detailThumbs').innerHTML = [p.icon, p.icon, p.icon].map((ic, i) =>
-    `<div class="detail-thumb ${i===0?'active':''}" onclick="selectThumb(this,'${ic}')">${ic}</div>`
-  ).join('');
-
-  // Metal options — FIX: proper active toggling
-  document.getElementById('metalSelected').textContent = selectedMetal;
-  document.getElementById('metalOpts').innerHTML = p.metals.map(m =>
-    `<button class="opt ${m === selectedMetal ? 'active' : ''}" onclick="selectOpt(this,'metal','${m}')">${m}</button>`
-  ).join('');
-
-  // Size options — FIX: proper active toggling
-  document.getElementById('sizeSelected').textContent = selectedSize;
-  document.getElementById('sizeOpts').innerHTML = p.sizes.map(s =>
-    `<button class="opt ${s === selectedSize ? 'active' : ''}" onclick="selectOpt(this,'size','${s}')">${s}</button>`
-  ).join('');
-
-  document.getElementById('detailMeta').innerHTML =
-    `<div class="detail-meta-row"><strong>Material</strong><span>${p.material}</span></div>
-     <div class="detail-meta-row"><strong>Category</strong><span>${p.cat}</span></div>
-     <div class="detail-meta-row"><strong>Shipping</strong><span>Free UK delivery, 3–5 days</span></div>`;
-
-  document.getElementById('addCartBtn').onclick = () => addToCart(p);
+  const p=P.find(x=>x.id===id); if(!p) return;
+  curP=p; selMetal=p.metals[0]; selSize=p.sizes[0];
   showPage('detail');
+  const di=g('dImg'); if(di) di.textContent=p.icon;
+  st('dCat',p.cat); st('dName',p.name);
+  st('dPrice','£'+p.price.toFixed(2)); st('dDesc',p.desc);
+  const back=g('dBack'); if(back) back.onclick=()=>showShop(p.cat);
+  sh('dThumbs',[p.icon,p.icon,p.icon].map((ic,i)=>
+    `<div class="detail-thumb ${i===0?'active':''}" onclick="pickThumb(this,'${ic}')">${ic}</div>`
+  ).join(''));
+  st('selMetal',selMetal);
+  sh('metalOpts',p.metals.map(m=>
+    `<button class="opt ${m===selMetal?'active':''}" onclick="pickOpt(this,'metal','${m}')">${m}</button>`
+  ).join(''));
+  st('selSize',selSize);
+  sh('sizeOpts',p.sizes.map(s=>
+    `<button class="opt ${s===selSize?'active':''}" onclick="pickOpt(this,'size','${s}')">${s}</button>`
+  ).join(''));
+  sh('dMeta',
+    `<div class="d-meta-row"><strong>Material</strong><span>${p.mat}</span></div>
+     <div class="d-meta-row"><strong>Category</strong><span>${p.cat}</span></div>
+     <div class="d-meta-row"><strong>Shipping</strong><span>Free UK delivery · 3–5 days</span></div>`);
+  const btn=g('addBtn'); if(btn) btn.onclick=()=>addToCart(p);
 }
 
-function selectOpt(btn, type, val) {
-  // Remove active from siblings
-  btn.closest('.opts').querySelectorAll('.opt').forEach(b => b.classList.remove('active'));
+function pickOpt(btn,type,val) {
+  btn.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if (type === 'metal') { selectedMetal = val; document.getElementById('metalSelected').textContent = val; }
-  if (type === 'size')  { selectedSize  = val; document.getElementById('sizeSelected').textContent  = val; }
+  if(type==='metal'){selMetal=val;st('selMetal',val);}
+  if(type==='size') {selSize=val; st('selSize',val);}
 }
 
-function selectThumb(el, icon) {
-  document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
+function pickThumb(el,icon) {
+  document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('detailImg').textContent = icon;
+  const di=g('dImg'); if(di) di.textContent=icon;
 }
 
 // ── CART ──
 function addToCart(p) {
-  cart.push({ ...p, metal: selectedMetal, size: selectedSize, uid: Date.now() + Math.random() });
-  updateCart();
-  openCart();
-  toast(`${p.name} added to cart`);
+  cart.push({...p,metal:selMetal,size:selSize,uid:Date.now()+Math.random()});
+  updateCart(); openCart();
+  showToast(p.name+' added to cart');
 }
-
 function quickAdd(id) {
-  const p = PRODUCTS.find(x => x.id === id);
-  cart.push({ ...p, metal: p.metals[0], size: p.sizes[0], uid: Date.now() + Math.random() });
-  updateCart();
-  toast(`${p.name} added to cart`);
+  const p=P.find(x=>x.id===id); if(!p) return;
+  cart.push({...p,metal:p.metals[0],size:p.sizes[0],uid:Date.now()+Math.random()});
+  updateCart(); showToast(p.name+' added to cart');
 }
-
-function removeFromCart(uid) {
-  cart = cart.filter(i => i.uid !== uid);
-  updateCart();
-}
-
+function removeFromCart(uid) { cart=cart.filter(i=>i.uid!==uid); updateCart(); }
 function updateCart() {
-  const badge = document.getElementById('cartBadge');
-  badge.textContent = cart.length;
-  badge.style.display = cart.length ? 'flex' : 'none';
-
-  const body = document.getElementById('drawerBody');
-  if (!cart.length) { body.innerHTML = '<div class="drawer-empty">Your cart is empty</div>'; document.getElementById('drawerTotal').textContent = '£0.00'; return; }
-
-  let total = 0;
-  body.innerHTML = cart.map(item => {
-    total += item.price;
-    return `<div class="cart-line">
-      <div class="cart-line-img">${item.icon}</div>
-      <div class="cart-line-info">
-        <div class="cart-line-name">${item.name}</div>
-        <div class="cart-line-meta">${item.metal} · ${item.size}</div>
-      </div>
-      <div class="cart-line-price">£${item.price.toFixed(2)}</div>
-      <button class="cart-line-rm" onclick="removeFromCart(${item.uid})">×</button>
+  const badge=g('cartBadge');
+  if(badge){badge.textContent=cart.length;badge.style.display=cart.length?'flex':'none';}
+  const body=g('cartBody'); if(!body) return;
+  if(!cart.length){body.innerHTML='<div class="drawer-empty">Your cart is empty</div>';st('cartTotal','£0.00');return;}
+  let total=0;
+  body.innerHTML=cart.map(item=>{
+    total+=item.price;
+    return `<div class="c-line">
+      <div class="c-img">${item.icon}</div>
+      <div class="c-info"><div class="c-name">${item.name}</div><div class="c-meta">${item.metal} · ${item.size}</div></div>
+      <div class="c-price">£${item.price.toFixed(2)}</div>
+      <button class="c-rm" onclick="removeFromCart(${item.uid})">×</button>
     </div>`;
   }).join('');
-  document.getElementById('drawerTotal').textContent = '£' + total.toFixed(2);
+  st('cartTotal','£'+total.toFixed(2));
 }
 
-function openCart()  { document.getElementById('drawerMask').classList.add('open'); document.getElementById('drawer').classList.add('open'); }
-function closeCart() { document.getElementById('drawerMask').classList.remove('open'); document.getElementById('drawer').classList.remove('open'); }
-function openAuth()  { document.getElementById('authMask').classList.add('open'); }
-function closeAuth() { document.getElementById('authMask').classList.remove('open'); }
-function toggleAuth(){ document.getElementById('authLogin').style.display = document.getElementById('authLogin').style.display==='none'?'block':'none'; document.getElementById('authRegister').style.display = document.getElementById('authRegister').style.display==='none'?'block':'none'; }
-function doAuth()    { closeAuth(); toast('Welcome to Aynnor\'s Jewelry!'); }
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function openCart()  { g('cartMask')?.classList.add('open'); g('cartDrawer')?.classList.add('open'); }
+function closeCart() { g('cartMask')?.classList.remove('open'); g('cartDrawer')?.classList.remove('open'); }
+function openAuth()  { g('authMask')?.classList.add('open'); }
+function closeAuth() { g('authMask')?.classList.remove('open'); }
+function toggleAuth(){
+  const l=g('authLogin'),r=g('authReg');
+  if(l) l.style.display=l.style.display==='none'?'block':'none';
+  if(r) r.style.display=r.style.display==='none'?'block':'none';
 }
-
-function toast(msg) {
-  const el = document.getElementById('toastEl');
-  el.textContent = msg; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2800);
+function doAuth(){ closeAuth(); showToast('Welcome to Aynnor\'s Jewelry!'); }
+function showToast(msg){
+  const t=g('toastEl'); if(!t) return;
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
 }
-
-// Hero image
-(function(){
-  const bg = document.getElementById('heroBg');
-  bg.style.backgroundImage = "url('hero.png')";
-  bg.style.backgroundSize = 'cover';
-  bg.style.backgroundPosition = 'center';
-})();
 </script>
 </body>
 </html>
