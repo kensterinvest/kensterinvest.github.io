@@ -9,9 +9,10 @@
 
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --gold:#c9952a;--gold-light:#e8c46a;--gold-pale:#f5e6c0;
-  --deep:#0e0800;--rich:#1a0e00;--warm:#2a1800;
-  --chalk:#fdf8f0;--mist:#f5ede0;
+  --ink:#2c2825;--ink2:#4a4540;--ink3:#7a7470;
+  --chalk:#fafaf8;--snow:#ffffff;--mist:#f4f2ef;--cloud:#ede9e4;--warm:#e8e2db;
+  --border:rgba(180,170,160,0.25);--border2:rgba(180,170,160,0.45);
+  --accent:#9e8c7a;--accent2:#c4aa8e;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Montserrat',sans-serif;
 }
@@ -37,7 +38,7 @@ button,a{cursor:pointer;font-family:var(--sans)}
 .nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 3rem;height:70px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s}
 .nav.scrolled{background:rgba(14,8,0,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,149,42,0.15)}
 .nav-logo{cursor:pointer;display:flex;align-items:center}
-.nav-logo img{height:38px;width:auto;max-width:170px;object-fit:contain}
+.nav-logo img{height:138px;width:auto;max-width:370px;object-fit:contain}
 .nav-links{display:flex;gap:2.5rem;list-style:none}
 .nav-links a{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,196,106,0.65);text-decoration:none;position:relative;transition:color 0.3s}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold-light);transition:width 0.3s}
@@ -58,7 +59,7 @@ button,a{cursor:pointer;font-family:var(--sans)}
 
 /* ── HERO ── */
 .hero{height:100vh;position:relative;overflow:hidden;display:flex}
-.hero-bg{position:absolute;inset:0;background-image:url('hero.jpg');background-size:cover;background-position:center;transform:scale(1.08);animation:heroZoom 8s ease forwards}
+.hero-bg{position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center;transform:scale(1.08);animation:heroZoom 8s ease forwards}
 @keyframes heroZoom{0%{transform:scale(1.08)}100%{transform:scale(1)}}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,8,0,0.78) 0%,rgba(14,8,0,0.35) 60%,rgba(14,8,0,0.6) 100%)}
 .hero-content{position:relative;z-index:2;padding:0 8vw;display:flex;flex-direction:column;justify-content:center;height:100%;padding-top:70px;max-width:720px}
@@ -659,6 +660,8 @@ window.addEventListener('scroll',()=>{
 
 // ── PAGE NAV ──
 function go(page,cat){
+  // 'detail-open' is a shorthand trigger from featured cards
+  if(page==='detail-open'){openDetail(cat);return;}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const t=g('page-'+page);
   if(!t) return;
@@ -699,7 +702,7 @@ function initHome(){
 
   // Hero + parallax bg
   const bg=g('heroBg');
-  if(bg) bg.style.cssText="background-image:url('hero.png');background-size:cover;background-position:center";
+  if(bg) bg.style.cssText="background-image:url('hero.jpg');background-size:cover;background-position:center";
   const pb=g('parallaxBg');
   if(pb) pb.style.cssText="background-image:url('hero.jpg');background-size:cover;background-position:center";
 
@@ -769,9 +772,9 @@ function filterShop(cat){
 
 function setView(v){
   curView=v;
-  g('vGrid')?.classList.toggle('active',v==='grid');
-  g('vList')?.classList.toggle('active',v==='list');
-  const gw=g('gridWrap'),lw=g('listWrap');
+  const vg=g('vGrid'),vl=g('vList'),gw=g('gridWrap'),lw=g('listWrap');
+  if(vg) vg.classList.toggle('active',v==='grid');
+  if(vl) vl.classList.toggle('active',v==='list');
   if(gw) gw.style.display=v==='grid'?'block':'none';
   if(lw) lw.style.display=v==='list'?'block':'none';
 }
