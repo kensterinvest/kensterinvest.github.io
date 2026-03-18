@@ -4,572 +4,562 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aynnor's Jewelry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap');
-
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --ink:#2c2825;--ink2:#4a4540;--ink3:#7a7470;
-  --chalk:#fafaf8;--snow:#ffffff;--mist:#f4f2ef;--cloud:#ede9e4;--warm:#e8e2db;
-  --border:rgba(180,170,160,0.25);--border2:rgba(180,170,160,0.45);
-  --accent:#9e8c7a;--accent2:#c4aa8e;
+  --bg:#faf9f7;
+  --bg2:#f3f1ee;
+  --bg3:#eceae6;
+  --dark:#1c1916;
+  --dark2:#2e2a26;
+  --mid:#7a7470;
+  --soft:#b0a89e;
+  --line:rgba(0,0,0,0.09);
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Montserrat',sans-serif;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--chalk);color:var(--deep);overflow-x:hidden}
-button,a{cursor:pointer;font-family:var(--sans)}
+body{font-family:var(--sans);background:var(--bg);color:var(--dark);overflow-x:hidden}
+img{display:block;width:100%;object-fit:cover}
+button{cursor:pointer;border:none;background:none;font-family:var(--sans)}
+a{text-decoration:none;color:inherit;cursor:pointer}
 
-/* ── CURSOR ── */
-.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s;mix-blend-mode:multiply}
-.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.12s ease;mix-blend-mode:multiply}
-.cursor-ring.hovered{width:56px;height:56px;border-color:var(--gold-light)}
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity 0.7s,visibility 0.7s}
+#loader.hide{opacity:0;visibility:hidden}
+.ld-name{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:rgba(255,255,255,0.85);letter-spacing:0.12em;opacity:0;animation:rise 0.9s 0.2s forwards}
+.ld-bar{width:100px;height:1px;background:rgba(255,255,255,0.12);overflow:hidden}
+.ld-fill{height:100%;background:rgba(255,255,255,0.5);animation:widen 1.8s ease forwards}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes widen{from{width:0}to{width:100%}}
 
-/* ── LOADER ── */
-.loader{position:fixed;inset:0;background:var(--deep);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.8s,visibility 0.8s}
-.loader.done{opacity:0;visibility:hidden}
-.loader-logo{font-family:var(--serif);font-size:2.5rem;font-weight:300;color:var(--gold-light);letter-spacing:0.15em;opacity:0;animation:fadeUp 0.8s 0.3s forwards}
-.loader-bar{width:120px;height:1px;background:rgba(201,149,42,0.2);overflow:hidden}
-.loader-fill{height:100%;background:var(--gold);animation:fill 1.8s ease forwards}
-@keyframes fill{0%{width:0}100%{width:100%}}
-@keyframes fadeUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+/* NAV */
+#nav{position:fixed;inset:0 0 auto;height:64px;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;transition:background 0.4s,box-shadow 0.4s}
+#nav.solid{background:rgba(250,249,247,0.97);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line)}
+.nav-logo{height:36px;width:auto;cursor:pointer}
+.nav-logo img{height:36px;width:auto;max-width:160px;object-fit:contain}
+.nav-logo-text{font-family:var(--serif);font-size:1.2rem;color:rgba(255,255,255,0.9);letter-spacing:0.1em;display:none}
+#nav.solid .nav-logo-text{color:var(--dark)}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.25s}
+#nav.solid .nav-links a{color:var(--mid)}
+.nav-links a:hover{color:#fff}
+#nav.solid .nav-links a:hover{color:var(--dark)}
+.nav-icons{display:flex;gap:0.8rem;align-items:center}
+.ni{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.65);transition:color 0.25s;position:relative}
+#nav.solid .ni{color:var(--mid)}
+.ni:hover{color:#fff}
+#nav.solid .ni:hover{color:var(--dark)}
+.ni-badge{position:absolute;top:3px;right:3px;width:14px;height:14px;background:var(--dark);color:#fff;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:600}
+#nav.solid .ni-badge{background:var(--dark)}
 
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 3rem;height:70px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s}
-.nav.scrolled{background:rgba(14,8,0,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,149,42,0.15)}
-.nav-logo{cursor:pointer;display:flex;align-items:center}
-.nav-logo img{height:138px;width:auto;max-width:370px;object-fit:contain}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(232,196,106,0.65);text-decoration:none;position:relative;transition:color 0.3s}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold-light);transition:width 0.3s}
-.nav-links a:hover{color:var(--gold-light)}
-.nav-links a:hover::after{width:100%}
-.nav-actions{display:flex;align-items:center;gap:1rem}
-.nav-btn{background:none;border:none;color:rgba(232,196,106,0.65);width:38px;height:38px;display:flex;align-items:center;justify-content:center;position:relative;transition:color 0.3s}
-.nav-btn:hover{color:var(--gold-light)}
-.cart-count{position:absolute;top:2px;right:2px;width:15px;height:15px;background:var(--gold);color:var(--deep);border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
+/* PAGES */
+.pg{display:none}
+.pg.on{display:block}
+.pg-anim{animation:pgIn 0.5s cubic-bezier(0.25,1,0.5,1) both}
+@keyframes pgIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 
-/* ── PAGES ── */
-.page{display:none;min-height:100vh}
-.page.active{display:block}
+/* ─── HOME ─── */
+/* HERO */
+.hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end}
+.hero-img{position:absolute;inset:0}
+.hero-img img{height:100%;object-fit:cover;animation:hzoom 10s ease both}
+@keyframes hzoom{from{transform:scale(1.07)}to{transform:scale(1)}}
+.hero-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,17,14,0.82) 0%,rgba(20,17,14,0.25) 55%,transparent 100%)}
+.hero-body{position:relative;z-index:2;padding:0 6vw 7vh;max-width:780px}
+.hero-label{font-size:0.58rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(255,255,255,0.48);margin-bottom:1.6rem;opacity:0;animation:rise 0.8s 2s both}
+.hero-h1{font-family:var(--serif);font-size:clamp(3.8rem,7.5vw,7rem);font-weight:300;line-height:1;color:#fff;margin-bottom:1.8rem}
+.hero-h1 .wl{overflow:hidden;display:block}
+.hero-h1 .wl span{display:block;transform:translateY(105%);animation:rise 0.9s cubic-bezier(0.25,1,0.5,1) both}
+.hero-h1 .wl:nth-child(1) span{animation-delay:1.8s}
+.hero-h1 .wl:nth-child(2) span{animation-delay:1.95s}
+.hero-h1 .wl:nth-child(3) span{animation-delay:2.1s}
+.hero-h1 em{font-style:italic;color:rgba(255,255,255,0.52)}
+.hero-sub{font-size:0.78rem;line-height:1.95;color:rgba(255,255,255,0.42);max-width:400px;margin-bottom:2.8rem;opacity:0;animation:rise 0.8s 2.3s both}
+.hero-btns{display:flex;gap:1.2rem;flex-wrap:wrap;opacity:0;animation:rise 0.8s 2.5s both}
+.btn-fill{padding:0.85rem 2.2rem;background:rgba(255,255,255,0.92);color:var(--dark);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:background 0.25s,color 0.25s}
+.btn-fill:hover{background:#fff}
+.btn-line{padding:0.85rem 2.2rem;background:none;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.3);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:border-color 0.25s,color 0.25s}
+.btn-line:hover{border-color:rgba(255,255,255,0.75);color:#fff}
+.hero-scroll{position:absolute;bottom:2.5rem;right:3rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0;animation:rise 0.8s 2.8s both}
+.hero-scroll span{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);writing-mode:vertical-lr}
+.hs-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);animation:pulse 2.2s ease infinite}
+@keyframes pulse{0%,100%{opacity:0.35}50%{opacity:0.9}}
 
-/* ── PAGE TRANSITIONS ── */
-.page-enter{animation:pageIn 0.6s cubic-bezier(0.22,1,0.36,1) forwards}
-@keyframes pageIn{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+/* TICKER */
+.ticker{overflow:hidden;background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:0.72rem 0;white-space:nowrap}
+.ticker-t{display:inline-block;animation:tick 30s linear infinite}
+@keyframes tick{to{transform:translateX(-50%)}}
+.ticker-i{display:inline-block;font-size:0.57rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--soft);padding:0 3rem}
+.ticker-dot{color:var(--line)}
 
-/* ── HERO ── */
-.hero{height:100vh;position:relative;overflow:hidden;display:flex}
-.hero-bg{position:absolute;inset:0;background-image:url('hero.png');background-size:cover;background-position:center;transform:scale(1.08);animation:heroZoom 8s ease forwards}
-@keyframes heroZoom{0%{transform:scale(1.08)}100%{transform:scale(1)}}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,8,0,0.78) 0%,rgba(14,8,0,0.35) 60%,rgba(14,8,0,0.6) 100%)}
-.hero-content{position:relative;z-index:2;padding:0 8vw;display:flex;flex-direction:column;justify-content:center;height:100%;padding-top:70px;max-width:720px}
-.hero-tag{font-size:0.62rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;opacity:0;animation:fadeUp 0.8s 1.8s forwards}
-.hero-title{font-family:var(--serif);font-size:clamp(4rem,8vw,7.5rem);font-weight:300;line-height:0.95;color:#fff;margin-bottom:2.5rem}
-.hero-title .line{display:block;overflow:hidden}
-.hero-title .line span{display:block;transform:translateY(110%);animation:slideUp 0.9s cubic-bezier(0.22,1,0.36,1) forwards}
-.hero-title .line:nth-child(1) span{animation-delay:1.9s}
-.hero-title .line:nth-child(2) span{animation-delay:2.05s}
-.hero-title .line:nth-child(3) span{animation-delay:2.2s}
-.hero-title em{font-style:italic;color:var(--gold-light)}
-@keyframes slideUp{0%{transform:translateY(110%)}100%{transform:translateY(0)}}
-.hero-sub{font-size:0.82rem;letter-spacing:0.08em;color:rgba(255,255,255,0.55);line-height:1.9;max-width:380px;margin-bottom:3rem;opacity:0;animation:fadeUp 0.8s 2.4s forwards}
-.hero-ctas{display:flex;gap:1.5rem;opacity:0;animation:fadeUp 0.8s 2.6s forwards}
-.btn-gold{padding:0.9rem 2.4rem;background:var(--gold);color:var(--deep);border:none;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;position:relative;overflow:hidden;transition:color 0.3s}
-.btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold-light);transform:scaleX(0);transform-origin:left;transition:transform 0.35s}
-.btn-gold:hover::before{transform:scaleX(1)}
-.btn-gold:hover{color:var(--deep)}
-.btn-gold span{position:relative;z-index:1}
-.btn-ghost{padding:0.9rem 2.4rem;background:none;color:rgba(255,255,255,0.8);border:1px solid rgba(232,196,106,0.4);font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;transition:all 0.3s}
-.btn-ghost:hover{border-color:var(--gold-light);color:var(--gold-light)}
-.hero-scroll{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.6rem;opacity:0;animation:fadeUp 0.8s 3s forwards;z-index:2}
-.hero-scroll span{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
-.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,rgba(201,149,42,0.6),transparent);animation:scrollPulse 2s ease infinite}
-@keyframes scrollPulse{0%,100%{opacity:0.4;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease}
+.rv.in{opacity:1;transform:none}
 
-/* ── MARQUEE ── */
-.marquee{background:var(--rich);border-top:1px solid rgba(201,149,42,0.2);border-bottom:1px solid rgba(201,149,42,0.2);padding:0.85rem 0;overflow:hidden;white-space:nowrap}
-.marquee-track{display:inline-block;animation:scroll 25s linear infinite}
-@keyframes scroll{to{transform:translateX(-50%)}}
-.marquee-item{display:inline-block;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(201,149,42,0.5);padding:0 3.5rem}
-.marquee-sep{color:rgba(201,149,42,0.25)}
+/* CATS */
+.sec{padding:5.5rem 3rem}
+.sec-head{text-align:center;margin-bottom:3.5rem}
+.sec-eye{font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:0.8rem}
+.sec-title{font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:300;color:var(--dark);line-height:1.1}
+.sec-title em{font-style:italic;color:var(--mid)}
+.cats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--line)}
+.cat-card{background:var(--bg);padding:2.2rem 1.2rem;text-align:center;cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden}
+.cat-card:hover{background:#fff}
+.cat-card img{width:100%;height:170px;object-fit:cover;margin-bottom:1.1rem;transition:transform 0.5s ease}
+.cat-card:hover img{transform:scale(1.04)}
+.cat-n{font-family:var(--serif);font-size:1.15rem;color:var(--dark);margin-bottom:0.3rem;transition:color 0.25s}
+.cat-card:hover .cat-n{color:var(--mid)}
+.cat-c{font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft)}
+.cat-arr{position:absolute;bottom:1rem;right:1rem;font-size:0.8rem;color:var(--soft);opacity:0;transform:translateX(-5px);transition:all 0.25s}
+.cat-card:hover .cat-arr{opacity:1;transform:none}
 
-/* ── REVEAL ANIMATIONS ── */
-.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s cubic-bezier(0.22,1,0.36,1),transform 0.8s cubic-bezier(0.22,1,0.36,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.8s cubic-bezier(0.22,1,0.36,1),transform 0.8s cubic-bezier(0.22,1,0.36,1)}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.8s,transform 0.8s cubic-bezier(0.22,1,0.36,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
-
-/* ── CATEGORIES STRIP ── */
-.cats-section{padding:6rem 0;background:var(--chalk)}
-.cats-header{text-align:center;margin-bottom:4rem;padding:0 3rem}
-.section-eyebrow{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block}
-.section-title{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--deep);line-height:1.1}
-.section-title em{font-style:italic;color:var(--gold)}
-.cats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(160,120,64,0.12);margin:0 3rem}
-.cat-tile{background:var(--chalk);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:background 0.4s}
-.cat-tile::before{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:linear-gradient(to top,rgba(201,149,42,0.12),transparent);transition:height 0.4s}
-.cat-tile:hover::before{height:100%}
-.cat-tile:hover{background:#fff}
-.cat-emoji{font-size:2.8rem;display:block;margin-bottom:1.2rem;transition:transform 0.4s}
-.cat-tile:hover .cat-emoji{transform:scale(1.15) translateY(-4px)}
-.cat-name{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--deep);margin-bottom:0.4rem;transition:color 0.3s}
-.cat-tile:hover .cat-name{color:var(--gold)}
-.cat-count{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(160,120,64,0.6)}
-.cat-arrow{position:absolute;bottom:1.2rem;right:1.2rem;font-size:1rem;color:var(--gold);opacity:0;transform:translateX(-8px);transition:all 0.3s}
-.cat-tile:hover .cat-arrow{opacity:1;transform:translateX(0)}
-
-/* ── FEATURED ── */
-.featured{padding:6rem 3rem;background:linear-gradient(180deg,var(--chalk),var(--mist))}
-.featured-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3.5rem}
-.featured-header .section-title{text-align:left}
-.view-all-link{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:none;background:none;display:flex;align-items:center;gap:0.6rem;transition:gap 0.3s}
-.view-all-link:hover{gap:1rem}
-.view-all-line{width:24px;height:1px;background:var(--gold);transition:width 0.3s}
-.view-all-link:hover .view-all-line{width:40px}
-.feat-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;grid-template-rows:auto auto;gap:1.5rem}
-.feat-card{cursor:pointer;position:relative;overflow:hidden;background:var(--chalk)}
+/* FEATURED */
+.feat-sec{padding:5.5rem 3rem;background:var(--bg2)}
+.feat-row{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:1.5rem}
+.feat-card{cursor:pointer;background:var(--bg);position:relative;overflow:hidden}
 .feat-card:first-child{grid-row:span 2}
-.feat-img{width:100%;background:linear-gradient(135deg,#fdf3e3,#f0e0c0);display:flex;align-items:center;justify-content:center;font-size:5rem;transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);overflow:hidden}
-.feat-card:first-child .feat-img{min-height:520px;font-size:8rem}
-.feat-img.sm{min-height:220px}
-.feat-card:hover .feat-img{transform:scale(1.04)}
-.feat-body{padding:1.2rem 0}
-.feat-cat{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem}
-.feat-name{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--deep);margin-bottom:0.3rem}
-.feat-card:first-child .feat-name{font-size:1.5rem}
-.feat-price{font-size:0.82rem;color:rgba(160,120,64,0.8)}
-.feat-overlay{position:absolute;inset:0;background:rgba(14,8,0,0.65);opacity:0;transition:opacity 0.35s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.feat-card:hover .feat-overlay{opacity:1}
-.feat-overlay-btn{padding:0.6rem 1.6rem;border:1px solid rgba(232,196,106,0.7);color:var(--gold-light);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;background:none;transition:all 0.25s;transform:translateY(12px);opacity:0}
-.feat-card:hover .feat-overlay-btn{transform:translateY(0);opacity:1;transition:all 0.3s 0.05s}
-.feat-overlay-btn:hover{background:var(--gold);color:var(--deep);border-color:var(--gold)}
+.feat-card img{width:100%;transition:transform 0.6s ease}
+.feat-card:first-child img{height:540px}
+.feat-card:not(:first-child) img{height:220px}
+.feat-card:hover img{transform:scale(1.04)}
+.feat-veil{position:absolute;inset:0;background:rgba(18,15,12,0.56);opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem}
+.feat-card:hover .feat-veil{opacity:1}
+.fv-btn{padding:0.5rem 1.4rem;border:1px solid rgba(255,255,255,0.45);color:rgba(255,255,255,0.85);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;transform:translateY(8px);opacity:0;transition:all 0.28s}
+.feat-card:hover .fv-btn{transform:none;opacity:1}
+.feat-card:hover .fv-btn:nth-child(2){transition-delay:0.06s}
+.fv-btn:hover{background:rgba(255,255,255,0.12)}
+.feat-foot{padding:1rem 0}
+.feat-cat{font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.3rem}
+.feat-name{font-family:var(--serif);font-size:1.05rem;color:var(--dark);margin-bottom:0.2rem}
+.feat-card:first-child .feat-name{font-size:1.4rem}
+.feat-price{font-size:0.75rem;color:var(--mid)}
 
-/* ── PARALLAX BANNER ── */
-.parallax-banner{height:55vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.parallax-bg{position:absolute;inset:-20%;background-image:url('hero.jpg');background-size:cover;background-position:center;filter:brightness(0.35)}
-.parallax-content{position:relative;z-index:2;text-align:center;padding:0 3rem}
-.parallax-content h2{font-family:var(--serif);font-size:clamp(2.5rem,6vw,5rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1.5rem}
-.parallax-content h2 em{font-style:italic;color:var(--gold-light)}
-.parallax-content p{font-size:0.82rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;max-width:480px;margin:0 auto 2.5rem;line-height:1.9}
+/* BANNER */
+.banner{height:54vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.banner-img{position:absolute;inset:0}
+.banner-img img{height:100%;object-fit:cover}
+.banner-scrim{position:absolute;inset:0;background:rgba(18,15,12,0.62)}
+.banner-body{position:relative;z-index:2;padding:0 3rem;max-width:700px}
+.banner-h{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4.5rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1.2rem}
+.banner-h em{font-style:italic;color:rgba(255,255,255,0.5)}
+.banner-p{font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:2;margin-bottom:2.2rem;max-width:460px;margin-left:auto;margin-right:auto}
+.btn-fill-dark{padding:0.85rem 2.2rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
+.btn-fill-dark:hover{background:var(--dark2)}
 
-/* ── STATS ── */
-.stats{background:var(--rich);padding:5rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border-top:1px solid rgba(201,149,42,0.15);border-bottom:1px solid rgba(201,149,42,0.15)}
-.stat{text-align:center;padding:2rem}
-.stat-num{font-family:var(--serif);font-size:3.5rem;font-weight:300;color:var(--gold-light);display:block;line-height:1}
-.stat-label{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(201,149,42,0.4);margin-top:0.6rem;display:block}
-
-/* ── SHOP PAGE ── */
-.shop-header{background:var(--rich);padding:5rem 3rem 4rem;position:relative;overflow:hidden}
-.shop-header::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;border:1px solid rgba(201,149,42,0.08);border-radius:50%}
-.shop-header::after{content:'';position:absolute;top:-20%;right:5%;width:300px;height:300px;border:1px solid rgba(201,149,42,0.05);border-radius:50%}
-.shop-header-inner{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
-.shop-title{font-family:var(--serif);font-size:clamp(3.5rem,7vw,6rem);font-weight:300;color:#fff;line-height:0.95}
-.shop-title em{font-style:italic;color:var(--gold)}
-.shop-pills{display:flex;gap:0.5rem;flex-wrap:wrap}
-.pill{padding:0.5rem 1.2rem;border:1px solid rgba(201,149,42,0.25);background:none;color:rgba(201,149,42,0.55);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.25s}
-.pill:hover{border-color:rgba(201,149,42,0.7);color:var(--gold-light)}
-.pill.active{background:var(--gold);color:var(--deep);border-color:var(--gold)}
-.shop-toolbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;border-bottom:1px solid rgba(160,120,64,0.12);background:var(--chalk);flex-wrap:wrap;gap:0.5rem}
-.tool-count{font-size:0.68rem;color:rgba(160,120,64,0.6);letter-spacing:0.05em}
-.tool-right{display:flex;align-items:center;gap:1rem}
-.view-btns{display:flex;gap:0.3rem}
-.vbtn{background:none;border:1px solid rgba(160,120,64,0.18);width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:rgba(160,120,64,0.5);transition:all 0.2s}
-.vbtn.active{background:var(--rich);border-color:var(--rich);color:var(--gold)}
-.sort-pick{font-size:0.68rem;border:1px solid rgba(160,120,64,0.18);background:none;padding:0.4rem 0.8rem;color:var(--deep);outline:none}
-
-/* MASONRY */
-.masonry-wrap{padding:2px;background:rgba(160,120,64,0.08)}
-.masonry-grid{columns:4;column-gap:2px}
-@media(max-width:1100px){.masonry-grid{columns:3}}
-@media(max-width:700px){.masonry-grid{columns:2}}
-.m-card{break-inside:avoid;margin-bottom:2px;background:var(--chalk);cursor:pointer;position:relative;overflow:hidden}
-.m-thumb{width:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fdf3e3,#f0e0c0);font-size:4rem;transition:transform 0.5s cubic-bezier(0.22,1,0.36,1)}
-.m-thumb.tall{min-height:300px}
-.m-thumb.short{min-height:180px}
-.m-card:hover .m-thumb{transform:scale(1.05)}
-.m-veil{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,8,0,0.85),rgba(14,8,0,0.2));opacity:0;transition:opacity 0.35s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.5rem}
-.m-card:hover .m-veil{opacity:1}
-.m-veil-name{font-family:var(--serif);font-size:1rem;color:#fff;margin-bottom:0.2rem;transform:translateY(10px);transition:transform 0.3s 0.05s}
-.m-veil-price{font-size:0.75rem;color:var(--gold-light);margin-bottom:0.9rem;transform:translateY(10px);transition:transform 0.3s 0.08s}
-.m-card:hover .m-veil-name,.m-card:hover .m-veil-price{transform:translateY(0)}
-.m-veil-add{padding:0.4rem 0.9rem;border:1px solid rgba(232,196,106,0.55);color:var(--gold-light);font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;background:none;width:fit-content;transform:translateY(10px);opacity:0;transition:all 0.3s 0.1s}
-.m-card:hover .m-veil-add{transform:translateY(0);opacity:1}
-.m-veil-add:hover{background:var(--gold);color:var(--deep);border-color:var(--gold)}
-.m-foot{padding:0.85rem 1rem;background:var(--chalk)}
-.m-cat{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.2rem}
-.m-name{font-family:var(--serif);font-size:0.88rem;color:var(--deep);margin-bottom:0.1rem}
-.m-price{font-size:0.75rem;color:rgba(160,120,64,0.75)}
-
-/* LIST VIEW */
-.list-wrap{display:none}
-.l-row{display:grid;grid-template-columns:90px 1fr auto auto;align-items:center;gap:2rem;padding:1.2rem 3rem;border-bottom:1px solid rgba(160,120,64,0.1);cursor:pointer;transition:background 0.25s}
-.l-row:hover{background:var(--mist)}
-.l-ico{width:90px;height:90px;background:linear-gradient(135deg,#fdf3e3,#f0e0c0);display:flex;align-items:center;justify-content:center;font-size:2.2rem;transition:transform 0.3s}
-.l-row:hover .l-ico{transform:scale(1.05)}
-.l-cat{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
-.l-name{font-family:var(--serif);font-size:1.1rem;color:var(--deep);margin-bottom:0.2rem}
-.l-meta{font-size:0.7rem;color:rgba(160,120,64,0.6)}
-.l-price{font-size:1rem;color:var(--deep);white-space:nowrap}
-.l-add{padding:0.5rem 1.2rem;background:var(--rich);color:var(--gold-light);border:none;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;transition:background 0.25s}
-.l-add:hover{background:var(--warm)}
-
-/* DETAIL PAGE */
-.detail-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 70px)}
-.detail-gallery{background:linear-gradient(135deg,#fdf3e3,#ecddb8);display:flex;flex-direction:column;position:sticky;top:70px;height:calc(100vh - 70px);overflow:hidden}
-.detail-main{flex:1;display:flex;align-items:center;justify-content:center;font-size:10rem;transition:all 0.4s;position:relative}
-.detail-main::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(201,149,42,0.08),transparent 70%)}
-.detail-thumbs{display:flex;gap:1px;background:rgba(160,120,64,0.15);height:90px}
-.d-thumb{flex:1;background:var(--chalk);display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;transition:all 0.25s;opacity:0.65}
-.d-thumb:hover,.d-thumb.active{background:#fff;opacity:1}
-.detail-info{padding:5rem 4rem;overflow-y:auto;background:var(--chalk)}
-.d-crumb{font-size:0.62rem;letter-spacing:0.15em;color:rgba(160,120,64,0.55);margin-bottom:2.5rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.5rem;transition:color 0.25s;border:none;background:none}
-.d-crumb:hover{color:var(--gold)}
-.d-cat{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
-.d-name{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--deep);line-height:1.1;margin-bottom:0.8rem}
-.d-price{font-size:1.5rem;font-family:var(--serif);font-weight:300;color:var(--gold);margin-bottom:2rem}
-.d-divider{height:1px;background:rgba(160,120,64,0.12);margin-bottom:1.8rem}
-.d-desc{font-size:0.82rem;line-height:1.95;color:rgba(42,24,0,0.65);margin-bottom:2rem}
-.opt-section{margin-bottom:1.8rem}
-.opt-title{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(160,120,64,0.55);margin-bottom:0.8rem;display:flex;justify-content:space-between}
-.opt-title span{color:var(--gold)}
-.opts{display:flex;gap:0.5rem;flex-wrap:wrap}
-.opt{padding:0.45rem 1.1rem;border:1px solid rgba(160,120,64,0.2);background:none;font-size:0.75rem;color:var(--deep);transition:all 0.2s}
-.opt:hover{border-color:var(--gold)}
-.opt.active{background:var(--rich);color:var(--gold-light);border-color:var(--rich)}
-.d-btns{display:flex;flex-direction:column;gap:0.8rem;margin-top:2.5rem}
-.d-add{padding:1.1rem;background:var(--rich);color:var(--gold-light);border:none;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;transition:background 0.3s;position:relative;overflow:hidden}
-.d-add::before{content:'';position:absolute;inset:0;background:var(--warm);transform:scaleX(0);transform-origin:left;transition:transform 0.35s}
-.d-add:hover::before{transform:scaleX(1)}
-.d-add span{position:relative;z-index:1}
-.d-wish{padding:1rem;background:none;color:var(--deep);border:1px solid rgba(160,120,64,0.22);font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;transition:all 0.25s}
-.d-wish:hover{border-color:var(--gold);color:var(--gold)}
-.d-specs{margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(160,120,64,0.12)}
-.d-spec{display:flex;gap:1rem;padding:0.6rem 0;border-bottom:1px solid rgba(160,120,64,0.07);font-size:0.78rem}
-.d-spec dt{color:rgba(160,120,64,0.5);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;min-width:90px}
-.d-spec dd{color:var(--deep)}
-
-/* CART DRAWER */
-.cart-mask{position:fixed;inset:0;background:rgba(14,8,0,0.5);z-index:800;opacity:0;pointer-events:none;transition:opacity 0.4s;backdrop-filter:blur(4px)}
-.cart-mask.open{opacity:1;pointer-events:all}
-.cart-drawer{position:fixed;top:0;right:0;width:420px;max-width:100%;height:100%;background:var(--chalk);z-index:801;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.22,1,0.36,1)}
-.cart-drawer.open{transform:translateX(0)}
-.cart-top{padding:2rem;border-bottom:1px solid rgba(160,120,64,0.12);display:flex;justify-content:space-between;align-items:center}
-.cart-top h3{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:var(--deep)}
-.cart-x{background:none;border:none;font-size:1.5rem;color:rgba(160,120,64,0.5);line-height:1;transition:color 0.2s}
-.cart-x:hover{color:var(--deep)}
-.cart-scroll{flex:1;overflow-y:auto;padding:1.5rem 2rem}
-.cart-empty{text-align:center;color:rgba(160,120,64,0.45);font-family:var(--serif);font-size:1.1rem;font-style:italic;padding:4rem 0}
-.cart-line{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid rgba(160,120,64,0.08);animation:fadeUp 0.3s forwards}
-.c-thumb{width:64px;height:64px;background:linear-gradient(135deg,#fdf3e3,#f0e0c0);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
-.c-body{flex:1}
-.c-name{font-family:var(--serif);font-size:0.95rem;color:var(--deep);margin-bottom:0.2rem}
-.c-meta{font-size:0.68rem;color:rgba(160,120,64,0.55)}
-.c-price{font-size:0.88rem;color:var(--gold)}
-.c-del{background:none;border:none;color:rgba(160,120,64,0.35);font-size:1.1rem;align-self:flex-start;line-height:1;transition:color 0.2s}
-.c-del:hover{color:var(--deep)}
-.cart-bot{padding:2rem;border-top:1px solid rgba(160,120,64,0.12)}
-.cart-subtotal{display:flex;justify-content:space-between;font-family:var(--serif);font-size:1rem;font-weight:300;margin-bottom:1.2rem;color:var(--deep)}
-.cart-checkout{width:100%;padding:1rem;background:var(--rich);color:var(--gold-light);border:none;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;transition:background 0.3s}
-.cart-checkout:hover{background:var(--warm)}
-
-/* AUTH MODAL */
-.auth-mask{position:fixed;inset:0;background:rgba(14,8,0,0.65);z-index:900;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
-.auth-mask.open{display:flex}
-.auth-box{background:var(--chalk);width:480px;max-width:95%;padding:3.5rem;position:relative;border-top:2px solid var(--gold);animation:fadeUp 0.4s forwards}
-.auth-x{position:absolute;top:1.2rem;right:1.5rem;background:none;border:none;font-size:1.4rem;color:rgba(160,120,64,0.4);transition:color 0.2s}
-.auth-x:hover{color:var(--deep)}
-.auth-title{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--deep);margin-bottom:0.4rem}
-.auth-sub{font-size:0.72rem;color:rgba(160,120,64,0.55);margin-bottom:2.5rem;letter-spacing:0.05em}
-.f-group{margin-bottom:1.4rem}
-.f-group label{display:block;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(160,120,64,0.55);margin-bottom:0.6rem}
-.f-group input{width:100%;padding:0.8rem 0;border:none;border-bottom:1px solid rgba(160,120,64,0.2);background:transparent;font-size:0.9rem;outline:none;color:var(--deep);font-family:var(--sans);transition:border-color 0.3s}
-.f-group input:focus{border-color:var(--gold)}
-.auth-btn{width:100%;margin-top:1.8rem;padding:1rem;background:var(--rich);color:var(--gold-light);border:none;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;transition:background 0.3s}
-.auth-btn:hover{background:var(--warm)}
-.auth-switch{font-size:0.75rem;color:rgba(160,120,64,0.5);text-align:center;margin-top:1.2rem}
-.auth-switch a{color:var(--gold);text-decoration:underline;cursor:pointer}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);background:var(--dark)}
+.stat{padding:3.5rem 2rem;text-align:center;border-right:1px solid rgba(255,255,255,0.06)}
+.stat:last-child{border-right:none}
+.st-num{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:rgba(255,255,255,0.82);display:block;line-height:1}
+.st-lbl{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:0.5rem;display:block}
 
 /* FOOTER */
-.site-footer{background:var(--deep);padding:4rem 3rem 2.5rem;border-top:1px solid rgba(201,149,42,0.12)}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(201,149,42,0.08)}
-.footer-brand img{height:34px;width:auto;max-width:160px;margin-bottom:1.2rem}
-.footer-tagline{font-family:var(--serif);font-size:1rem;font-style:italic;color:rgba(201,149,42,0.4);line-height:1.7}
-.footer-col h4{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(201,149,42,0.4);margin-bottom:1.2rem}
-.footer-col a{display:block;font-size:0.78rem;color:rgba(201,149,42,0.35);margin-bottom:0.6rem;text-decoration:none;transition:color 0.2s;cursor:pointer}
-.footer-col a:hover{color:var(--gold-light)}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.footer-copy{font-size:0.65rem;color:rgba(201,149,42,0.25);letter-spacing:0.05em}
-.footer-social{display:flex;gap:1.5rem}
-.footer-social a{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(201,149,42,0.3);text-decoration:none;transition:color 0.2s;cursor:pointer}
-.footer-social a:hover{color:var(--gold-light)}
+.footer{background:var(--dark2);padding:4rem 3rem 2.5rem}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;padding-bottom:3rem;margin-bottom:2.5rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.foot-logo img{height:30px;width:auto;max-width:140px;object-fit:contain;opacity:0.6;margin-bottom:1rem}
+.foot-tag{font-family:var(--serif);font-size:0.95rem;font-style:italic;color:rgba(255,255,255,0.2);line-height:1.7}
+.foot-col h5{font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:1.1rem}
+.foot-col a{display:block;font-size:0.72rem;color:rgba(255,255,255,0.28);margin-bottom:0.55rem;transition:color 0.22s}
+.foot-col a:hover{color:rgba(255,255,255,0.65)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.foot-copy{font-size:0.6rem;color:rgba(255,255,255,0.16);letter-spacing:0.05em}
+.foot-soc{display:flex;gap:1.5rem}
+.foot-soc a{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);transition:color 0.22s}
+.foot-soc a:hover{color:rgba(255,255,255,0.6)}
+
+/* ─── SHOP ─── */
+.shop-hd{background:var(--dark);padding:5rem 3rem 4rem;position:relative;overflow:hidden}
+.shop-hd::after{content:'';position:absolute;right:-80px;top:-80px;width:400px;height:400px;border:1px solid rgba(255,255,255,0.04);border-radius:50%}
+.shop-hd-inner{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+.shop-hd-title{font-family:var(--serif);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:300;color:rgba(255,255,255,0.88);line-height:0.95}
+.shop-hd-title em{font-style:italic;color:rgba(255,255,255,0.32)}
+.pills{display:flex;gap:0.5rem;flex-wrap:wrap}
+.pill{padding:0.45rem 1.1rem;border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.38);font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;transition:all 0.22s}
+.pill:hover{border-color:rgba(255,255,255,0.42);color:rgba(255,255,255,0.75)}
+.pill.on{background:rgba(255,255,255,0.88);color:var(--dark);border-color:rgba(255,255,255,0.88)}
+.shop-bar{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 3rem;border-bottom:1px solid var(--line);background:var(--bg);flex-wrap:wrap;gap:0.5rem}
+.bar-ct{font-size:0.6rem;color:var(--soft);letter-spacing:0.05em}
+.bar-r{display:flex;align-items:center;gap:0.8rem}
+.vbts{display:flex;gap:2px}
+.vb{width:30px;height:30px;border:1px solid var(--line);color:var(--soft);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.vb.on{background:var(--dark);border-color:var(--dark);color:#fff}
+.sort-s{font-size:0.6rem;border:1px solid var(--line);background:none;padding:0.35rem 0.7rem;color:var(--dark);outline:none}
+
+/* MASONRY */
+.mason-wrap{padding:2px;background:var(--line)}
+.mason{columns:4;column-gap:2px}
+@media(max-width:1100px){.mason{columns:3}}
+@media(max-width:640px){.mason{columns:2}}
+.mc{break-inside:avoid;margin-bottom:2px;background:var(--bg);cursor:pointer;position:relative;overflow:hidden}
+.mc-img{width:100%;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mc-img img{width:100%;transition:transform 0.55s ease}
+.mc-img.t{min-height:290px}
+.mc-img.s{min-height:170px}
+.mc:hover .mc-img img{transform:scale(1.06)}
+.mc-vl{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,15,12,0.78),rgba(18,15,12,0.12));opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.3rem}
+.mc:hover .mc-vl{opacity:1}
+.mc-vl-n{font-family:var(--serif);font-size:0.95rem;color:#fff;margin-bottom:0.15rem;transform:translateY(7px);transition:transform 0.28s 0.03s}
+.mc-vl-p{font-size:0.68rem;color:rgba(255,255,255,0.5);margin-bottom:0.7rem;transform:translateY(7px);transition:transform 0.28s 0.06s}
+.mc-vl-b{padding:0.38rem 0.85rem;border:1px solid rgba(255,255,255,0.32);color:rgba(255,255,255,0.78);font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;background:none;width:fit-content;transform:translateY(7px);opacity:0;transition:all 0.28s 0.08s}
+.mc:hover .mc-vl-n,.mc:hover .mc-vl-p{transform:none}
+.mc:hover .mc-vl-b{transform:none;opacity:1}
+.mc-vl-b:hover{background:rgba(255,255,255,0.1)}
+.mc-ft{padding:0.75rem 0.9rem;background:var(--bg)}
+.mc-cat{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft);margin-bottom:0.18rem}
+.mc-n{font-family:var(--serif);font-size:0.85rem;color:var(--dark)}
+.mc-p{font-size:0.7rem;color:var(--mid)}
+
+/* LIST */
+.list-wrap{display:none}
+.li-row{display:grid;grid-template-columns:88px 1fr auto auto;align-items:center;gap:1.8rem;padding:1rem 3rem;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.22s}
+.li-row:hover{background:var(--bg2)}
+.li-thumb{width:88px;height:88px;object-fit:cover;background:var(--bg3);transition:transform 0.3s}
+.li-row:hover .li-thumb{transform:scale(1.03)}
+.li-cat{font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft)}
+.li-n{font-family:var(--serif);font-size:1.05rem;color:var(--dark);margin-bottom:0.18rem}
+.li-m{font-size:0.65rem;color:var(--soft)}
+.li-p{font-size:0.95rem;color:var(--dark);white-space:nowrap}
+.li-b{padding:0.45rem 1.1rem;background:var(--dark);color:rgba(255,255,255,0.82);font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 0.22s;white-space:nowrap}
+.li-b:hover{background:var(--dark2)}
+
+/* ─── DETAIL ─── */
+.det-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
+.det-gal{background:var(--bg2);position:sticky;top:64px;height:calc(100vh - 64px);display:flex;flex-direction:column}
+.det-main{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.det-main img{max-height:100%;width:100%;object-fit:cover;transition:opacity 0.3s}
+.det-strips{display:flex;gap:1px;background:var(--line);height:84px;flex-shrink:0}
+.det-th{flex:1;background:var(--bg);opacity:0.55;cursor:pointer;overflow:hidden;transition:opacity 0.22s}
+.det-th:hover,.det-th.on{opacity:1;background:#fff}
+.det-th img{width:100%;height:100%;object-fit:cover}
+.det-info{padding:4.5rem 3.5rem;overflow-y:auto;background:var(--bg)}
+.det-back{font-size:0.58rem;letter-spacing:0.14em;color:var(--soft);margin-bottom:2.2rem;display:inline-flex;align-items:center;gap:0.4rem;transition:color 0.22s}
+.det-back:hover{color:var(--dark)}
+.det-cat{font-size:0.56rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--soft);margin-bottom:0.8rem}
+.det-n{font-family:var(--serif);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;color:var(--dark);line-height:1.1;margin-bottom:0.6rem}
+.det-p{font-family:var(--serif);font-size:1.35rem;font-weight:300;color:var(--mid);margin-bottom:1.8rem}
+.det-hr{height:1px;background:var(--line);margin-bottom:1.6rem}
+.det-d{font-size:0.76rem;line-height:2;color:var(--mid);margin-bottom:1.8rem}
+.opt-g{margin-bottom:1.5rem}
+.opt-l{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.65rem;display:flex;justify-content:space-between}
+.opt-l span{color:var(--dark)}
+.opts{display:flex;gap:0.45rem;flex-wrap:wrap}
+.opt{padding:0.42rem 1rem;border:1px solid var(--line);font-size:0.72rem;color:var(--dark);transition:all 0.2s}
+.opt:hover{border-color:var(--dark)}
+.opt.on{background:var(--dark);color:rgba(255,255,255,0.88);border-color:var(--dark)}
+.det-acts{display:flex;flex-direction:column;gap:0.7rem;margin-top:2rem}
+.det-add{padding:1rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s;position:relative;overflow:hidden}
+.det-add::before{content:'';position:absolute;inset:0;background:var(--dark2);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.det-add:hover::before{transform:scaleX(1)}
+.det-add span{position:relative;z-index:1}
+.det-wish{padding:0.9rem;background:none;color:var(--mid);border:1px solid var(--line);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.22s}
+.det-wish:hover{border-color:var(--dark);color:var(--dark)}
+.det-specs{margin-top:2rem;padding-top:1.8rem;border-top:1px solid var(--line)}
+.sp-row{display:flex;gap:1rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:0.74rem}
+.sp-row dt{font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);min-width:88px}
+.sp-row dd{color:var(--dark)}
+
+/* ─── CART DRAWER ─── */
+.cmask{position:fixed;inset:0;background:rgba(18,15,12,0.4);z-index:700;opacity:0;pointer-events:none;transition:opacity 0.35s;backdrop-filter:blur(3px)}
+.cmask.on{opacity:1;pointer-events:all}
+.cdrawer{position:fixed;top:0;right:0;width:400px;max-width:100%;height:100%;background:var(--bg);z-index:701;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.25,1,0.5,1);box-shadow:-4px 0 24px rgba(0,0,0,0.08)}
+.cdrawer.on{transform:none}
+.cd-top{padding:1.6rem 1.8rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.cd-top h3{font-family:var(--serif);font-size:1.3rem;font-weight:300}
+.cd-x{font-size:1.5rem;color:var(--soft);line-height:1;transition:color 0.22s}
+.cd-x:hover{color:var(--dark)}
+.cd-body{flex:1;overflow-y:auto;padding:1.2rem 1.8rem}
+.cd-empty{text-align:center;font-family:var(--serif);font-style:italic;color:var(--soft);padding:3.5rem 0;font-size:1rem}
+.cl{display:flex;gap:1rem;padding:0.9rem 0;border-bottom:1px solid var(--line)}
+.cl-img{width:60px;height:60px;object-fit:cover;background:var(--bg3);flex-shrink:0}
+.cl-info{flex:1}
+.cl-n{font-family:var(--serif);font-size:0.88rem;margin-bottom:0.18rem}
+.cl-m{font-size:0.62rem;color:var(--soft)}
+.cl-p{font-size:0.82rem;color:var(--mid);white-space:nowrap}
+.cl-rm{color:var(--soft);font-size:1rem;align-self:flex-start;line-height:1;transition:color 0.2s}
+.cl-rm:hover{color:var(--dark)}
+.cd-bot{padding:1.4rem 1.8rem;border-top:1px solid var(--line)}
+.cd-sub{display:flex;justify-content:space-between;font-family:var(--serif);font-size:0.95rem;font-weight:300;margin-bottom:1rem}
+.cd-ck{width:100%;padding:0.95rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
+.cd-ck:hover{background:var(--dark2)}
+
+/* ─── AUTH ─── */
+.amask{position:fixed;inset:0;background:rgba(18,15,12,0.5);z-index:800;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+.amask.on{display:flex}
+.abox{background:var(--bg);width:460px;max-width:95%;padding:3.2rem;position:relative;animation:pgIn 0.35s both;border-top:1px solid rgba(0,0,0,0.12)}
+.ax{position:absolute;top:1rem;right:1.3rem;font-size:1.35rem;color:var(--soft);transition:color 0.2s}
+.ax:hover{color:var(--dark)}
+.a-title{font-family:var(--serif);font-size:1.85rem;font-weight:300;margin-bottom:0.35rem}
+.a-sub{font-size:0.68rem;color:var(--soft);margin-bottom:2.2rem}
+.fg{margin-bottom:1.2rem}
+.fg label{display:block;font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.45rem}
+.fg input{width:100%;padding:0.7rem 0;border:none;border-bottom:1px solid rgba(0,0,0,0.14);background:transparent;font-size:0.86rem;outline:none;color:var(--dark);font-family:var(--sans);transition:border-color 0.25s}
+.fg input:focus{border-color:var(--dark)}
+.a-btn{width:100%;margin-top:1.5rem;padding:0.95rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
+.a-btn:hover{background:var(--dark2)}
+.a-sw{font-size:0.7rem;color:var(--soft);text-align:center;margin-top:1.1rem}
+.a-sw a{color:var(--dark);text-decoration:underline}
 
 /* TOAST */
-.toast{position:fixed;bottom:3rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--rich);color:var(--gold-light);border:1px solid rgba(201,149,42,0.25);padding:0.9rem 2.2rem;font-size:0.68rem;letter-spacing:0.12em;z-index:1000;opacity:0;pointer-events:none;white-space:nowrap;transition:all 0.4s cubic-bezier(0.22,1,0.36,1)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:rgba(255,255,255,0.85);padding:0.75rem 2rem;font-size:0.62rem;letter-spacing:0.1em;z-index:999;opacity:0;pointer-events:none;transition:all 0.38s cubic-bezier(0.25,1,0.5,1);white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media(max-width:768px){
-  .hero-title{font-size:clamp(3rem,12vw,5rem)}
-  .cats-grid{grid-template-columns:repeat(3,1fr)}
-  .feat-grid{grid-template-columns:1fr 1fr}
+@media(max-width:900px){
+  .cats-row{grid-template-columns:repeat(3,1fr)}
+  .feat-row{grid-template-columns:1fr 1fr}
   .feat-card:first-child{grid-row:auto}
-  .detail-wrap{grid-template-columns:1fr}
-  .detail-gallery{position:static;height:auto}
-  .nav-links{display:none}
-  .stats{grid-template-columns:1fr 1fr}
-  .footer-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .det-wrap{grid-template-columns:1fr}
+  .det-gal{position:static;height:50vw;min-height:260px}
+  .foot-grid{grid-template-columns:1fr}
+  #nav .nav-links{display:none}
+}
+@media(max-width:600px){
+  .cats-row{grid-template-columns:repeat(2,1fr)}
+  .sec,.feat-sec{padding:4rem 1.5rem}
+  .shop-hd{padding:4rem 1.5rem 3rem}
+  .shop-bar,.li-row{padding-left:1.5rem;padding-right:1.5rem}
+  .det-info{padding:2.5rem 1.5rem}
+  #nav{padding:0 1.5rem}
 }
 </style>
 </head>
 <body>
 
-<!-- CURSOR -->
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="curRing"></div>
-
 <!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="loader-logo">Aynnor's</div>
-  <div class="loader-bar"><div class="loader-fill"></div></div>
+<div id="loader">
+  <div class="ld-name">Aynnor's</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
 </div>
 
 <!-- NAV -->
-<nav class="nav" id="mainNav">
-  <div class="nav-logo" onclick="go('home')">
-    <img src="logo.png" alt="Aynnor's Jewelry" onerror="this.style.display='none';this.nextSibling.style.display='block'">
-    <span style="display:none;font-family:var(--serif);font-size:1.2rem;color:var(--gold-light);letter-spacing:0.1em">Aynnor's</span>
+<nav id="nav">
+  <div class="nav-logo" onclick="goPg('home')">
+    <img src="logo.png" alt="Aynnor's" onerror="this.style.display='none';this.nextSibling.style.display='block'">
+    <span class="nav-logo-text" style="display:none">Aynnor's</span>
   </div>
   <ul class="nav-links">
-    <li><a onclick="go('home')">Home</a></li>
-    <li><a onclick="go('shop',null)">Collection</a></li>
-    <li><a onclick="go('shop','Rings')">Rings</a></li>
-    <li><a onclick="go('shop','Necklaces')">Necklaces</a></li>
-    <li><a onclick="go('shop','Earrings')">Earrings</a></li>
+    <li><a onclick="goPg('home')">Home</a></li>
+    <li><a onclick="goShop(null)">Collection</a></li>
+    <li><a onclick="goShop('Rings')">Rings</a></li>
+    <li><a onclick="goShop('Necklaces')">Necklaces</a></li>
+    <li><a onclick="goShop('Earrings')">Earrings</a></li>
+    <li><a onclick="goShop('Bracelets')">Bracelets</a></li>
   </ul>
-  <div class="nav-actions">
-    <button class="nav-btn" onclick="openAuth()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+  <div class="nav-icons">
+    <button class="ni" onclick="openAuth()">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
     </button>
-    <button class="nav-btn" onclick="openCart()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      <span class="cart-count" id="cartCount">0</span>
+    <button class="ni" onclick="openCart()">
+      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="ni-badge" id="cBadge">0</span>
     </button>
   </div>
 </nav>
 
-<!-- HOME -->
-<div class="page active" id="page-home">
+<!-- ── HOME PAGE ── -->
+<div class="pg on" id="pg-home">
+
   <section class="hero">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <span class="hero-tag">New Collection 2026</span>
-      <h1 class="hero-title">
-        <span class="line"><span>Where</span></span>
-        <span class="line"><span><em>elegance</em></span></span>
-        <span class="line"><span>meets artistry</span></span>
+    <div class="hero-img"><img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&q=80" alt="Hero jewelry"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-body">
+      <span class="hero-label">New Collection — 2026</span>
+      <h1 class="hero-h1">
+        <span class="wl"><span>Where</span></span>
+        <span class="wl"><span><em>elegance</em></span></span>
+        <span class="wl"><span>meets artistry</span></span>
       </h1>
       <p class="hero-sub">Handcrafted jewelry designed to celebrate the women who wear them. Each piece, a timeless story.</p>
-      <div class="hero-ctas">
-        <button class="btn-gold" onclick="go('shop',null)"><span>Explore Collection</span></button>
-        <button class="btn-ghost" onclick="go('shop','Rings')">Shop Rings</button>
+      <div class="hero-btns">
+        <button class="btn-fill" onclick="goShop(null)">Explore Collection</button>
+        <button class="btn-line" onclick="goShop('Rings')">Shop Rings</button>
       </div>
     </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="hs-line"></div></div>
   </section>
 
-  <div class="marquee">
-    <div class="marquee-track">
-      <span class="marquee-item">Handcrafted Jewelry</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Sterling Silver</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Diamond Collection</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Free UK Delivery</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Lifetime Guarantee</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Bespoke Designs</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Handcrafted Jewelry</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Sterling Silver</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Diamond Collection</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Free UK Delivery</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Lifetime Guarantee</span><span class="marquee-sep">✦</span>
-      <span class="marquee-item">Bespoke Designs</span><span class="marquee-sep">✦</span>
+  <div class="ticker">
+    <div class="ticker-t">
+      <span class="ticker-i">Handcrafted Jewelry</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Sterling Silver</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Diamond Collection</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Free UK Delivery</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Lifetime Guarantee</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Bespoke Designs</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Handcrafted Jewelry</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Sterling Silver</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Diamond Collection</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Free UK Delivery</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Lifetime Guarantee</span><span class="ticker-dot">✦</span>
+      <span class="ticker-i">Bespoke Designs</span><span class="ticker-dot">✦</span>
     </div>
   </div>
 
-  <section class="cats-section">
-    <div class="cats-header reveal">
-      <span class="section-eyebrow">Browse by Category</span>
-      <h2 class="section-title">Our <em>Collections</em></h2>
+  <section class="sec">
+    <div class="sec-head rv">
+      <span class="sec-eye">Browse by Category</span>
+      <h2 class="sec-title">Our <em>Collections</em></h2>
     </div>
-    <div class="cats-grid" id="catsGrid"></div>
+    <div class="cats-row" id="catsRow"></div>
   </section>
 
-  <section class="featured">
-    <div class="featured-header reveal">
+  <section class="feat-sec">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem" class="rv">
       <div>
-        <span class="section-eyebrow">Curated for you</span>
-        <h2 class="section-title">Featured <em>Pieces</em></h2>
+        <span class="sec-eye">Curated for you</span>
+        <h2 class="sec-title">Featured <em>Pieces</em></h2>
       </div>
-      <button class="view-all-link" onclick="go('shop',null)">
-        <div class="view-all-line"></div> View All
+      <button onclick="goShop(null)" style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);border:none;background:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.22s" onmouseover="this.style.color='var(--dark)'" onmouseout="this.style.color='var(--mid)'">
+        <span style="width:20px;height:1px;background:currentColor;display:inline-block"></span> View All
       </button>
     </div>
-    <div class="feat-grid" id="featGrid"></div>
+    <div class="feat-row" id="featRow"></div>
   </section>
 
-  <div class="parallax-banner">
-    <div class="parallax-bg" id="parallaxBg"></div>
-    <div class="parallax-content reveal">
-      <h2>Crafted with <em>intention.</em><br>Worn with love.</h2>
-      <p>Every Aynnor's piece is a testament to timeless beauty, made with the finest materials for women who appreciate the extraordinary.</p>
-      <button class="btn-gold" onclick="go('shop',null)"><span>Discover More</span></button>
+  <div class="banner rv">
+    <div class="banner-img"><img src="https://images.unsplash.com/photo-1601121141461-9d6647bef0a1?w=1600&q=80" alt="Jewelry banner"></div>
+    <div class="banner-scrim"></div>
+    <div class="banner-body">
+      <h2 class="banner-h">Crafted with <em>intention.</em><br>Worn with love.</h2>
+      <p class="banner-p">Every Aynnor's piece is a testament to timeless beauty, made with the finest materials for women who appreciate the extraordinary.</p>
+      <button class="btn-fill" onclick="goShop(null)">Discover More</button>
     </div>
   </div>
 
-  <div class="stats">
-    <div class="stat reveal"><span class="stat-num" data-target="200">0</span><span class="stat-label">Unique Designs</span></div>
-    <div class="stat reveal" style="transition-delay:0.15s"><span class="stat-num" data-target="5000">0</span><span class="stat-label">Happy Customers</span></div>
-    <div class="stat reveal" style="transition-delay:0.3s"><span class="stat-num" data-target="12">0</span><span class="stat-label">Years of Craft</span></div>
+  <div class="stats-row">
+    <div class="stat rv"><span class="st-num" data-t="200">0+</span><span class="st-lbl">Unique Designs</span></div>
+    <div class="stat rv" style="transition-delay:.12s"><span class="st-num" data-t="5000">0+</span><span class="st-lbl">Happy Customers</span></div>
+    <div class="stat rv" style="transition-delay:.24s"><span class="st-num" data-t="12">0</span><span class="st-lbl">Years of Craft</span></div>
   </div>
 
-  <footer class="site-footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <img src="logo.png" alt="Aynnor's Jewelry" onerror="this.style.display='none'">
-        <p class="footer-tagline">"Where elegance meets artistry."</p>
+  <footer class="footer">
+    <div class="foot-grid">
+      <div class="foot-logo">
+        <img src="logo.png" alt="Aynnor's" onerror="this.style.display='none'">
+        <p class="foot-tag">"Where elegance meets artistry."</p>
       </div>
-      <div class="footer-col">
-        <h4>Collections</h4>
-        <a onclick="go('shop','Rings')">Rings</a>
-        <a onclick="go('shop','Necklaces')">Necklaces</a>
-        <a onclick="go('shop','Earrings')">Earrings</a>
-        <a onclick="go('shop','Bracelets')">Bracelets</a>
-        <a onclick="go('shop','Anklets')">Anklets</a>
+      <div class="foot-col">
+        <h5>Collections</h5>
+        <a onclick="goShop('Rings')">Rings</a>
+        <a onclick="goShop('Necklaces')">Necklaces</a>
+        <a onclick="goShop('Earrings')">Earrings</a>
+        <a onclick="goShop('Bracelets')">Bracelets</a>
+        <a onclick="goShop('Anklets')">Anklets</a>
       </div>
-      <div class="footer-col">
-        <h4>Information</h4>
-        <a>About Us</a>
-        <a>Care Guide</a>
-        <a>Shipping & Returns</a>
-        <a>Contact</a>
+      <div class="foot-col">
+        <h5>Information</h5>
+        <a>About Us</a><a>Care Guide</a>
+        <a>Shipping & Returns</a><a>Contact</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
-      <div class="footer-social">
-        <a>Instagram</a><a>Pinterest</a><a>Facebook</a>
-      </div>
+    <div class="foot-bot">
+      <span class="foot-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
+      <div class="foot-soc"><a>Instagram</a><a>Pinterest</a><a>Facebook</a></div>
     </div>
   </footer>
 </div>
 
-<!-- SHOP -->
-<div class="page" id="page-shop">
-  <div class="shop-header">
-    <div class="shop-header-inner">
-      <div class="shop-title" id="shopTitle">The<br><em>Collection</em></div>
-      <div class="shop-pills" id="shopPills"></div>
+<!-- ── SHOP PAGE ── -->
+<div class="pg" id="pg-shop">
+  <div class="shop-hd">
+    <div class="shop-hd-inner">
+      <div class="shop-hd-title" id="shopTitle">The<br><em>Collection</em></div>
+      <div class="pills" id="shopPills"></div>
     </div>
   </div>
-  <div class="shop-toolbar">
-    <span class="tool-count" id="shopCount">— pieces</span>
-    <div class="tool-right">
-      <div class="view-btns">
-        <button class="vbtn active" id="vGrid" onclick="setView('grid')" title="Grid">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="currentColor"><rect x="0" y="0" width="5" height="5"/><rect x="8" y="0" width="5" height="5"/><rect x="0" y="8" width="5" height="5"/><rect x="8" y="8" width="5" height="5"/></svg>
+  <div class="shop-bar">
+    <span class="bar-ct" id="shopCt">— pieces</span>
+    <div class="bar-r">
+      <div class="vbts">
+        <button class="vb on" id="vbGrid" onclick="setView('g')" title="Grid">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 12 12"><rect x="0" y="0" width="5" height="5"/><rect x="7" y="0" width="5" height="5"/><rect x="0" y="7" width="5" height="5"/><rect x="7" y="7" width="5" height="5"/></svg>
         </button>
-        <button class="vbtn" id="vList" onclick="setView('list')" title="List">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="currentColor"><rect x="0" y="0" width="13" height="2"/><rect x="0" y="5.5" width="13" height="2"/><rect x="0" y="11" width="13" height="2"/></svg>
+        <button class="vb" id="vbList" onclick="setView('l')" title="List">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 12 12"><rect x="0" y="0" width="12" height="2"/><rect x="0" y="5" width="12" height="2"/><rect x="0" y="10" width="12" height="2"/></svg>
         </button>
       </div>
-      <select class="sort-pick" id="sortPick" onchange="renderShop()">
-        <option value="default">Featured</option>
+      <select class="sort-s" id="sortS" onchange="renderShop()">
+        <option value="d">Featured</option>
         <option value="asc">Price: Low → High</option>
         <option value="desc">Price: High → Low</option>
         <option value="az">Name A → Z</option>
       </select>
     </div>
   </div>
-  <div class="masonry-wrap" id="gridWrap">
-    <div class="masonry-grid" id="shopGrid"></div>
-  </div>
+  <div class="mason-wrap" id="masonWrap"><div class="mason" id="shopGrid"></div></div>
   <div class="list-wrap" id="listWrap"></div>
-  <footer class="site-footer" style="margin-top:4rem">
-    <div class="footer-bottom">
-      <span class="footer-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
-      <div class="footer-social"><a>Instagram</a><a>Pinterest</a></div>
+  <footer class="footer" style="margin-top:4rem">
+    <div class="foot-bot">
+      <span class="foot-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
+      <div class="foot-soc"><a>Instagram</a><a>Pinterest</a></div>
     </div>
   </footer>
 </div>
 
-<!-- DETAIL -->
-<div class="page" id="page-detail">
-  <div class="detail-wrap">
-    <div class="detail-gallery">
-      <div class="detail-main" id="dMain"></div>
-      <div class="detail-thumbs" id="dThumbs"></div>
+<!-- ── DETAIL PAGE ── -->
+<div class="pg" id="pg-detail">
+  <div class="det-wrap">
+    <div class="det-gal">
+      <div class="det-main"><img id="detMainImg" src="" alt="product"></div>
+      <div class="det-strips" id="detThumbs"></div>
     </div>
-    <div class="detail-info">
-      <button class="d-crumb" id="dCrumb">← Back</button>
-      <div class="d-cat" id="dCat"></div>
-      <div class="d-name" id="dName"></div>
-      <div class="d-price" id="dPrice"></div>
-      <div class="d-divider"></div>
-      <div class="d-desc" id="dDesc"></div>
-      <div class="opt-section">
-        <div class="opt-title">Metal <span id="selMetal"></span></div>
+    <div class="det-info">
+      <button class="det-back" id="detBack">← Back</button>
+      <div class="det-cat" id="detCat"></div>
+      <div class="det-n" id="detN"></div>
+      <div class="det-p" id="detP"></div>
+      <div class="det-hr"></div>
+      <div class="det-d" id="detD"></div>
+      <div class="opt-g">
+        <div class="opt-l">Metal <span id="oMetal"></span></div>
         <div class="opts" id="metalOpts"></div>
       </div>
-      <div class="opt-section">
-        <div class="opt-title">Size <span id="selSize"></span></div>
+      <div class="opt-g">
+        <div class="opt-l">Size <span id="oSize"></span></div>
         <div class="opts" id="sizeOpts"></div>
       </div>
-      <div class="d-btns">
-        <button class="d-add" id="dAddBtn"><span>Add to Cart</span></button>
-        <button class="d-wish">♡ Add to Wishlist</button>
+      <div class="det-acts">
+        <button class="det-add" id="detAddBtn"><span>Add to Cart</span></button>
+        <button class="det-wish">♡ Add to Wishlist</button>
       </div>
-      <dl class="d-specs" id="dSpecs"></dl>
+      <dl class="det-specs" id="detSpecs"></dl>
     </div>
   </div>
 </div>
 
-<!-- CART -->
-<div class="cart-mask" id="cartMask" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-top">
-    <h3>Your Cart</h3>
-    <button class="cart-x" onclick="closeCart()">×</button>
-  </div>
-  <div class="cart-scroll" id="cartScroll"><div class="cart-empty">Your cart is empty</div></div>
-  <div class="cart-bot">
-    <div class="cart-subtotal"><span>Subtotal</span><span id="cartTotal">£0.00</span></div>
-    <button class="cart-checkout" onclick="showToast('Checkout coming soon!')">Proceed to Checkout</button>
+<!-- CART DRAWER -->
+<div class="cmask" id="cmask" onclick="closeCart()"></div>
+<div class="cdrawer" id="cdrawer">
+  <div class="cd-top"><h3>Shopping Cart</h3><button class="cd-x" onclick="closeCart()">×</button></div>
+  <div class="cd-body" id="cdBody"><div class="cd-empty">Your cart is empty</div></div>
+  <div class="cd-bot">
+    <div class="cd-sub"><span>Subtotal</span><span id="cdTotal">£0.00</span></div>
+    <button class="cd-ck" onclick="toast('Checkout coming soon!')">Proceed to Checkout</button>
   </div>
 </div>
 
-<!-- AUTH -->
-<div class="auth-mask" id="authMask">
-  <div class="auth-box">
-    <button class="auth-x" onclick="closeAuth()">×</button>
-    <div id="authLogin">
-      <div class="auth-title">Welcome back</div>
-      <div class="auth-sub">Sign in to your Aynnor's account</div>
-      <div class="f-group"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="f-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
-      <button class="auth-btn" onclick="doAuth()">Sign In</button>
-      <div class="auth-switch">New here? <a onclick="toggleAuth()">Create an account</a></div>
+<!-- AUTH MODAL -->
+<div class="amask" id="amask">
+  <div class="abox">
+    <button class="ax" onclick="closeAuth()">×</button>
+    <div id="aLogin">
+      <div class="a-title">Welcome back</div>
+      <div class="a-sub">Sign in to your Aynnor's account</div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="fg"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="a-btn" onclick="doAuth()">Sign In</button>
+      <div class="a-sw">New here? <a onclick="toggleAuth()">Create an account</a></div>
     </div>
-    <div id="authReg" style="display:none">
-      <div class="auth-title">Create account</div>
-      <div class="auth-sub">Join Aynnor's Jewelry</div>
-      <div class="f-group"><label>Full Name</label><input type="text" placeholder="Your name"></div>
-      <div class="f-group"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="f-group"><label>Password</label><input type="password" placeholder="Choose a password"></div>
-      <button class="auth-btn" onclick="doAuth()">Create Account</button>
-      <div class="auth-switch">Already have an account? <a onclick="toggleAuth()">Sign in</a></div>
+    <div id="aReg" style="display:none">
+      <div class="a-title">Create account</div>
+      <div class="a-sub">Join Aynnor's Jewelry</div>
+      <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="fg"><label>Password</label><input type="password" placeholder="Choose a password"></div>
+      <button class="a-btn" onclick="doAuth()">Create Account</button>
+      <div class="a-sw">Already have an account? <a onclick="toggleAuth()">Sign in</a></div>
     </div>
   </div>
 </div>
@@ -578,327 +568,323 @@ button,a{cursor:pointer;font-family:var(--sans)}
 
 <script>
 // ── DATA ──
-const CATS=['Rings','Necklaces','Earrings','Bracelets','Anklets'];
-const EMOJIS={Rings:'💍',Necklaces:'📿',Earrings:'💎',Bracelets:'✨',Anklets:'🌟'};
-const HH=['tall','short','tall','short','short','tall','short','tall'];
-const P=[
-  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,mat:'Sterling Silver',desc:'A delicate halo of cubic zirconia surrounding a central moonstone. Inspired by the night sky, this ring brings celestial glow to any occasion.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9']},
-  {id:2,cat:'Rings',name:'Infinity Band',price:145,mat:'Sterling Silver',desc:'Sleek infinity band with micro-pavé diamond accents. Perfect alone or stacked.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10']},
-  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,mat:'White Gold Plated',desc:'Artisan-crafted floral signet with hand-engraved petals. Vintage charm meets modern design.',icon:'💍',metals:['White Gold','Silver'],sizes:['6','7','8']},
-  {id:4,cat:'Rings',name:'Moonstone Solitaire',price:265,mat:'Sterling Silver',desc:'Luminous moonstone set in a delicate four-prong sterling silver band.',icon:'💍',metals:['Silver','White Gold'],sizes:['5','6','7','8']},
-  {id:5,cat:'Rings',name:'Art Deco Cocktail Ring',price:310,mat:'Rhodium Plated',desc:'Bold geometric art deco design with sparkling pavé stones. Made to be noticed.',icon:'💍',metals:['Silver','White Gold'],sizes:['6','7','8','9']},
-  {id:6,cat:'Rings',name:'Eternity Band',price:240,mat:'Sterling Silver',desc:'A full circle of matched brilliant-cut stones for everlasting sparkle.',icon:'💍',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9','10']},
-  {id:7,cat:'Rings',name:'Rose Quartz Ring',price:155,mat:'Sterling Silver',desc:'Soft rose quartz cabochon wrapped in a delicate silver bezel.',icon:'💍',metals:['Silver','Rose Gold'],sizes:['5','6','7','8']},
-  {id:8,cat:'Rings',name:'Sapphire Halo Ring',price:285,mat:'White Gold Plated',desc:'Deep blue lab-grown sapphire surrounded by a sparkling diamond halo.',icon:'💍',metals:['White Gold','Platinum'],sizes:['5','6','7','8','9']},
-  {id:9,cat:'Necklaces',name:'Dainty Star Pendant',price:95,mat:'Sterling Silver',desc:'Minimalist sterling silver star pendant on a delicate 18" chain.',icon:'⭐',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
-  {id:10,cat:'Necklaces',name:'Pearl Choker',price:165,mat:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker. A timeless classic.',icon:'📿',metals:['Silver','Gold'],sizes:['14"','16"']},
-  {id:11,cat:'Necklaces',name:'Crescent Moon Pendant',price:108,mat:'Sterling Silver',desc:'Slender crescent moon with a dusting of pavé stones on a fine chain.',icon:'🌙',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
-  {id:12,cat:'Necklaces',name:'Diamond Bar Necklace',price:198,mat:'White Gold Plated',desc:'Horizontal bar set with brilliant-cut diamonds. Clean and contemporary.',icon:'💎',metals:['White Gold','Silver'],sizes:['16"','18"']},
-  {id:13,cat:'Necklaces',name:'Heart Locket',price:168,mat:'Sterling Silver',desc:'Polished heart locket that opens to hold two tiny photographs.',icon:'💝',metals:['Silver','Rose Gold'],sizes:['16"','18"']},
-  {id:14,cat:'Necklaces',name:'Tennis Necklace',price:345,mat:'White Gold Plated',desc:'Continuous line of matched brilliant stones — the pinnacle of luxury.',icon:'💎',metals:['White Gold','Silver'],sizes:['14"','16"','18"']},
-  {id:15,cat:'Necklaces',name:'Opal Pendant',price:198,mat:'Sterling Silver',desc:'Fiery Australian-style opal doublet in a delicate silver frame.',icon:'🌈',metals:['Silver','White Gold'],sizes:['16"','18"','20"']},
-  {id:16,cat:'Necklaces',name:'Layered Lariat',price:148,mat:'Sterling Silver',desc:'Elegant Y-lariat necklace with an adjustable double-layer chain.',icon:'✨',metals:['Silver','Gold'],sizes:['18"','20"','24"']},
-  {id:17,cat:'Earrings',name:'Crystal Drop Earrings',price:110,mat:'Sterling Silver',desc:'Faceted crystal drops that catch the light beautifully. Ideal for evenings.',icon:'💎',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:18,cat:'Earrings',name:'Hammered Hoops',price:88,mat:'Sterling Silver',desc:'Classic hoops with a subtle hammered texture that adds depth.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
-  {id:19,cat:'Earrings',name:'Pearl Studs',price:95,mat:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting.',icon:'⚪',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:20,cat:'Earrings',name:'Chandelier Earrings',price:165,mat:'White Gold Plated',desc:'Multi-tier chandelier drops dripping with pavé stones.',icon:'🕯️',metals:['White Gold','Silver'],sizes:['One Size']},
-  {id:21,cat:'Earrings',name:'Ear Climbers',price:118,mat:'Sterling Silver',desc:'Curved climber that follows the natural curve of the ear beautifully.',icon:'👂',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:22,cat:'Earrings',name:'Baroque Pearl Drops',price:145,mat:'Sterling Silver',desc:'Irregular baroque pearls on a delicate drop wire for organic elegance.',icon:'⚪',metals:['Silver'],sizes:['One Size']},
-  {id:23,cat:'Earrings',name:'Mismatched Moon & Star',price:88,mat:'Sterling Silver',desc:'One moon, one star — an intentionally mismatched pair full of charm.',icon:'🌟',metals:['Silver','White Gold'],sizes:['One Size']},
-  {id:24,cat:'Earrings',name:'Cluster Drop Earrings',price:155,mat:'White Gold Plated',desc:'Multi-stone cluster drops for effortless evening glamour.',icon:'💠',metals:['White Gold','Silver'],sizes:['One Size']},
-  {id:25,cat:'Bracelets',name:'Tennis Bracelet',price:245,mat:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones in sterling silver.',icon:'✨',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"']},
-  {id:26,cat:'Bracelets',name:'Charm Bracelet',price:130,mat:'Sterling Silver',desc:'Personalised sterling silver charm bracelet with botanical charms.',icon:'🌿',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"']},
-  {id:27,cat:'Bracelets',name:'Pearl Strand Bracelet',price:155,mat:'Freshwater Pearl',desc:'Single strand of matched freshwater pearls with a silver clasp.',icon:'⚪',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"']},
-  {id:28,cat:'Bracelets',name:'Cuff Bangle',price:168,mat:'Sterling Silver',desc:'Open-ended solid cuff with a hammered texture. Bold and minimal.',icon:'⭕',metals:['Silver','Gold'],sizes:['Small','Medium','Large']},
-  {id:29,cat:'Bracelets',name:'Pavé Bangle',price:195,mat:'White Gold Plated',desc:'Full pavé-set bangle — pure sparkle all the way around.',icon:'💍',metals:['White Gold','Silver'],sizes:['Small','Medium','Large']},
-  {id:30,cat:'Bracelets',name:'Herringbone Bracelet',price:178,mat:'Sterling Silver',desc:'Flat herringbone weave sits flush against the wrist.',icon:'〰️',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"']},
-  {id:31,cat:'Bracelets',name:'Moon Phase Bracelet',price:148,mat:'Sterling Silver',desc:'Seven moon phases etched on a fine silver bar bracelet.',icon:'🌙',metals:['Silver'],sizes:['Adjustable']},
-  {id:32,cat:'Bracelets',name:'Opal Inlay Bangle',price:278,mat:'Sterling Silver',desc:'Polished bangle with stunning inlaid opal segments.',icon:'🌈',metals:['Silver'],sizes:['Small','Medium','Large']},
-  {id:33,cat:'Anklets',name:'Delicate Chain Anklet',price:72,mat:'Sterling Silver',desc:'Feather-light sterling silver chain with a tiny star charm.',icon:'🌟',metals:['Silver','Gold'],sizes:['9"','10"']},
-  {id:34,cat:'Anklets',name:'Beaded Anklet',price:68,mat:'Silver & Gemstone',desc:'Iridescent freshwater pearls and silver beads on durable nylon.',icon:'🦋',metals:['Silver'],sizes:['9"','10"','Adjustable']},
-  {id:35,cat:'Anklets',name:'Butterfly Anklet',price:85,mat:'Sterling Silver',desc:'Tiny pavé butterfly charm floats delicately on a trace chain.',icon:'🦋',metals:['Silver','White Gold'],sizes:['9"','10"']},
-  {id:36,cat:'Anklets',name:'Pearl Drop Anklet',price:110,mat:'Freshwater Pearl',desc:'Three freshwater pearl drops spaced on a fine anklet chain.',icon:'⚪',metals:['Silver'],sizes:['9"','10"','10.5"']},
-  {id:37,cat:'Anklets',name:'Moon & Stars Anklet',price:88,mat:'Sterling Silver',desc:'Crescent moon and star charms scattered along a delicate chain.',icon:'🌙',metals:['Silver','White Gold'],sizes:['9"','10"']},
-  {id:38,cat:'Anklets',name:'Gold Vermeil Anklet',price:135,mat:'Gold Vermeil',desc:'Thick gold vermeil on sterling silver for lasting warmth.',icon:'🌟',metals:['Gold'],sizes:['9"','10"']},
-  {id:39,cat:'Anklets',name:'Charm Cluster Anklet',price:115,mat:'Sterling Silver',desc:'Five mixed charms — star, moon, heart, flower, key — on one chain.',icon:'🔑',metals:['Silver'],sizes:['9"','10"','Adjustable']},
-  {id:40,cat:'Anklets',name:'Layered Double Anklet',price:105,mat:'Sterling Silver',desc:'Two fine chains of slightly different lengths for an effortless layered look.',icon:'⛓️',metals:['Silver','Gold'],sizes:['Adjustable']},
+const CATS = ['Rings','Necklaces','Earrings','Bracelets','Anklets'];
+const CAT_IMGS = {
+  Rings:'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80',
+  Necklaces:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
+  Earrings:'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&q=80',
+  Bracelets:'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=400&q=80',
+  Anklets:'https://images.unsplash.com/photo-1594750018638-37ebe43ba90e?w=400&q=80'
+};
+const PROD_IMGS = [
+  'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80',
+  'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80',
+  'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80',
+  'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80',
+  'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=600&q=80',
+  'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=600&q=80',
+  'https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?w=600&q=80',
+  'https://images.unsplash.com/photo-1601121141461-9d6647bef0a1?w=600&q=80',
+  'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80',
+  'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=600&q=80',
 ];
 
-let cart=[],curCat=null,curP=null,selMetal='',selSize='',curView='grid';
+const P = [
+  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,mat:'Sterling Silver',desc:'A delicate halo of cubic zirconia surrounding a central moonstone. Inspired by the night sky, this ring brings a celestial glow to any occasion.',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9'],img:0},
+  {id:2,cat:'Rings',name:'Infinity Band',price:145,mat:'Sterling Silver',desc:'Sleek infinity band with micro-pavé diamond accents. Perfect alone or stacked.',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10'],img:1},
+  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,mat:'White Gold Plated',desc:'Artisan-crafted floral signet with hand-engraved petals. Vintage charm meets modern design.',metals:['White Gold','Silver'],sizes:['6','7','8'],img:1},
+  {id:4,cat:'Rings',name:'Moonstone Solitaire',price:265,mat:'Sterling Silver',desc:'Luminous moonstone set in a delicate four-prong sterling silver band.',metals:['Silver','White Gold'],sizes:['5','6','7','8'],img:0},
+  {id:5,cat:'Rings',name:'Art Deco Cocktail Ring',price:310,mat:'Rhodium Plated',desc:'Bold geometric art deco design with sparkling pavé stones.',metals:['Silver','White Gold'],sizes:['6','7','8','9'],img:1},
+  {id:6,cat:'Rings',name:'Eternity Band',price:240,mat:'Sterling Silver',desc:'A full circle of matched brilliant-cut stones for everlasting sparkle.',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9','10'],img:0},
+  {id:7,cat:'Rings',name:'Rose Quartz Ring',price:155,mat:'Sterling Silver',desc:'Soft rose quartz cabochon wrapped in a delicate silver bezel.',metals:['Silver','Rose Gold'],sizes:['5','6','7','8'],img:1},
+  {id:8,cat:'Rings',name:'Sapphire Halo Ring',price:285,mat:'White Gold Plated',desc:'Deep blue lab-grown sapphire surrounded by a sparkling diamond halo.',metals:['White Gold','Platinum'],sizes:['5','6','7','8','9'],img:0},
+  {id:9,cat:'Necklaces',name:'Dainty Star Pendant',price:95,mat:'Sterling Silver',desc:'Minimalist sterling silver star pendant on a delicate 18" chain.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
+  {id:10,cat:'Necklaces',name:'Pearl Choker',price:165,mat:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker.',metals:['Silver','Gold'],sizes:['14"','16"'],img:2},
+  {id:11,cat:'Necklaces',name:'Crescent Moon Pendant',price:108,mat:'Sterling Silver',desc:'Slender crescent moon with a dusting of pavé stones on a fine chain.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
+  {id:12,cat:'Necklaces',name:'Diamond Bar Necklace',price:198,mat:'White Gold Plated',desc:'Horizontal bar set with brilliant-cut diamonds. Clean and contemporary.',metals:['White Gold','Silver'],sizes:['16"','18"'],img:8},
+  {id:13,cat:'Necklaces',name:'Heart Locket',price:168,mat:'Sterling Silver',desc:'Polished heart locket that opens to hold two tiny photographs.',metals:['Silver','Rose Gold'],sizes:['16"','18"'],img:2},
+  {id:14,cat:'Necklaces',name:'Tennis Necklace',price:345,mat:'White Gold Plated',desc:'Continuous line of matched brilliant stones — the pinnacle of luxury.',metals:['White Gold','Silver'],sizes:['14"','16"','18"'],img:9},
+  {id:15,cat:'Necklaces',name:'Opal Pendant',price:198,mat:'Sterling Silver',desc:'Fiery Australian-style opal doublet in a delicate silver frame.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
+  {id:16,cat:'Necklaces',name:'Layered Lariat',price:148,mat:'Sterling Silver',desc:'Elegant Y-lariat necklace with an adjustable double-layer chain.',metals:['Silver','Gold'],sizes:['18"','20"','24"'],img:8},
+  {id:17,cat:'Earrings',name:'Crystal Drop Earrings',price:110,mat:'Sterling Silver',desc:'Faceted crystal drops that catch the light beautifully. Ideal for evenings.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
+  {id:18,cat:'Earrings',name:'Hammered Hoops',price:88,mat:'Sterling Silver',desc:'Classic hoops with a subtle hammered texture that adds depth.',metals:['Silver','Gold'],sizes:['Small','Medium','Large'],img:3},
+  {id:19,cat:'Earrings',name:'Pearl Studs',price:95,mat:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
+  {id:20,cat:'Earrings',name:'Chandelier Earrings',price:165,mat:'White Gold Plated',desc:'Multi-tier chandelier drops dripping with pavé stones.',metals:['White Gold','Silver'],sizes:['One Size'],img:3},
+  {id:21,cat:'Earrings',name:'Ear Climbers',price:118,mat:'Sterling Silver',desc:'Curved climber that follows the natural curve of the ear beautifully.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
+  {id:22,cat:'Earrings',name:'Baroque Pearl Drops',price:145,mat:'Sterling Silver',desc:'Irregular baroque pearls on a delicate drop wire for organic elegance.',metals:['Silver'],sizes:['One Size'],img:3},
+  {id:23,cat:'Earrings',name:'Mismatched Moon & Star',price:88,mat:'Sterling Silver',desc:'One moon, one star — an intentionally mismatched pair full of charm.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
+  {id:24,cat:'Earrings',name:'Cluster Drop Earrings',price:155,mat:'White Gold Plated',desc:'Multi-stone cluster drops for effortless evening glamour.',metals:['White Gold','Silver'],sizes:['One Size'],img:3},
+  {id:25,cat:'Bracelets',name:'Tennis Bracelet',price:245,mat:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones in sterling silver.',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"'],img:4},
+  {id:26,cat:'Bracelets',name:'Charm Bracelet',price:130,mat:'Sterling Silver',desc:'Personalised sterling silver charm bracelet with botanical charms.',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"'],img:4},
+  {id:27,cat:'Bracelets',name:'Pearl Strand Bracelet',price:155,mat:'Freshwater Pearl',desc:'Single strand of matched freshwater pearls with a silver clasp.',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"'],img:4},
+  {id:28,cat:'Bracelets',name:'Cuff Bangle',price:168,mat:'Sterling Silver',desc:'Open-ended solid cuff with a hammered texture. Bold and minimal.',metals:['Silver','Gold'],sizes:['Small','Medium','Large'],img:4},
+  {id:29,cat:'Bracelets',name:'Pavé Bangle',price:195,mat:'White Gold Plated',desc:'Full pavé-set bangle — pure sparkle all the way around.',metals:['White Gold','Silver'],sizes:['Small','Medium','Large'],img:5},
+  {id:30,cat:'Bracelets',name:'Herringbone Bracelet',price:178,mat:'Sterling Silver',desc:'Flat herringbone weave sits flush against the wrist.',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"'],img:4},
+  {id:31,cat:'Bracelets',name:'Moon Phase Bracelet',price:148,mat:'Sterling Silver',desc:'Seven moon phases etched on a fine silver bar bracelet.',metals:['Silver'],sizes:['Adjustable'],img:5},
+  {id:32,cat:'Bracelets',name:'Opal Inlay Bangle',price:278,mat:'Sterling Silver',desc:'Polished bangle with stunning inlaid opal segments.',metals:['Silver'],sizes:['Small','Medium','Large'],img:4},
+  {id:33,cat:'Anklets',name:'Delicate Chain Anklet',price:72,mat:'Sterling Silver',desc:'Feather-light sterling silver chain with a tiny star charm.',metals:['Silver','Gold'],sizes:['9"','10"'],img:6},
+  {id:34,cat:'Anklets',name:'Beaded Anklet',price:68,mat:'Silver & Gemstone',desc:'Iridescent freshwater pearls and silver beads on durable nylon.',metals:['Silver'],sizes:['9"','10"','Adjustable'],img:6},
+  {id:35,cat:'Anklets',name:'Butterfly Anklet',price:85,mat:'Sterling Silver',desc:'Tiny pavé butterfly charm floats delicately on a trace chain.',metals:['Silver','White Gold'],sizes:['9"','10"'],img:7},
+  {id:36,cat:'Anklets',name:'Pearl Drop Anklet',price:110,mat:'Freshwater Pearl',desc:'Three freshwater pearl drops spaced on a fine anklet chain.',metals:['Silver'],sizes:['9"','10"','10.5"'],img:6},
+  {id:37,cat:'Anklets',name:'Moon & Stars Anklet',price:88,mat:'Sterling Silver',desc:'Crescent moon and star charms scattered along a delicate chain.',metals:['Silver','White Gold'],sizes:['9"','10"'],img:7},
+  {id:38,cat:'Anklets',name:'Gold Vermeil Anklet',price:135,mat:'Gold Vermeil',desc:'Thick gold vermeil on sterling silver for lasting warmth.',metals:['Gold'],sizes:['9"','10"'],img:7},
+  {id:39,cat:'Anklets',name:'Charm Cluster Anklet',price:115,mat:'Sterling Silver',desc:'Five mixed charms — star, moon, heart, flower, key — on one chain.',metals:['Silver'],sizes:['9"','10"','Adjustable'],img:6},
+  {id:40,cat:'Anklets',name:'Layered Double Anklet',price:105,mat:'Sterling Silver',desc:'Two fine chains of slightly different lengths for an effortless layered look.',metals:['Silver','Gold'],sizes:['Adjustable'],img:7},
+];
+
+// ── STATE ──
+let cart=[], curCat=null, curProd=null, selMetal='', selSize='', curView='g';
 
 // ── HELPERS ──
-const g=id=>document.getElementById(id);
-const sh=(id,html)=>{const e=g(id);if(e)e.innerHTML=html;};
-const st=(id,txt)=>{const e=g(id);if(e)e.textContent=txt;};
-
-// ── CURSOR ──
-document.addEventListener('mousemove',e=>{
-  const c=g('cur'),r=g('curRing');
-  if(c){c.style.left=e.clientX+'px';c.style.top=e.clientY+'px';}
-  if(r){r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';}
-});
-document.querySelectorAll('button,a,[onclick]').forEach(el=>{
-  el.addEventListener('mouseenter',()=>g('curRing')?.classList.add('hovered'));
-  el.addEventListener('mouseleave',()=>g('curRing')?.classList.remove('hovered'));
-});
+const g = id => document.getElementById(id);
+const sh = (id,h) => { const e=g(id); if(e) e.innerHTML=h; };
+const st = (id,t) => { const e=g(id); if(e) e.textContent=t; };
+const imgSrc = idx => PROD_IMGS[idx % PROD_IMGS.length];
 
 // ── LOADER ──
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    g('loader')?.classList.add('done');
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    g('loader').classList.add('hide');
     initHome();
-    initScrollReveal();
-    initParallax();
+    initReveal();
     initCounters();
-  },2000);
+  }, 1900);
 });
 
-// ── SCROLL NAV ──
-window.addEventListener('scroll',()=>{
-  g('mainNav')?.classList.toggle('scrolled',window.scrollY>50);
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  g('nav').classList.toggle('solid', window.scrollY > 40);
 });
 
-// ── PAGE NAV ──
-function go(page,cat){
-  // 'detail-open' is a shorthand trigger from featured cards
-  if(page==='detail-open'){openDetail(cat);return;}
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const t=g('page-'+page);
-  if(!t) return;
-  t.classList.add('active','page-enter');
-  setTimeout(()=>t.classList.remove('page-enter'),600);
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(page==='shop') openShop(cat);
+// ── PAGE NAVIGATION ──
+function goPg(id) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  const t = g('pg-'+id);
+  if (!t) return;
+  t.classList.add('on','pg-anim');
+  setTimeout(() => t.classList.remove('pg-anim'), 500);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goShop(cat) {
+  curCat = cat;
+  goPg('shop');
+  // set title
+  const t = g('shopTitle');
+  if (t) t.innerHTML = cat ? `${cat}<br><em>Collection</em>` : `The<br><em>Collection</em>`;
+  // set pills
+  sh('shopPills', ['All',...CATS].map(c =>
+    `<button class="pill ${(!cat&&c==='All')||cat===c?'on':''}" onclick="filterCat(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
+  ).join(''));
+  renderShop();
+}
+
+function filterCat(cat) {
+  curCat = cat;
+  const t = g('shopTitle');
+  if (t) t.innerHTML = cat ? `${cat}<br><em>Collection</em>` : `The<br><em>Collection</em>`;
+  sh('shopPills', ['All',...CATS].map(c =>
+    `<button class="pill ${(!cat&&c==='All')||cat===c?'on':''}" onclick="filterCat(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
+  ).join(''));
+  renderShop();
 }
 
 // ── HOME INIT ──
-function initHome(){
+function initHome() {
   // Category tiles
-  sh('catsGrid',CATS.map((c,i)=>{
-    const n=P.filter(p=>p.cat===c).length;
-    return `<div class="cat-tile reveal" style="transition-delay:${i*0.08}s" onclick="go('shop','${c}')">
-      <span class="cat-emoji">${EMOJIS[c]}</span>
-      <div class="cat-name">${c}</div>
-      <div class="cat-count">${n} pieces</div>
-      <span class="cat-arrow">→</span>
+  sh('catsRow', CATS.map((c,i) => {
+    const n = P.filter(p=>p.cat===c).length;
+    return `<div class="cat-card rv" style="transition-delay:${i*0.07}s" onclick="goShop('${c}')">
+      <img src="${CAT_IMGS[c]}" alt="${c}" loading="lazy">
+      <div class="cat-n">${c}</div>
+      <div class="cat-c">${n} pieces</div>
+      <span class="cat-arr">→</span>
     </div>`;
   }).join(''));
 
   // Featured grid
-  sh('featGrid',[P[0],P[9],P[16],P[24]].map((p,i)=>`
-    <div class="feat-card reveal" style="transition-delay:${i*0.1}s" onclick="go('detail-open',${p.id})">
-      <div class="feat-img ${i>0?'sm':''}">${p.icon}</div>
-      <div class="feat-overlay">
-        <button class="feat-overlay-btn" onclick="event.stopPropagation();quickAdd(${p.id})">Quick Add</button>
-        <button class="feat-overlay-btn" onclick="event.stopPropagation();openDetail(${p.id})">View Details</button>
+  const fp = [P[0], P[9], P[17], P[24]];
+  sh('featRow', fp.map((p,i) => `
+    <div class="feat-card rv" style="transition-delay:${i*0.09}s" onclick="openDetail(${p.id})">
+      <img src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy">
+      <div class="feat-veil">
+        <button class="fv-btn" onclick="event.stopPropagation();qAdd(${p.id})">Quick Add</button>
+        <button class="fv-btn" onclick="event.stopPropagation();openDetail(${p.id})">View Details</button>
       </div>
-      <div class="feat-body">
+      <div class="feat-foot">
         <div class="feat-cat">${p.cat}</div>
         <div class="feat-name">${p.name}</div>
         <div class="feat-price">£${p.price.toFixed(2)}</div>
       </div>
-    </div>`
-  ).join(''));
+    </div>`).join(''));
 
-  // Hero + parallax bg
-  const bg=g('heroBg');
-  if(bg) bg.style.cssText="background-image:url('hero.jpg');background-size:cover;background-position:center";
-  const pb=g('parallaxBg');
-  if(pb) pb.style.cssText="background-image:url('hero.jpg');background-size:cover;background-position:center";
-
-  setTimeout(initScrollReveal,100);
+  setTimeout(initReveal, 80);
 }
 
 // ── SCROLL REVEAL ──
-function initScrollReveal(){
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-  },{threshold:0.12});
-  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>obs.observe(el));
-}
-
-// ── PARALLAX ──
-function initParallax(){
-  window.addEventListener('scroll',()=>{
-    const pb=g('parallaxBg');
-    if(!pb) return;
-    const rect=pb.closest('.parallax-banner')?.getBoundingClientRect();
-    if(rect&&rect.top<window.innerHeight&&rect.bottom>0){
-      pb.style.transform=`translateY(${rect.top*0.25}px)`;
-    }
-  });
+function initReveal() {
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }});
+  }, {threshold: 0.1});
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 }
 
 // ── COUNTERS ──
-function initCounters(){
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const el=e.target,target=+el.dataset.target,isLarge=target>100;
-        let cur=0;
-        const step=Math.ceil(target/(isLarge?80:40));
-        const t=setInterval(()=>{
-          cur=Math.min(cur+step,target);
-          el.textContent=(target>=1000?cur.toLocaleString():cur)+(target>=1000?'+':target>=100?'+':'');
-          if(cur>=target)clearInterval(t);
-        },20);
-        obs.unobserve(el);
-      }
+function initCounters() {
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.t, suffix = target>=1000?'+':target>=100?'+':'';
+      let cur=0; const step=Math.ceil(target/60);
+      const iv = setInterval(()=>{
+        cur = Math.min(cur+step, target);
+        el.textContent = (target>=1000 ? cur.toLocaleString() : cur) + suffix;
+        if(cur>=target) clearInterval(iv);
+      }, 22);
+      obs.unobserve(el);
     });
-  },{threshold:0.5});
-  document.querySelectorAll('.stat-num[data-target]').forEach(el=>obs.observe(el));
+  }, {threshold:0.5});
+  document.querySelectorAll('.st-num[data-t]').forEach(el => obs.observe(el));
 }
 
 // ── SHOP ──
-function openShop(cat){
-  curCat=cat;
-  const titleHTML=cat?`${cat}<br><em>Collection</em>:`:`The<br><em>Collection</em>`;
-  sh('shopTitle',cat?`${cat}<br><em>Collection</em>`:`The<br><em>Collection</em>`);
-  sh('shopPills',['All',...CATS].map(c=>
-    `<button class="pill ${(!cat&&c==='All')||cat===c?'active':''}" onclick="filterShop(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
-  ).join(''));
-  renderShop();
-  setTimeout(initScrollReveal,100);
+const HH = ['t','s','t','s','s','t','s','t'];
+
+function setView(v) {
+  curView = v;
+  const vg=g('vbGrid'), vl=g('vbList'), mw=g('masonWrap'), lw=g('listWrap');
+  if(vg) vg.classList.toggle('on', v==='g');
+  if(vl) vl.classList.toggle('on', v==='l');
+  if(mw) mw.style.display = v==='g' ? 'block' : 'none';
+  if(lw) lw.style.display = v==='l' ? 'block' : 'none';
 }
 
-function filterShop(cat){
-  curCat=cat;
-  sh('shopTitle',cat?`${cat}<br><em>Collection</em>`:`The<br><em>Collection</em>`);
-  sh('shopPills',['All',...CATS].map(c=>
-    `<button class="pill ${(!cat&&c==='All')||cat===c?'active':''}" onclick="filterShop(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
-  ).join(''));
-  renderShop();
-}
-
-function setView(v){
-  curView=v;
-  const vg=g('vGrid'),vl=g('vList'),gw=g('gridWrap'),lw=g('listWrap');
-  if(vg) vg.classList.toggle('active',v==='grid');
-  if(vl) vl.classList.toggle('active',v==='list');
-  if(gw) gw.style.display=v==='grid'?'block':'none';
-  if(lw) lw.style.display=v==='list'?'block':'none';
-}
-
-function renderShop(){
-  let list=curCat?P.filter(p=>p.cat===curCat):[...P];
-  const s=g('sortPick')?.value||'default';
-  if(s==='asc') list.sort((a,b)=>a.price-b.price);
+function renderShop() {
+  let list = curCat ? P.filter(p=>p.cat===curCat) : [...P];
+  const s = g('sortS')?.value || 'd';
+  if(s==='asc')  list.sort((a,b)=>a.price-b.price);
   if(s==='desc') list.sort((a,b)=>b.price-a.price);
-  if(s==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
-  st('shopCount',`${list.length} piece${list.length!==1?'s':''}`);
+  if(s==='az')   list.sort((a,b)=>a.name.localeCompare(b.name));
+  st('shopCt', `${list.length} piece${list.length!==1?'s':''}`);
 
-  sh('shopGrid',list.map((p,i)=>`
-    <div class="m-card" onclick="openDetail(${p.id})">
-      <div class="m-thumb ${HH[i%HH.length]}">${p.icon}</div>
-      <div class="m-veil">
-        <div class="m-veil-name">${p.name}</div>
-        <div class="m-veil-price">£${p.price.toFixed(2)}</div>
-        <button class="m-veil-add" onclick="event.stopPropagation();quickAdd(${p.id})">Quick Add →</button>
+  sh('shopGrid', list.map((p,i) => `
+    <div class="mc" onclick="openDetail(${p.id})">
+      <div class="mc-img ${HH[i%HH.length]}"><img src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy"></div>
+      <div class="mc-vl">
+        <div class="mc-vl-n">${p.name}</div>
+        <div class="mc-vl-p">£${p.price.toFixed(2)}</div>
+        <button class="mc-vl-b" onclick="event.stopPropagation();qAdd(${p.id})">Quick Add →</button>
       </div>
-      <div class="m-foot">
-        <div class="m-cat">${p.cat}</div>
-        <div class="m-name">${p.name}</div>
-        <div class="m-price">£${p.price.toFixed(2)}</div>
+      <div class="mc-ft">
+        <div class="mc-cat">${p.cat}</div>
+        <div class="mc-n">${p.name}</div>
+        <div class="mc-p">£${p.price.toFixed(2)}</div>
       </div>
     </div>`).join(''));
 
-  sh('listWrap',list.map(p=>`
-    <div class="l-row" onclick="openDetail(${p.id})">
-      <div class="l-ico">${p.icon}</div>
+  sh('listWrap', list.map(p => `
+    <div class="li-row" onclick="openDetail(${p.id})">
+      <img class="li-thumb" src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy">
       <div>
-        <div class="l-cat">${p.cat}</div>
-        <div class="l-name">${p.name}</div>
-        <div class="l-meta">${p.mat} · ${p.metals.join(', ')}</div>
+        <div class="li-cat">${p.cat}</div>
+        <div class="li-n">${p.name}</div>
+        <div class="li-m">${p.mat} · ${p.metals.join(', ')}</div>
       </div>
-      <div class="l-price">£${p.price.toFixed(2)}</div>
-      <button class="l-add" onclick="event.stopPropagation();quickAdd(${p.id})">Add to Cart</button>
+      <div class="li-p">£${p.price.toFixed(2)}</div>
+      <button class="li-b" onclick="event.stopPropagation();qAdd(${p.id})">Add to Cart</button>
     </div>`).join(''));
 }
 
 // ── DETAIL ──
-function openDetail(id){
-  const p=P.find(x=>x.id===id); if(!p) return;
-  curP=p; selMetal=p.metals[0]; selSize=p.sizes[0];
-  go('detail');
-  const dm=g('dMain'); if(dm) dm.textContent=p.icon;
-  st('dCat',p.cat); st('dName',p.name);
-  st('dPrice','£'+p.price.toFixed(2)); st('dDesc',p.desc);
-  const cr=g('dCrumb'); if(cr) cr.onclick=()=>go('shop',p.cat);
-  sh('dThumbs',[p.icon,p.icon,p.icon].map((ic,i)=>
-    `<div class="d-thumb ${i===0?'active':''}" onclick="pickThumb(this,'${ic}')">${ic}</div>`
+function openDetail(id) {
+  const p = P.find(x=>x.id===id); if(!p) return;
+  curProd=p; selMetal=p.metals[0]; selSize=p.sizes[0];
+  goPg('detail');
+  const mi = g('detMainImg');
+  if(mi){ mi.src=imgSrc(p.img); mi.alt=p.name; }
+  sh('detThumbs', [p.img, (p.img+1)%PROD_IMGS.length, (p.img+2)%PROD_IMGS.length].map((idx,i) =>
+    `<div class="det-th ${i===0?'on':''}" onclick="swapImg(this,'${PROD_IMGS[idx%PROD_IMGS.length]}')"><img src="${PROD_IMGS[idx%PROD_IMGS.length]}" alt="view ${i+1}"></div>`
   ).join(''));
-  st('selMetal',selMetal);
-  sh('metalOpts',p.metals.map(m=>
-    `<button class="opt ${m===selMetal?'active':''}" onclick="pickOpt(this,'metal','${m}')">${m}</button>`
+  st('detCat',p.cat); st('detN',p.name);
+  st('detP','£'+p.price.toFixed(2)); st('detD',p.desc);
+  const db = g('detBack'); if(db) db.onclick = ()=>goShop(p.cat);
+  st('oMetal',selMetal);
+  sh('metalOpts', p.metals.map(m =>
+    `<button class="opt ${m===selMetal?'on':''}" onclick="pickOpt(this,'m','${m}')">${m}</button>`
   ).join(''));
-  st('selSize',selSize);
-  sh('sizeOpts',p.sizes.map(s=>
-    `<button class="opt ${s===selSize?'active':''}" onclick="pickOpt(this,'size','${s}')">${s}</button>`
+  st('oSize',selSize);
+  sh('sizeOpts', p.sizes.map(s =>
+    `<button class="opt ${s===selSize?'on':''}" onclick="pickOpt(this,'s','${s}')">${s}</button>`
   ).join(''));
-  sh('dSpecs',`
-    <div class="d-spec"><dt>Material</dt><dd>${p.mat}</dd></div>
-    <div class="d-spec"><dt>Category</dt><dd>${p.cat}</dd></div>
-    <div class="d-spec"><dt>Metals</dt><dd>${p.metals.join(', ')}</dd></div>
-    <div class="d-spec"><dt>Shipping</dt><dd>Free UK delivery · 3–5 days</dd></div>
-    <div class="d-spec"><dt>Returns</dt><dd>30-day free returns</dd></div>
+  sh('detSpecs', `
+    <div class="sp-row"><dt>Material</dt><dd>${p.mat}</dd></div>
+    <div class="sp-row"><dt>Category</dt><dd>${p.cat}</dd></div>
+    <div class="sp-row"><dt>Metals</dt><dd>${p.metals.join(', ')}</dd></div>
+    <div class="sp-row"><dt>Shipping</dt><dd>Free UK delivery · 3–5 days</dd></div>
+    <div class="sp-row"><dt>Returns</dt><dd>30-day free returns</dd></div>
   `);
-  const btn=g('dAddBtn'); if(btn) btn.onclick=()=>addToCart(p);
+  const ab = g('detAddBtn'); if(ab) ab.onclick = ()=>addToCart(p);
 }
 
-function pickOpt(btn,type,val){
-  btn.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  if(type==='metal'){selMetal=val;st('selMetal',val);}
-  if(type==='size'){selSize=val;st('selSize',val);}
+function swapImg(el, src) {
+  document.querySelectorAll('.det-th').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  const mi = g('detMainImg');
+  if(mi){ mi.style.opacity='0'; setTimeout(()=>{ mi.src=src; mi.style.opacity='1'; },220); }
 }
-function pickThumb(el,icon){
-  document.querySelectorAll('.d-thumb').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  const dm=g('dMain'); if(dm){dm.style.opacity='0';setTimeout(()=>{dm.textContent=icon;dm.style.opacity='1';},200);}
+
+function pickOpt(btn,type,val) {
+  btn.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(type==='m'){ selMetal=val; st('oMetal',val); }
+  if(type==='s'){ selSize=val; st('oSize',val); }
 }
 
 // ── CART ──
-function addToCart(p){
-  cart.push({...p,metal:selMetal,size:selSize,uid:Date.now()+Math.random()});
-  updateCart(); openCart(); showToast(p.name+' added to cart');
+function addToCart(p) {
+  cart.push({...p, metal:selMetal, size:selSize, uid:Date.now()+Math.random()});
+  updateCart(); openCart(); toast(p.name+' added to cart');
 }
-function quickAdd(id){
+function qAdd(id) {
   const p=P.find(x=>x.id===id); if(!p) return;
-  cart.push({...p,metal:p.metals[0],size:p.sizes[0],uid:Date.now()+Math.random()});
-  updateCart(); showToast(p.name+' added to cart');
+  cart.push({...p, metal:p.metals[0], size:p.sizes[0], uid:Date.now()+Math.random()});
+  updateCart(); toast(p.name+' added to cart');
 }
-function removeItem(uid){cart=cart.filter(i=>i.uid!==uid);updateCart();}
-function updateCart(){
-  const badge=g('cartCount');
-  if(badge){badge.textContent=cart.length;badge.style.display=cart.length?'flex':'none';}
-  const body=g('cartScroll'); if(!body) return;
-  if(!cart.length){body.innerHTML='<div class="cart-empty">Your cart is empty</div>';st('cartTotal','£0.00');return;}
+function delItem(uid) { cart=cart.filter(i=>i.uid!==uid); updateCart(); }
+function updateCart() {
+  const b=g('cBadge');
+  if(b){ b.textContent=cart.length; b.style.display=cart.length?'flex':'none'; }
+  const bd=g('cdBody'); if(!bd) return;
+  if(!cart.length){ bd.innerHTML='<div class="cd-empty">Your cart is empty</div>'; st('cdTotal','£0.00'); return; }
   let total=0;
-  body.innerHTML=cart.map(item=>{
+  bd.innerHTML = cart.map(item => {
     total+=item.price;
-    return `<div class="cart-line">
-      <div class="c-thumb">${item.icon}</div>
-      <div class="c-body"><div class="c-name">${item.name}</div><div class="c-meta">${item.metal} · ${item.size}</div></div>
-      <div class="c-price">£${item.price.toFixed(2)}</div>
-      <button class="c-del" onclick="removeItem(${item.uid})">×</button>
+    return `<div class="cl">
+      <img class="cl-img" src="${imgSrc(item.img)}" alt="${item.name}">
+      <div class="cl-info">
+        <div class="cl-n">${item.name}</div>
+        <div class="cl-m">${item.metal} · ${item.size}</div>
+      </div>
+      <div class="cl-p">£${item.price.toFixed(2)}</div>
+      <button class="cl-rm" onclick="delItem(${item.uid})">×</button>
     </div>`;
   }).join('');
-  st('cartTotal','£'+total.toFixed(2));
+  st('cdTotal','£'+total.toFixed(2));
 }
-function openCart(){g('cartMask')?.classList.add('open');g('cartDrawer')?.classList.add('open');}
-function closeCart(){g('cartMask')?.classList.remove('open');g('cartDrawer')?.classList.remove('open');}
-function openAuth(){g('authMask')?.classList.add('open');}
-function closeAuth(){g('authMask')?.classList.remove('open');}
+function openCart()  { g('cmask')?.classList.add('on'); g('cdrawer')?.classList.add('on'); }
+function closeCart() { g('cmask')?.classList.remove('on'); g('cdrawer')?.classList.remove('on'); }
+function openAuth()  { const a=g('amask'); if(a) a.classList.add('on'); }
+function closeAuth() { const a=g('amask'); if(a) a.classList.remove('on'); }
 function toggleAuth(){
-  const l=g('authLogin'),r=g('authReg');
-  if(l)l.style.display=l.style.display==='none'?'block':'none';
-  if(r)r.style.display=r.style.display==='none'?'block':'none';
+  const l=g('aLogin'),r=g('aReg');
+  if(l) l.style.display=l.style.display==='none'?'block':'none';
+  if(r) r.style.display=r.style.display==='none'?'block':'none';
 }
-function doAuth(){closeAuth();showToast('Welcome to Aynnor\'s Jewelry!');}
-function showToast(msg){
+function doAuth(){ closeAuth(); toast('Welcome to Aynnor\'s Jewelry!'); }
+function toast(msg) {
   const t=g('toastEl'); if(!t) return;
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),3000);
 }
 </script>
 </body>
