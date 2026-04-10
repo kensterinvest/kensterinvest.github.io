@@ -1,890 +1,780 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aynnor's Jewelry</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tidus — Self-Hosted Enterprise AI Router</title>
+<meta name="description" content="Tidus intelligently routes AI requests to the best model for every task — cutting costs 60–80% while preserving quality. Self-hosted, open source, enterprise-ready.">
+<meta property="og:title" content="Tidus — Enterprise AI Router">
+<meta property="og:description" content="Stop overpaying for AI. Route every request to the optimal model automatically.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;color:#1a1a2e;background:#fff;line-height:1.6}
+a{text-decoration:none;color:inherit}
 :root{
-  --bg:#faf9f7;
-  --bg2:#f3f1ee;
-  --bg3:#eceae6;
-  --dark:#1c1916;
-  --dark2:#2e2a26;
-  --mid:#7a7470;
-  --soft:#b0a89e;
-  --line:rgba(0,0,0,0.09);
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Montserrat',sans-serif;
+  --navy:#0f3460;--purple:#533483;--violet:#a78bfa;--pink:#e94560;
+  --light:#f0f2f5;--green:#22c55e;--red:#ef4444;
+  --radius:12px;--shadow:0 4px 24px rgba(0,0,0,.08);--shadow-lg:0 8px 48px rgba(0,0,0,.14)
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--bg);color:var(--dark);overflow-x:hidden}
-img{display:block;width:100%;object-fit:cover}
-button{cursor:pointer;border:none;background:none;font-family:var(--sans)}
-a{text-decoration:none;color:inherit;cursor:pointer}
-
-/* LOADER */
-#loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity 0.7s,visibility 0.7s}
-#loader.hide{opacity:0;visibility:hidden}
-.ld-name{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:rgba(255,255,255,0.85);letter-spacing:0.12em;opacity:0;animation:rise 0.9s 0.2s forwards}
-.ld-bar{width:100px;height:1px;background:rgba(255,255,255,0.12);overflow:hidden}
-.ld-fill{height:100%;background:rgba(255,255,255,0.5);animation:widen 1.8s ease forwards}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes widen{from{width:0}to{width:100%}}
 
 /* NAV */
-#nav{position:fixed;inset:0 0 auto;height:64px;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;transition:background 0.4s,box-shadow 0.4s}
-#nav.solid{background:rgba(250,249,247,0.97);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line)}
-.nav-logo{height:36px;width:auto;cursor:pointer}
-.nav-logo img{height:136px;width:auto;max-width:360px;object-fit:contain}
-.nav-logo-text{font-family:var(--serif);font-size:1.2rem;color:rgba(255,255,255,0.9);letter-spacing:0.1em;display:none}
-#nav.solid .nav-logo-text{color:var(--dark)}
-.nav-links{display:flex;gap:2.2rem;list-style:none}
-.nav-links a{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.25s}
-#nav.solid .nav-links a{color:var(--mid)}
+nav{position:sticky;top:0;z-index:1000;background:rgba(15,52,96,.97);backdrop-filter:blur(12px);
+    display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;
+    border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-logo{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.nav-logo span{color:var(--violet)}
+.nav-links{display:flex;gap:30px}
+.nav-links a{font-size:13px;font-weight:500;color:rgba(255,255,255,.65);transition:color .2s}
 .nav-links a:hover{color:#fff}
-#nav.solid .nav-links a:hover{color:var(--dark)}
-.nav-icons{display:flex;gap:0.8rem;align-items:center}
-.ni{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.65);transition:color 0.25s;position:relative}
-#nav.solid .ni{color:var(--mid)}
-.ni:hover{color:#fff}
-#nav.solid .ni:hover{color:var(--dark)}
-.ni-badge{position:absolute;top:3px;right:3px;width:14px;height:14px;background:var(--dark);color:#fff;border-radius:50%;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:600}
-#nav.solid .ni-badge{background:var(--dark)}
+.nav-cta{background:var(--violet);color:#fff;font-size:13px;font-weight:700;
+         padding:8px 18px;border-radius:8px;transition:all .2s}
+.nav-cta:hover{background:#9061f9;transform:translateY(-1px)}
 
-/* PAGES */
-.pg{display:none}
-.pg.on{display:block}
-.pg-anim{animation:pgIn 0.5s cubic-bezier(0.25,1,0.5,1) both}
-@keyframes pgIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-
-/* ─── HOME ─── */
 /* HERO */
-.hero{height:100vh;position:relative;overflow:hidden;display:flex;align-items:flex-end}
-.hero-img{position:absolute;inset:0}
-.hero-img img{height:100%;object-fit:cover;animation:hzoom 10s ease both}
-@keyframes hzoom{from{transform:scale(1.07)}to{transform:scale(1)}}
-.hero-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,17,14,0.82) 0%,rgba(20,17,14,0.25) 55%,transparent 100%)}
-.hero-body{position:relative;z-index:2;padding:0 6vw 7vh;max-width:780px}
-.hero-label{font-size:0.58rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(255,255,255,0.48);margin-bottom:1.6rem;opacity:0;animation:rise 0.8s 2s both}
-.hero-h1{font-family:var(--serif);font-size:clamp(3.8rem,7.5vw,7rem);font-weight:300;line-height:1;color:#fff;margin-bottom:1.8rem}
-.hero-h1 .wl{overflow:hidden;display:block}
-.hero-h1 .wl span{display:block;transform:translateY(105%);animation:rise 0.9s cubic-bezier(0.25,1,0.5,1) both}
-.hero-h1 .wl:nth-child(1) span{animation-delay:1.8s}
-.hero-h1 .wl:nth-child(2) span{animation-delay:1.95s}
-.hero-h1 .wl:nth-child(3) span{animation-delay:2.1s}
-.hero-h1 em{font-style:italic;color:rgba(255,255,255,0.52)}
-.hero-sub{font-size:0.78rem;line-height:1.95;color:rgba(255,255,255,0.42);max-width:400px;margin-bottom:2.8rem;opacity:0;animation:rise 0.8s 2.3s both}
-.hero-btns{display:flex;gap:1.2rem;flex-wrap:wrap;opacity:0;animation:rise 0.8s 2.5s both}
-.btn-fill{padding:0.85rem 2.2rem;background:rgba(255,255,255,0.92);color:var(--dark);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;transition:background 0.25s,color 0.25s}
-.btn-fill:hover{background:#fff}
-.btn-line{padding:0.85rem 2.2rem;background:none;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.3);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:border-color 0.25s,color 0.25s}
-.btn-line:hover{border-color:rgba(255,255,255,0.75);color:#fff}
-.hero-scroll{position:absolute;bottom:2.5rem;right:3rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0;animation:rise 0.8s 2.8s both}
-.hero-scroll span{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);writing-mode:vertical-lr}
-.hs-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent);animation:pulse 2.2s ease infinite}
-@keyframes pulse{0%,100%{opacity:0.35}50%{opacity:0.9}}
+.hero{background:linear-gradient(135deg,#060d1f 0%,#0f3460 40%,#1e1b4b 70%,#533483 100%);
+      padding:100px 48px 80px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:0;
+             background:radial-gradient(ellipse at 75% 50%,rgba(167,139,250,.1) 0%,transparent 65%);
+             pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;
+            background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);
+            color:var(--violet);font-size:12px;font-weight:600;
+            padding:4px 14px;border-radius:20px;letter-spacing:.5px;margin-bottom:24px}
+.hero-badge::before{content:'●';font-size:8px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{font-size:66px;font-weight:900;color:#fff;line-height:1.05;
+            letter-spacing:-2.5px;margin-bottom:20px}
+.hero-title .accent{color:var(--violet)}
+.hero-sub{font-size:19px;color:rgba(255,255,255,.68);max-width:580px;
+          line-height:1.65;margin-bottom:40px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:68px}
+.btn-hero{font-size:15px;font-weight:700;padding:14px 28px;border-radius:10px;transition:all .2s}
+.btn-hero.primary{background:var(--violet);color:#fff}
+.btn-hero.primary:hover{background:#9061f9;transform:translateY(-2px);
+                         box-shadow:0 8px 24px rgba(167,139,250,.4)}
+.btn-hero.secondary{background:rgba(255,255,255,.1);color:#fff;
+                    border:1px solid rgba(255,255,255,.2)}
+.btn-hero.secondary:hover{background:rgba(255,255,255,.16)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+            background:rgba(255,255,255,.08);border-radius:16px;overflow:hidden;
+            border:1px solid rgba(255,255,255,.08)}
+.stat-card{background:rgba(255,255,255,.04);padding:24px;text-align:center}
+.stat-val{font-size:36px;font-weight:900;color:var(--violet);line-height:1}
+.stat-lbl{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;
+          color:rgba(255,255,255,.45);margin-top:6px}
 
-/* TICKER */
-.ticker{overflow:hidden;background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:0.72rem 0;white-space:nowrap}
-.ticker-t{display:inline-block;animation:tick 30s linear infinite}
-@keyframes tick{to{transform:translateX(-50%)}}
-.ticker-i{display:inline-block;font-size:0.57rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--soft);padding:0 3rem}
-.ticker-dot{color:var(--line)}
+/* SECTIONS */
+section{padding:88px 48px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+             color:var(--purple);margin-bottom:8px}
+.section-title{font-size:40px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;
+               line-height:1.15;margin-bottom:14px}
+.section-sub{font-size:17px;color:#555;max-width:620px;line-height:1.75}
+hr.divider{border:none;border-top:1px solid #e9ecef;margin:0 48px}
 
-/* REVEAL */
-.rv{opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease}
-.rv.in{opacity:1;transform:none}
+/* ABOUT */
+.about{background:var(--light)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;
+            align-items:center;margin-top:56px}
+.about-text p{font-size:15px;color:#444;line-height:1.85;margin-bottom:16px}
+.about-code{background:#1a1a2e;border-radius:var(--radius);overflow:hidden;
+            box-shadow:var(--shadow-lg)}
+.code-bar{background:#2a2a3e;padding:12px 18px;display:flex;align-items:center;gap:7px}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
+.code-bar span{font-size:12px;color:rgba(255,255,255,.35);margin-left:8px;font-family:monospace}
+.code-body{padding:24px;font-family:'Courier New',Monaco,monospace;font-size:12.5px;line-height:1.9}
+.ck{color:#c792ea}.cs{color:#c3e88d}.cn{color:#f78c6c}.cv{color:#82aaff}
+.cc{color:#546e7a}.co{color:#a78bfa}.cm{color:#4ade80}
 
-/* CATS */
-.sec{padding:5.5rem 3rem}
-.sec-head{text-align:center;margin-bottom:3.5rem}
-.sec-eye{font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:0.8rem}
-.sec-title{font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:300;color:var(--dark);line-height:1.1}
-.sec-title em{font-style:italic;color:var(--mid)}
-.cats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;background:var(--line)}
-.cat-card{background:var(--bg);padding:2.2rem 1.2rem;text-align:center;cursor:pointer;transition:background 0.3s;position:relative;overflow:hidden}
-.cat-card:hover{background:#fff}
-.cat-card img{width:100%;height:170px;object-fit:cover;margin-bottom:1.1rem;transition:transform 0.5s ease}
-.cat-card:hover img{transform:scale(1.04)}
-.cat-n{font-family:var(--serif);font-size:1.15rem;color:var(--dark);margin-bottom:0.3rem;transition:color 0.25s}
-.cat-card:hover .cat-n{color:var(--mid)}
-.cat-c{font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft)}
-.cat-arr{position:absolute;bottom:1rem;right:1rem;font-size:0.8rem;color:var(--soft);opacity:0;transform:translateX(-5px);transition:all 0.25s}
-.cat-card:hover .cat-arr{opacity:1;transform:none}
+/* PILLARS */
+.pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+.pillar-card{background:#fff;border-radius:16px;padding:32px;
+             border:1px solid #e9ecef;transition:transform .25s,box-shadow .25s;
+             position:relative;overflow:hidden}
+.pillar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+                     background:linear-gradient(90deg,var(--navy),var(--purple),var(--violet))}
+.pillar-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.pillar-card.wide{grid-column:span 2}
+.pillar-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;
+            color:var(--purple);margin-bottom:8px}
+.pillar-icon{font-size:38px;margin-bottom:14px}
+.pillar-title{font-size:20px;font-weight:800;color:#1a1a2e;margin-bottom:10px;letter-spacing:-.4px}
+.pillar-desc{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;
+     background:rgba(83,52,131,.08);color:var(--purple)}
 
-/* FEATURED */
-.feat-sec{padding:5.5rem 3rem;background:var(--bg2)}
-.feat-row{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:1.5rem}
-.feat-card{cursor:pointer;background:var(--bg);position:relative;overflow:hidden}
-.feat-card:first-child{grid-row:span 2}
-.feat-card img{width:100%;transition:transform 0.6s ease}
-.feat-card:first-child img{height:540px}
-.feat-card:not(:first-child) img{height:220px}
-.feat-card:hover img{transform:scale(1.04)}
-.feat-veil{position:absolute;inset:0;background:rgba(18,15,12,0.56);opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem}
-.feat-card:hover .feat-veil{opacity:1}
-.fv-btn{padding:0.5rem 1.4rem;border:1px solid rgba(255,255,255,0.45);color:rgba(255,255,255,0.85);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;transform:translateY(8px);opacity:0;transition:all 0.28s}
-.feat-card:hover .fv-btn{transform:none;opacity:1}
-.feat-card:hover .fv-btn:nth-child(2){transition-delay:0.06s}
-.fv-btn:hover{background:rgba(255,255,255,0.12)}
-.feat-foot{padding:1rem 0}
-.feat-cat{font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.3rem}
-.feat-name{font-family:var(--serif);font-size:1.05rem;color:var(--dark);margin-bottom:0.2rem}
-.feat-card:first-child .feat-name{font-size:1.4rem}
-.feat-price{font-size:0.75rem;color:var(--mid)}
+/* FLOW */
+.how{background:var(--light)}
+.flow{display:flex;align-items:stretch;margin-top:56px;border-radius:14px;
+      overflow:hidden;border:1px solid #e9ecef;box-shadow:var(--shadow)}
+.flow-step{flex:1;background:#fff;padding:28px 20px;text-align:center;
+           border-right:1px solid #f0f2f5;position:relative}
+.flow-step:last-child{border-right:none}
+.flow-step::after{content:'›';position:absolute;right:-10px;top:50%;
+                  transform:translateY(-50%);font-size:18px;color:var(--violet);
+                  z-index:1;font-weight:700;line-height:1}
+.flow-step:last-child::after{display:none}
+.flow-n{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+        color:var(--violet);margin-bottom:6px}
+.flow-icon{font-size:28px;margin-bottom:8px}
+.flow-title{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:5px}
+.flow-desc{font-size:11.5px;color:#888;line-height:1.5}
 
-/* BANNER */
-.banner{height:54vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
-.banner-img{position:absolute;inset:0}
-.banner-img img{height:100%;object-fit:cover}
-.banner-scrim{position:absolute;inset:0;background:rgba(18,15,12,0.62)}
-.banner-body{position:relative;z-index:2;padding:0 3rem;max-width:700px}
-.banner-h{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4.5rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1.2rem}
-.banner-h em{font-style:italic;color:rgba(255,255,255,0.5)}
-.banner-p{font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:2;margin-bottom:2.2rem;max-width:460px;margin-left:auto;margin-right:auto}
-.btn-fill-dark{padding:0.85rem 2.2rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
-.btn-fill-dark:hover{background:var(--dark2)}
+/* PRICING TABLE */
+.pricing-legend{display:flex;gap:0;background:rgba(83,52,131,.05);
+                border:1px solid rgba(83,52,131,.15);border-radius:10px;
+                overflow:hidden;margin-bottom:20px}
+.leg{flex:1;padding:14px 20px;border-right:1px solid rgba(83,52,131,.12)}
+.leg:last-child{border-right:none}
+.leg-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
+         color:var(--purple);margin-bottom:3px}
+.leg-desc{font-size:12.5px;color:#555}
+.table-wrap{border:1px solid #e9ecef;border-radius:12px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+thead th{background:#1a1a2e;color:rgba(255,255,255,.6);font-size:11px;font-weight:600;
+         text-transform:uppercase;letter-spacing:1px;padding:12px 16px;text-align:left}
+tbody tr{border-bottom:1px solid #f0f2f5;transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f8f9ff}
+td{padding:10px 16px;vertical-align:middle}
+.col-rank{color:#bbb;font-size:12px;text-align:center;width:40px}
+.col-model{font-family:'Courier New',monospace;font-weight:600;color:#1a1a2e;font-size:12.5px}
+.col-vendor{font-size:12px;color:#666}
+.tier-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:8px;
+            font-size:10.5px;font-weight:700;letter-spacing:.3px}
+.t1{background:#fef2f2;color:#991b1b}
+.t2{background:#fff7ed;color:#9a3412}
+.t3{background:#f0fdf4;color:#166534}
+.t4{background:#f0f9ff;color:#075985}
+.col-in{font-family:'Courier New',monospace;font-weight:700;color:#0f3460;font-size:13px}
+.col-out{font-family:'Courier New',monospace;font-weight:600;color:#533483;font-size:13px}
+.table-note{font-size:12px;color:#aaa;margin-top:10px;text-align:center}
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);background:var(--dark)}
-.stat{padding:3.5rem 2rem;text-align:center;border-right:1px solid rgba(255,255,255,0.06)}
-.stat:last-child{border-right:none}
-.st-num{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:rgba(255,255,255,0.82);display:block;line-height:1}
-.st-lbl{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:0.5rem;display:block}
+/* MAGAZINE */
+.magazine-section{background:linear-gradient(135deg,#f8f9ff 0%,#ede9fe 100%)}
+.mag-card{background:#fff;border-radius:20px;overflow:hidden;
+          box-shadow:var(--shadow-lg);border:1px solid rgba(83,52,131,.1);
+          max-width:860px;margin:0 auto}
+.mag-header{background:linear-gradient(135deg,#0f3460 0%,#533483 60%,#e94560 100%);
+            padding:32px 40px 28px}
+.mag-logo{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.mag-logo span{color:var(--violet)}
+.mag-sub-tag{font-size:10px;text-transform:uppercase;letter-spacing:2.5px;
+             color:rgba(255,255,255,.45);margin-top:3px}
+.mag-title{font-size:20px;font-weight:700;color:#fff;margin-top:20px;line-height:1.3}
+.mag-date{font-size:13px;color:rgba(255,255,255,.6);margin-top:6px}
+.mag-stats-bar{background:#1a1a2e;display:flex}
+.ms{flex:1;padding:18px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.ms:last-child{border-right:none}
+.ms-val{font-size:24px;font-weight:900;color:var(--violet);line-height:1}
+.ms-val.g{color:#4ade80}.ms-val.r{color:#f87171}
+.ms-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;
+        color:rgba(255,255,255,.35);margin-top:4px}
+.mag-body{padding:32px 40px}
+.exec-sum{font-size:14px;color:#555;line-height:1.85;padding:16px 20px;
+          background:#f8f9ff;border-left:3px solid var(--purple);
+          border-radius:0 8px 8px 0;margin-bottom:28px}
+.mag-sec-title{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:14px;
+               padding-bottom:8px;border-bottom:2px solid #e9ecef}
+.changes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.cc-card{padding:16px;border-radius:10px;border:1px solid transparent}
+.cc-card.drop{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.cc-card.rise{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.cc-card.new{background:rgba(83,52,131,.05);border-color:rgba(83,52,131,.15)}
+.cc-model{font-size:13px;font-weight:700;font-family:monospace;color:#1a1a2e;margin-bottom:3px}
+.cc-vendor{font-size:11px;color:#aaa;margin-bottom:10px}
+.cc-row{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:3px}
+.cc-lbl{color:#bbb;width:50px;flex-shrink:0}
+.cc-old{color:#ccc;text-decoration:line-through}
+.cc-new{font-weight:700}
+.cc-new.drop{color:#16a34a}.cc-new.rise{color:#dc2626}.cc-new.new{color:var(--purple)}
+.cc-delta{font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px}
+.d-drop{background:rgba(34,197,94,.1);color:#16a34a}
+.d-rise{background:rgba(239,68,68,.1);color:#dc2626}
+.d-new{background:rgba(83,52,131,.1);color:var(--purple)}
+.mag-footer{background:#f8f9ff;padding:18px 40px;border-top:1px solid #e9ecef;
+            display:flex;align-items:center;justify-content:space-between}
+.mag-footer p{font-size:12px;color:#aaa}
+.mag-footer a{font-size:12px;font-weight:600;color:var(--purple)}
+
+/* SUBSCRIBE */
+.sub-section{background:var(--navy);padding:80px 48px;text-align:center}
+.sub-section h2{font-size:40px;font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:12px}
+.sub-section p{font-size:17px;color:rgba(255,255,255,.6);margin-bottom:40px}
+.sub-form{display:flex;gap:12px;max-width:460px;margin:0 auto}
+.sub-form input{flex:1;padding:13px 18px;border-radius:10px;border:none;
+                font-size:14px;outline:none}
+.sub-form input:focus{box-shadow:0 0 0 3px rgba(167,139,250,.4)}
+.sub-form button{background:var(--violet);color:#fff;font-size:14px;font-weight:700;
+                 padding:13px 22px;border-radius:10px;border:none;cursor:pointer;
+                 white-space:nowrap;transition:all .2s}
+.sub-form button:hover{background:#9061f9;transform:translateY(-2px)}
+#sub-note{font-size:12px;color:rgba(255,255,255,.35);margin-top:14px}
+#sub-msg{margin-top:14px;font-size:14px;display:none}
+#sub-msg.ok{color:#4ade80}#sub-msg.err{color:#f87171}
 
 /* FOOTER */
-.footer{background:var(--dark2);padding:4rem 3rem 2.5rem}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;padding-bottom:3rem;margin-bottom:2.5rem;border-bottom:1px solid rgba(255,255,255,0.06)}
-.foot-logo img{height:30px;width:auto;max-width:140px;object-fit:contain;opacity:0.6;margin-bottom:1rem}
-.foot-tag{font-family:var(--serif);font-size:0.95rem;font-style:italic;color:rgba(255,255,255,0.2);line-height:1.7}
-.foot-col h5{font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:1.1rem}
-.foot-col a{display:block;font-size:0.72rem;color:rgba(255,255,255,0.28);margin-bottom:0.55rem;transition:color 0.22s}
-.foot-col a:hover{color:rgba(255,255,255,0.65)}
-.foot-bot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.foot-copy{font-size:0.6rem;color:rgba(255,255,255,0.16);letter-spacing:0.05em}
-.foot-soc{display:flex;gap:1.5rem}
-.foot-soc a{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);transition:color 0.22s}
-.foot-soc a:hover{color:rgba(255,255,255,0.6)}
+footer{background:#0a0f1e;padding:48px}
+.footer-inner{max-width:1100px;margin:0 auto;
+              display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.f-brand .logo{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.f-brand .logo span{color:var(--violet)}
+.f-brand p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.65;max-width:220px}
+.f-col h4{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;
+          color:rgba(255,255,255,.35);margin-bottom:14px}
+.f-col a{display:block;font-size:13px;color:rgba(255,255,255,.55);
+         margin-bottom:9px;transition:color .2s}
+.f-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:32px auto 0;padding-top:24px;
+               border-top:1px solid rgba(255,255,255,.06);
+               display:flex;justify-content:space-between;align-items:center;
+               flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.28)}
+.footer-bottom a{color:var(--violet)}
 
-/* ─── SHOP ─── */
-.shop-hd{background:var(--dark);padding:5rem 3rem 4rem;position:relative;overflow:hidden}
-.shop-hd::after{content:'';position:absolute;right:-80px;top:-80px;width:400px;height:400px;border:1px solid rgba(255,255,255,0.04);border-radius:50%}
-.shop-hd-inner{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem}
-.shop-hd-title{font-family:var(--serif);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:300;color:rgba(255,255,255,0.88);line-height:0.95}
-.shop-hd-title em{font-style:italic;color:rgba(255,255,255,0.32)}
-.pills{display:flex;gap:0.5rem;flex-wrap:wrap}
-.pill{padding:0.45rem 1.1rem;border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.38);font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;transition:all 0.22s}
-.pill:hover{border-color:rgba(255,255,255,0.42);color:rgba(255,255,255,0.75)}
-.pill.on{background:rgba(255,255,255,0.88);color:var(--dark);border-color:rgba(255,255,255,0.88)}
-.shop-bar{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 3rem;border-bottom:1px solid var(--line);background:var(--bg);flex-wrap:wrap;gap:0.5rem}
-.bar-ct{font-size:0.6rem;color:var(--soft);letter-spacing:0.05em}
-.bar-r{display:flex;align-items:center;gap:0.8rem}
-.vbts{display:flex;gap:2px}
-.vb{width:30px;height:30px;border:1px solid var(--line);color:var(--soft);display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.vb.on{background:var(--dark);border-color:var(--dark);color:#fff}
-.sort-s{font-size:0.6rem;border:1px solid var(--line);background:none;padding:0.35rem 0.7rem;color:var(--dark);outline:none}
-
-/* MASONRY */
-.mason-wrap{padding:2px;background:var(--line)}
-.mason{columns:4;column-gap:2px}
-@media(max-width:1100px){.mason{columns:3}}
-@media(max-width:640px){.mason{columns:2}}
-.mc{break-inside:avoid;margin-bottom:2px;background:var(--bg);cursor:pointer;position:relative;overflow:hidden}
-.mc-img{width:100%;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.mc-img img{width:100%;transition:transform 0.55s ease}
-.mc-img.t{min-height:290px}
-.mc-img.s{min-height:170px}
-.mc:hover .mc-img img{transform:scale(1.06)}
-.mc-vl{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,15,12,0.78),rgba(18,15,12,0.12));opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.3rem}
-.mc:hover .mc-vl{opacity:1}
-.mc-vl-n{font-family:var(--serif);font-size:0.95rem;color:#fff;margin-bottom:0.15rem;transform:translateY(7px);transition:transform 0.28s 0.03s}
-.mc-vl-p{font-size:0.68rem;color:rgba(255,255,255,0.5);margin-bottom:0.7rem;transform:translateY(7px);transition:transform 0.28s 0.06s}
-.mc-vl-b{padding:0.38rem 0.85rem;border:1px solid rgba(255,255,255,0.32);color:rgba(255,255,255,0.78);font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;background:none;width:fit-content;transform:translateY(7px);opacity:0;transition:all 0.28s 0.08s}
-.mc:hover .mc-vl-n,.mc:hover .mc-vl-p{transform:none}
-.mc:hover .mc-vl-b{transform:none;opacity:1}
-.mc-vl-b:hover{background:rgba(255,255,255,0.1)}
-.mc-ft{padding:0.75rem 0.9rem;background:var(--bg)}
-.mc-cat{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft);margin-bottom:0.18rem}
-.mc-n{font-family:var(--serif);font-size:0.85rem;color:var(--dark)}
-.mc-p{font-size:0.7rem;color:var(--mid)}
-
-/* LIST */
-.list-wrap{display:none}
-.li-row{display:grid;grid-template-columns:88px 1fr auto auto;align-items:center;gap:1.8rem;padding:1rem 3rem;border-bottom:1px solid var(--line);cursor:pointer;transition:background 0.22s}
-.li-row:hover{background:var(--bg2)}
-.li-thumb{width:88px;height:88px;object-fit:cover;background:var(--bg3);transition:transform 0.3s}
-.li-row:hover .li-thumb{transform:scale(1.03)}
-.li-cat{font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--soft)}
-.li-n{font-family:var(--serif);font-size:1.05rem;color:var(--dark);margin-bottom:0.18rem}
-.li-m{font-size:0.65rem;color:var(--soft)}
-.li-p{font-size:0.95rem;color:var(--dark);white-space:nowrap}
-.li-b{padding:0.45rem 1.1rem;background:var(--dark);color:rgba(255,255,255,0.82);font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;transition:background 0.22s;white-space:nowrap}
-.li-b:hover{background:var(--dark2)}
-
-/* ─── DETAIL ─── */
-.det-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px)}
-.det-gal{background:var(--bg2);position:sticky;top:64px;height:calc(100vh - 64px);display:flex;flex-direction:column}
-.det-main{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.det-main img{max-height:100%;width:100%;object-fit:cover;transition:opacity 0.3s}
-.det-strips{display:flex;gap:1px;background:var(--line);height:84px;flex-shrink:0}
-.det-th{flex:1;background:var(--bg);opacity:0.55;cursor:pointer;overflow:hidden;transition:opacity 0.22s}
-.det-th:hover,.det-th.on{opacity:1;background:#fff}
-.det-th img{width:100%;height:100%;object-fit:cover}
-.det-info{padding:4.5rem 3.5rem;overflow-y:auto;background:var(--bg)}
-.det-back{font-size:0.58rem;letter-spacing:0.14em;color:var(--soft);margin-bottom:2.2rem;display:inline-flex;align-items:center;gap:0.4rem;transition:color 0.22s}
-.det-back:hover{color:var(--dark)}
-.det-cat{font-size:0.56rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--soft);margin-bottom:0.8rem}
-.det-n{font-family:var(--serif);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:300;color:var(--dark);line-height:1.1;margin-bottom:0.6rem}
-.det-p{font-family:var(--serif);font-size:1.35rem;font-weight:300;color:var(--mid);margin-bottom:1.8rem}
-.det-hr{height:1px;background:var(--line);margin-bottom:1.6rem}
-.det-d{font-size:0.76rem;line-height:2;color:var(--mid);margin-bottom:1.8rem}
-.opt-g{margin-bottom:1.5rem}
-.opt-l{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.65rem;display:flex;justify-content:space-between}
-.opt-l span{color:var(--dark)}
-.opts{display:flex;gap:0.45rem;flex-wrap:wrap}
-.opt{padding:0.42rem 1rem;border:1px solid var(--line);font-size:0.72rem;color:var(--dark);transition:all 0.2s}
-.opt:hover{border-color:var(--dark)}
-.opt.on{background:var(--dark);color:rgba(255,255,255,0.88);border-color:var(--dark)}
-.det-acts{display:flex;flex-direction:column;gap:0.7rem;margin-top:2rem}
-.det-add{padding:1rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s;position:relative;overflow:hidden}
-.det-add::before{content:'';position:absolute;inset:0;background:var(--dark2);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
-.det-add:hover::before{transform:scaleX(1)}
-.det-add span{position:relative;z-index:1}
-.det-wish{padding:0.9rem;background:none;color:var(--mid);border:1px solid var(--line);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:all 0.22s}
-.det-wish:hover{border-color:var(--dark);color:var(--dark)}
-.det-specs{margin-top:2rem;padding-top:1.8rem;border-top:1px solid var(--line)}
-.sp-row{display:flex;gap:1rem;padding:0.5rem 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:0.74rem}
-.sp-row dt{font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--soft);min-width:88px}
-.sp-row dd{color:var(--dark)}
-
-/* ─── CART DRAWER ─── */
-.cmask{position:fixed;inset:0;background:rgba(18,15,12,0.4);z-index:700;opacity:0;pointer-events:none;transition:opacity 0.35s;backdrop-filter:blur(3px)}
-.cmask.on{opacity:1;pointer-events:all}
-.cdrawer{position:fixed;top:0;right:0;width:400px;max-width:100%;height:100%;background:var(--bg);z-index:701;display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.25,1,0.5,1);box-shadow:-4px 0 24px rgba(0,0,0,0.08)}
-.cdrawer.on{transform:none}
-.cd-top{padding:1.6rem 1.8rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.cd-top h3{font-family:var(--serif);font-size:1.3rem;font-weight:300}
-.cd-x{font-size:1.5rem;color:var(--soft);line-height:1;transition:color 0.22s}
-.cd-x:hover{color:var(--dark)}
-.cd-body{flex:1;overflow-y:auto;padding:1.2rem 1.8rem}
-.cd-empty{text-align:center;font-family:var(--serif);font-style:italic;color:var(--soft);padding:3.5rem 0;font-size:1rem}
-.cl{display:flex;gap:1rem;padding:0.9rem 0;border-bottom:1px solid var(--line)}
-.cl-img{width:60px;height:60px;object-fit:cover;background:var(--bg3);flex-shrink:0}
-.cl-info{flex:1}
-.cl-n{font-family:var(--serif);font-size:0.88rem;margin-bottom:0.18rem}
-.cl-m{font-size:0.62rem;color:var(--soft)}
-.cl-p{font-size:0.82rem;color:var(--mid);white-space:nowrap}
-.cl-rm{color:var(--soft);font-size:1rem;align-self:flex-start;line-height:1;transition:color 0.2s}
-.cl-rm:hover{color:var(--dark)}
-.cd-bot{padding:1.4rem 1.8rem;border-top:1px solid var(--line)}
-.cd-sub{display:flex;justify-content:space-between;font-family:var(--serif);font-size:0.95rem;font-weight:300;margin-bottom:1rem}
-.cd-ck{width:100%;padding:0.95rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
-.cd-ck:hover{background:var(--dark2)}
-
-/* ─── AUTH ─── */
-.amask{position:fixed;inset:0;background:rgba(18,15,12,0.5);z-index:800;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
-.amask.on{display:flex}
-.abox{background:var(--bg);width:460px;max-width:95%;padding:3.2rem;position:relative;animation:pgIn 0.35s both;border-top:1px solid rgba(0,0,0,0.12)}
-.ax{position:absolute;top:1rem;right:1.3rem;font-size:1.35rem;color:var(--soft);transition:color 0.2s}
-.ax:hover{color:var(--dark)}
-.a-title{font-family:var(--serif);font-size:1.85rem;font-weight:300;margin-bottom:0.35rem}
-.a-sub{font-size:0.68rem;color:var(--soft);margin-bottom:2.2rem}
-.fg{margin-bottom:1.2rem}
-.fg label{display:block;font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:0.45rem}
-.fg input{width:100%;padding:0.7rem 0;border:none;border-bottom:1px solid rgba(0,0,0,0.14);background:transparent;font-size:0.86rem;outline:none;color:var(--dark);font-family:var(--sans);transition:border-color 0.25s}
-.fg input:focus{border-color:var(--dark)}
-.a-btn{width:100%;margin-top:1.5rem;padding:0.95rem;background:var(--dark);color:rgba(255,255,255,0.88);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;transition:background 0.25s}
-.a-btn:hover{background:var(--dark2)}
-.a-sw{font-size:0.7rem;color:var(--soft);text-align:center;margin-top:1.1rem}
-.a-sw a{color:var(--dark);text-decoration:underline}
-
-/* TOAST */
-.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:rgba(255,255,255,0.85);padding:0.75rem 2rem;font-size:0.62rem;letter-spacing:0.1em;z-index:999;opacity:0;pointer-events:none;transition:all 0.38s cubic-bezier(0.25,1,0.5,1);white-space:nowrap}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
+/* RESPONSIVE */
 @media(max-width:900px){
-  .cats-row{grid-template-columns:repeat(3,1fr)}
-  .feat-row{grid-template-columns:1fr 1fr}
-  .feat-card:first-child{grid-row:auto}
-  .stats-row{grid-template-columns:1fr 1fr}
-  .det-wrap{grid-template-columns:1fr}
-  .det-gal{position:static;height:50vw;min-height:260px}
-  .foot-grid{grid-template-columns:1fr}
-  #nav .nav-links{display:none}
-}
-@media(max-width:600px){
-  .cats-row{grid-template-columns:repeat(2,1fr)}
-  .sec,.feat-sec{padding:4rem 1.5rem}
-  .shop-hd{padding:4rem 1.5rem 3rem}
-  .shop-bar,.li-row{padding-left:1.5rem;padding-right:1.5rem}
-  .det-info{padding:2.5rem 1.5rem}
-  #nav{padding:0 1.5rem}
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:60px 20px 48px}
+  .hero-title{font-size:40px;letter-spacing:-1.5px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  section{padding:56px 20px}
+  .about-grid{grid-template-columns:1fr;gap:32px}
+  .pillars-grid{grid-template-columns:1fr}
+  .pillar-card.wide{grid-column:span 1}
+  .flow{flex-direction:column}
+  .flow-step{border-right:none!important;border-bottom:1px solid #f0f2f5}
+  .flow-step::after{display:none}
+  .changes-grid{grid-template-columns:1fr}
+  .sub-form{flex-direction:column}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .mag-body{padding:20px 24px}
+  hr.divider{margin:0 20px}
 }
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="ld-name">Aynnor's</div>
-  <div class="ld-bar"><div class="ld-fill"></div></div>
-</div>
-
 <!-- NAV -->
-<nav id="nav">
-  <div class="nav-logo" onclick="goPg('home')">
-    <img src="logo.png" alt="Aynnor's" onerror="this.style.display='none';this.nextSibling.style.display='block'">
-    <span class="nav-logo-text" style="display:none">Aynnor's</span>
+<nav>
+  <div class="nav-logo">tidus<span>.</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#pillars">Pillars</a>
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#magazine">Report</a>
   </div>
-  <ul class="nav-links">
-    <li><a onclick="goPg('home')">Home</a></li>
-    <li><a onclick="goShop(null)">Collection</a></li>
-    <li><a onclick="goShop('Rings')">Rings</a></li>
-    <li><a onclick="goShop('Necklaces')">Necklaces</a></li>
-    <li><a onclick="goShop('Earrings')">Earrings</a></li>
-    <li><a onclick="goShop('Bracelets')">Bracelets</a></li>
-  </ul>
-  <div class="nav-icons">
-    <button class="ni" onclick="openAuth()">
-      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-    </button>
-    <button class="ni" onclick="openCart()">
-      <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      <span class="ni-badge" id="cBadge">0</span>
-    </button>
-  </div>
+  <a href="#subscribe" class="nav-cta">Subscribe Free</a>
 </nav>
 
-<!-- ── HOME PAGE ── -->
-<div class="pg on" id="pg-home">
-
-  <section class="hero">
-    <div class="hero-img"><img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&q=80" alt="Hero jewelry"></div>
-    <div class="hero-scrim"></div>
-    <div class="hero-body">
-      <span class="hero-label">New Collection — 2026</span>
-      <h1 class="hero-h1">
-        <span class="wl"><span>Where</span></span>
-        <span class="wl"><span><em>elegance</em></span></span>
-        <span class="wl"><span>meets artistry</span></span>
-      </h1>
-      <p class="hero-sub">Handcrafted jewelry designed to celebrate the women who wear them. Each piece, a timeless story.</p>
-      <div class="hero-btns">
-        <button class="btn-fill" onclick="goShop(null)">Explore Collection</button>
-        <button class="btn-line" onclick="goShop('Rings')">Shop Rings</button>
-      </div>
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-badge">Open Source · Self-Hosted · Enterprise Ready</div>
+    <h1 class="hero-title">Stop overpaying<br>for <span class="accent">AI.</span></h1>
+    <p class="hero-sub">Tidus intelligently routes every AI request to the best-value model — cutting costs 60–80% while preserving quality. Your data never leaves your infrastructure.</p>
+    <div class="hero-actions">
+      <a href="https://github.com/kensterinvest/tidus" class="btn-hero primary">⭐ View on GitHub</a>
+      <a href="#about" class="btn-hero secondary">Learn More ↓</a>
     </div>
-    <div class="hero-scroll"><span>Scroll</span><div class="hs-line"></div></div>
-  </section>
-
-  <div class="ticker">
-    <div class="ticker-t">
-      <span class="ticker-i">Handcrafted Jewelry</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Sterling Silver</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Diamond Collection</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Free UK Delivery</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Lifetime Guarantee</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Bespoke Designs</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Handcrafted Jewelry</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Sterling Silver</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Diamond Collection</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Free UK Delivery</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Lifetime Guarantee</span><span class="ticker-dot">✦</span>
-      <span class="ticker-i">Bespoke Designs</span><span class="ticker-dot">✦</span>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-val">41+</div><div class="stat-lbl">Models Tracked</div></div>
+      <div class="stat-card"><div class="stat-val">12</div><div class="stat-lbl">AI Vendors</div></div>
+      <div class="stat-card"><div class="stat-val">70%</div><div class="stat-lbl">Cost Weight in Routing</div></div>
+      <div class="stat-card"><div class="stat-val">5</div><div class="stat-lbl">Validation Tiers</div></div>
     </div>
   </div>
+</section>
 
-  <section class="sec">
-    <div class="sec-head rv">
-      <span class="sec-eye">Browse by Category</span>
-      <h2 class="sec-title">Our <em>Collections</em></h2>
-    </div>
-    <div class="cats-row" id="catsRow"></div>
-  </section>
+<hr class="divider">
 
-  <section class="feat-sec">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem" class="rv">
-      <div>
-        <span class="sec-eye">Curated for you</span>
-        <h2 class="sec-title">Featured <em>Pieces</em></h2>
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <p class="section-tag">What is Tidus?</p>
+    <h2 class="section-title">Your AI requests, always on the optimal model</h2>
+    <p class="section-sub">Tidus sits in front of your AI workloads as a self-hosted FastAPI service. You call one endpoint — Tidus picks the right model automatically.</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Most teams waste money sending every request to the same premium model. A simple classification task costs $15/1M tokens on Claude Opus when Gemini 2.0 Flash at $0.10/1M returns an equivalent result.</p>
+        <p>Tidus analyses each request's complexity, privacy requirements, capability needs, and budget constraints — then scores every eligible model using a weighted algorithm (70% cost, 20% tier, 10% latency) to find the optimal route.</p>
+        <p>Because Tidus is fully self-hosted and open source, no request data ever leaves your environment. It works with any AI vendor and supports local Ollama models for confidential workloads where cloud APIs are prohibited.</p>
+        <p>The weekly pricing registry keeps costs accurate without manual intervention — syncing prices from multiple sources every Sunday, detecting outliers with MAD-based consensus, and creating versioned, auditable revisions.</p>
       </div>
-      <button onclick="goShop(null)" style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid);border:none;background:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.22s" onmouseover="this.style.color='var(--dark)'" onmouseout="this.style.color='var(--mid)'">
-        <span style="width:20px;height:1px;background:currentColor;display:inline-block"></span> View All
-      </button>
-    </div>
-    <div class="feat-row" id="featRow"></div>
-  </section>
-
-  <div class="banner rv">
-    <div class="banner-img"><img src="https://images.unsplash.com/photo-1601121141461-9d6647bef0a1?w=1600&q=80" alt="Jewelry banner"></div>
-    <div class="banner-scrim"></div>
-    <div class="banner-body">
-      <h2 class="banner-h">Crafted with <em>intention.</em><br>Worn with love.</h2>
-      <p class="banner-p">Every Aynnor's piece is a testament to timeless beauty, made with the finest materials for women who appreciate the extraordinary.</p>
-      <button class="btn-fill" onclick="goShop(null)">Discover More</button>
+      <div class="about-code">
+        <div class="code-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <span>tidus_client.py</span>
+        </div>
+        <div class="code-body">
+<span class="cc"># Before Tidus — every call goes to GPT-4o</span><br>
+<span class="cv">response</span> = <span class="cv">openai</span>.<span class="cv">chat</span>.<span class="cv">completions</span>.<span class="cv">create</span>(<br>
+&nbsp;&nbsp;<span class="cv">model</span>=<span class="cs">"gpt-4o"</span>,&nbsp;&nbsp;<span class="cc"># $2.50/1M — always</span><br>
+&nbsp;&nbsp;<span class="cv">messages</span>=<span class="cv">messages</span>,<br>
+)<br>
+<br>
+<span class="cc"># After Tidus — optimal model selected per request</span><br>
+<span class="cv">response</span> = <span class="ck">await</span> <span class="cv">tidus</span>.<span class="cv">route</span>(<br>
+&nbsp;&nbsp;<span class="cv">messages</span>=<span class="cv">messages</span>,<br>
+&nbsp;&nbsp;<span class="cv">complexity</span>=<span class="cs">"simple"</span>,<br>
+&nbsp;&nbsp;<span class="cv">team_id</span>=<span class="cs">"analytics"</span>,<br>
+)<br>
+<span class="cc"># → Gemini 2.0 Flash at $0.10/1M  ✓  96% cheaper</span><br>
+<br>
+<span class="cc"># Critical task? Tidus routes to Tier 1 automatically</span><br>
+<span class="cv">response</span> = <span class="ck">await</span> <span class="cv">tidus</span>.<span class="cv">route</span>(<br>
+&nbsp;&nbsp;<span class="cv">messages</span>=<span class="cv">messages</span>,<br>
+&nbsp;&nbsp;<span class="cv">complexity</span>=<span class="cs">"critical"</span>,<br>
+)<br>
+<span class="cc"># → Claude Opus 4.6  ✓  best model for the job</span>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="stats-row">
-    <div class="stat rv"><span class="st-num" data-t="200">0+</span><span class="st-lbl">Unique Designs</span></div>
-    <div class="stat rv" style="transition-delay:.12s"><span class="st-num" data-t="5000">0+</span><span class="st-lbl">Happy Customers</span></div>
-    <div class="stat rv" style="transition-delay:.24s"><span class="st-num" data-t="12">0</span><span class="st-lbl">Years of Craft</span></div>
-  </div>
+<hr class="divider">
 
-  <footer class="footer">
-    <div class="foot-grid">
-      <div class="foot-logo">
-        <img src="logo.png" alt="Aynnor's" onerror="this.style.display='none'">
-        <p class="foot-tag">"Where elegance meets artistry."</p>
-      </div>
-      <div class="foot-col">
-        <h5>Collections</h5>
-        <a onclick="goShop('Rings')">Rings</a>
-        <a onclick="goShop('Necklaces')">Necklaces</a>
-        <a onclick="goShop('Earrings')">Earrings</a>
-        <a onclick="goShop('Bracelets')">Bracelets</a>
-        <a onclick="goShop('Anklets')">Anklets</a>
-      </div>
-      <div class="foot-col">
-        <h5>Information</h5>
-        <a>About Us</a><a>Care Guide</a>
-        <a>Shipping & Returns</a><a>Contact</a>
-      </div>
-    </div>
-    <div class="foot-bot">
-      <span class="foot-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
-      <div class="foot-soc"><a>Instagram</a><a>Pinterest</a><a>Facebook</a></div>
-    </div>
-  </footer>
-</div>
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="section-inner">
+    <p class="section-tag">Five Pillars</p>
+    <h2 class="section-title">Everything routing needs to work in production</h2>
+    <p class="section-sub">Tidus v1.1.0 delivers five integrated capabilities — from real-time routing to weekly market intelligence.</p>
+    <div class="pillars-grid">
 
-<!-- ── SHOP PAGE ── -->
-<div class="pg" id="pg-shop">
-  <div class="shop-hd">
-    <div class="shop-hd-inner">
-      <div class="shop-hd-title" id="shopTitle">The<br><em>Collection</em></div>
-      <div class="pills" id="shopPills"></div>
-    </div>
-  </div>
-  <div class="shop-bar">
-    <span class="bar-ct" id="shopCt">— pieces</span>
-    <div class="bar-r">
-      <div class="vbts">
-        <button class="vb on" id="vbGrid" onclick="setView('g')" title="Grid">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 12 12"><rect x="0" y="0" width="5" height="5"/><rect x="7" y="0" width="5" height="5"/><rect x="0" y="7" width="5" height="5"/><rect x="7" y="7" width="5" height="5"/></svg>
-        </button>
-        <button class="vb" id="vbList" onclick="setView('l')" title="List">
-          <svg width="12" height="12" fill="currentColor" viewBox="0 0 12 12"><rect x="0" y="0" width="12" height="2"/><rect x="0" y="5" width="12" height="2"/><rect x="0" y="10" width="12" height="2"/></svg>
-        </button>
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar 1</div>
+        <div class="pillar-icon">🧭</div>
+        <div class="pillar-title">Intelligent Model Routing</div>
+        <div class="pillar-desc">A 5-factor scoring algorithm evaluates every eligible model on cost (70%), tier (20%), and latency (10%). Complexity tiers (simple → critical) define which model tiers are eligible. Capability matching filters models by required features — multimodal, code, function-calling. Budget guardrails cut off models that would exceed team spend limits.</div>
+        <div class="tags">
+          <span class="tag">MAD scoring</span>
+          <span class="tag">Capability matching</span>
+          <span class="tag">Tier ceiling</span>
+          <span class="tag">Privacy routing</span>
+          <span class="tag">Local-first</span>
+        </div>
       </div>
-      <select class="sort-s" id="sortS" onchange="renderShop()">
-        <option value="d">Featured</option>
-        <option value="asc">Price: Low → High</option>
-        <option value="desc">Price: High → Low</option>
-        <option value="az">Name A → Z</option>
-      </select>
-    </div>
-  </div>
-  <div class="mason-wrap" id="masonWrap"><div class="mason" id="shopGrid"></div></div>
-  <div class="list-wrap" id="listWrap"></div>
-  <footer class="footer" style="margin-top:4rem">
-    <div class="foot-bot">
-      <span class="foot-copy">© 2026 Aynnor's Jewelry. All rights reserved.</span>
-      <div class="foot-soc"><a>Instagram</a><a>Pinterest</a></div>
-    </div>
-  </footer>
-</div>
 
-<!-- ── DETAIL PAGE ── -->
-<div class="pg" id="pg-detail">
-  <div class="det-wrap">
-    <div class="det-gal">
-      <div class="det-main"><img id="detMainImg" src="" alt="product"></div>
-      <div class="det-strips" id="detThumbs"></div>
-    </div>
-    <div class="det-info">
-      <button class="det-back" id="detBack">← Back</button>
-      <div class="det-cat" id="detCat"></div>
-      <div class="det-n" id="detN"></div>
-      <div class="det-p" id="detP"></div>
-      <div class="det-hr"></div>
-      <div class="det-d" id="detD"></div>
-      <div class="opt-g">
-        <div class="opt-l">Metal <span id="oMetal"></span></div>
-        <div class="opts" id="metalOpts"></div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar 2</div>
+        <div class="pillar-icon">🏛️</div>
+        <div class="pillar-title">Self-Healing Pricing Registry</div>
+        <div class="pillar-desc">Prices drive 70% of the routing score — stale prices cause systematic misspending. The registry syncs from multiple sources every Sunday using MAD-based outlier detection. Changes create versioned, audited DB revisions via atomic two-phase write. Rollback to any previous revision in one API call. Overrides let teams adjust pricing, disable models, or pin providers without touching config files.</div>
+        <div class="tags">
+          <span class="tag">Multi-source consensus</span>
+          <span class="tag">MAD outlier detection</span>
+          <span class="tag">Atomic revisions</span>
+          <span class="tag">90-day audit trail</span>
+          <span class="tag">RBAC overrides</span>
+        </div>
       </div>
-      <div class="opt-g">
-        <div class="opt-l">Size <span id="oSize"></span></div>
-        <div class="opts" id="sizeOpts"></div>
+
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar 3</div>
+        <div class="pillar-icon">🛡️</div>
+        <div class="pillar-title">Budget Guardrails</div>
+        <div class="pillar-desc">Set hard spend limits per team, per model, or globally. Every routed request records actual token usage and cost in real time. Overages trigger alerts and optionally fall back to cheaper models within the same tier. Billing reconciliation ingests provider CSV exports and flags mismatches between Tidus cost records and actual invoices — catching silent cost leakage before it compounds.</div>
+        <div class="tags">
+          <span class="tag">Per-team limits</span>
+          <span class="tag">Real-time enforcement</span>
+          <span class="tag">Overage alerting</span>
+          <span class="tag">CSV reconciliation</span>
+        </div>
       </div>
-      <div class="det-acts">
-        <button class="det-add" id="detAddBtn"><span>Add to Cart</span></button>
-        <button class="det-wish">♡ Add to Wishlist</button>
+
+      <div class="pillar-card wide">
+        <div class="pillar-num">Pillar 4</div>
+        <div class="pillar-icon">🔬</div>
+        <div class="pillar-title">Drift Detection &amp; Auto-Remediation</div>
+        <div class="pillar-desc">AI models change behaviour without notice — latency spikes, context limits shift, tokenization diverges, prices move. Tidus runs four drift detectors on a 5-minute cycle: <strong>Latency</strong> (measured P50 vs catalog baseline), <strong>Context</strong> (overflow rate in recent requests), <strong>Tokenization</strong> (estimated vs actual token divergence over 7 days), and <strong>Price</strong> (unusual change frequency or magnitude). Warning events escalate the model to priority probing. Critical events auto-create a <code>hard_disable</code> override and remove the model from routing immediately. After 3 consecutive healthy probe cycles, the override is automatically lifted and the model returns to rotation. Every event is linked to the exact registry revision that was active at detection time — enabling precise postmortems.</div>
+        <div class="tags">
+          <span class="tag">4 drift detectors</span>
+          <span class="tag">5-min probe cycle</span>
+          <span class="tag">Auto-disable</span>
+          <span class="tag">Auto-recovery</span>
+          <span class="tag">Revision-linked events</span>
+          <span class="tag">Prometheus metrics</span>
+        </div>
       </div>
-      <dl class="det-specs" id="detSpecs"></dl>
+
+      <div class="pillar-card">
+        <div class="pillar-num">Pillar 5</div>
+        <div class="pillar-icon">📰</div>
+        <div class="pillar-title">Weekly Market Intelligence</div>
+        <div class="pillar-desc">Every Sunday at 02:00 UTC, Tidus syncs prices and emails your team a market intelligence report. The magazine highlights price drops (savings opportunities), price increases (cost risk), new model additions, and models with stale data. Delivered as a richly-formatted HTML email — no third-party analytics, no tracking pixels.</div>
+        <div class="tags">
+          <span class="tag">Weekly pricing sync</span>
+          <span class="tag">HTML email magazine</span>
+          <span class="tag">Price history</span>
+          <span class="tag">41 models tracked</span>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
+</section>
 
-<!-- CART DRAWER -->
-<div class="cmask" id="cmask" onclick="closeCart()"></div>
-<div class="cdrawer" id="cdrawer">
-  <div class="cd-top"><h3>Shopping Cart</h3><button class="cd-x" onclick="closeCart()">×</button></div>
-  <div class="cd-body" id="cdBody"><div class="cd-empty">Your cart is empty</div></div>
-  <div class="cd-bot">
-    <div class="cd-sub"><span>Subtotal</span><span id="cdTotal">£0.00</span></div>
-    <button class="cd-ck" onclick="toast('Checkout coming soon!')">Proceed to Checkout</button>
-  </div>
-</div>
+<hr class="divider">
 
-<!-- AUTH MODAL -->
-<div class="amask" id="amask">
-  <div class="abox">
-    <button class="ax" onclick="closeAuth()">×</button>
-    <div id="aLogin">
-      <div class="a-title">Welcome back</div>
-      <div class="a-sub">Sign in to your Aynnor's account</div>
-      <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="fg"><label>Password</label><input type="password" placeholder="••••••••"></div>
-      <button class="a-btn" onclick="doAuth()">Sign In</button>
-      <div class="a-sw">New here? <a onclick="toggleAuth()">Create an account</a></div>
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <p class="section-tag">How It Works</p>
+    <h2 class="section-title">From request to optimal route in milliseconds</h2>
+    <p class="section-sub">Tidus evaluates every request through a deterministic pipeline — no magic, no black-box AI decisions.</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-n">Step 1</div>
+        <div class="flow-icon">📥</div>
+        <div class="flow-title">Receive Request</div>
+        <div class="flow-desc">FastAPI endpoint accepts messages, complexity hint, capability tags, team ID, and optional privacy flag</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">Step 2</div>
+        <div class="flow-icon">🔍</div>
+        <div class="flow-title">Filter Candidates</div>
+        <div class="flow-desc">Capability matching removes ineligible models. Tier ceiling from complexity. Privacy flag forces local-only. Budget check removes over-limit models</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">Step 3</div>
+        <div class="flow-icon">💰</div>
+        <div class="flow-title">Estimate Cost</div>
+        <div class="flow-desc">Token count × registry price per model. 15% safety buffer applied. Prices from the active revision — verified against multiple sources</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">Step 4</div>
+        <div class="flow-icon">📊</div>
+        <div class="flow-title">Score &amp; Rank</div>
+        <div class="flow-desc">score = 0.70 × cost_score + 0.20 × tier_score + 0.10 × latency_score. Lowest cost wins within each tier</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-n">Step 5</div>
+        <div class="flow-icon">⚡</div>
+        <div class="flow-title">Route &amp; Record</div>
+        <div class="flow-desc">Top-ranked model receives the request. Actual tokens and cost recorded to cost_records. Telemetry updates latency P50</div>
+      </div>
     </div>
-    <div id="aReg" style="display:none">
-      <div class="a-title">Create account</div>
-      <div class="a-sub">Join Aynnor's Jewelry</div>
-      <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name"></div>
-      <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"></div>
-      <div class="fg"><label>Password</label><input type="password" placeholder="Choose a password"></div>
-      <button class="a-btn" onclick="doAuth()">Create Account</button>
-      <div class="a-sw">Already have an account? <a onclick="toggleAuth()">Sign in</a></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRICING TABLE -->
+<section id="pricing">
+  <div class="section-inner">
+    <p class="section-tag">Model Catalog</p>
+    <h2 class="section-title">41 models across 12 vendors — prices updated weekly</h2>
+    <p class="section-sub">All prices USD per 1M tokens. Verified April 9, 2026. Ranked by input price — highest first.</p>
+
+    <div style="margin-top:32px">
+      <div class="pricing-legend">
+        <div class="leg">
+          <div class="leg-lbl">Input Price</div>
+          <div class="leg-desc">Tokens <em>you send</em> — your prompt, system message, and context. Charged once per request.</div>
+        </div>
+        <div class="leg">
+          <div class="leg-lbl">Output Price</div>
+          <div class="leg-desc">Tokens the <em>model generates</em>. Typically 3–5× the input price. Estimate: 200 output tokens per request.</div>
+        </div>
+        <div class="leg">
+          <div class="leg-lbl">Cost Formula</div>
+          <div class="leg-desc">(input_tokens × in_price + output_tokens × out_price) ÷ 1,000,000 = cost in USD</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="model-table">
+          <thead>
+            <tr>
+              <th class="col-rank">#</th>
+              <th>Model</th>
+              <th>Vendor</th>
+              <th>Tier</th>
+              <th>Input $/1M</th>
+              <th>Output $/1M</th>
+            </tr>
+          </thead>
+          <tbody id="model-tbody"></tbody>
+        </table>
+      </div>
+      <p class="table-note">★ Tier 1 = critical tasks · Tier 2 = complex · Tier 3 = moderate · Tier 4 = simple/budget · Local models (Ollama) excluded from this table</p>
     </div>
   </div>
-</div>
+</section>
 
-<div class="toast" id="toastEl"></div>
+<hr class="divider">
+
+<!-- MAGAZINE SECTION -->
+<section class="magazine-section" id="magazine">
+  <div class="section-inner">
+    <p class="section-tag">Latest Report</p>
+    <h2 class="section-title">Weekly AI Market Intelligence</h2>
+    <p class="section-sub">Published every Sunday. Covers price movements, new models, and cost optimisation opportunities across 41 models and 12 vendors.</p>
+    <div style="margin-top:40px">
+    <div class="mag-card">
+      <div class="mag-header">
+        <div class="mag-logo">tidus<span>.</span>magazine</div>
+        <div class="mag-sub-tag">AI Model Market Intelligence · Weekly Edition</div>
+        <div class="mag-title">April Market Update: DeepSeek Pressure Continues · Google Gemini 3.1 Confirmed · xAI Holds Premium</div>
+        <div class="mag-date">Week of April 10, 2026 · Issue #17</div>
+      </div>
+      <div class="mag-stats-bar">
+        <div class="ms"><div class="ms-val">41</div><div class="ms-lbl">Models Tracked</div></div>
+        <div class="ms"><div class="ms-val g">2</div><div class="ms-lbl">Price Drops</div></div>
+        <div class="ms"><div class="ms-val r">0</div><div class="ms-lbl">Price Rises</div></div>
+        <div class="ms"><div class="ms-val">2</div><div class="ms-lbl">Models Updated</div></div>
+        <div class="ms"><div class="ms-val">4</div><div class="ms-lbl">New Verifications</div></div>
+      </div>
+      <div class="mag-body">
+        <div class="exec-sum">
+          <strong>Executive Summary:</strong> DeepSeek continues its aggressive pricing posture — deepseek-v3 input price ticked down a further 3.6% this week, reinforcing its position as the value leader at $0.27/1M. Google confirmed the Gemini 3.1 series in the catalog at $2.00/1M (pro) and $1.00/1M (flash). xAI's Grok-3-Fast remains firmly premium at $5.00/1M — the highest-cost routed model. OpenAI's gpt-oss-120b holds at $0.039/1M, the cheapest non-local model in the catalog. Routing teams can reduce costs by 35–40% this month by shifting moderate-complexity tasks from gpt-4o to gpt-4.1-mini or gemini-2.5-flash.
+        </div>
+
+        <div class="mag-sec-title">📉 Price Changes This Week</div>
+        <div class="changes-grid">
+
+          <div class="cc-card drop">
+            <div class="cc-model">deepseek-v3</div>
+            <div class="cc-vendor">DeepSeek</div>
+            <div class="cc-row">
+              <span class="cc-lbl">Input</span>
+              <span class="cc-old">$0.280</span>
+              <span>→</span>
+              <span class="cc-new drop">$0.270</span>
+              <span class="cc-delta d-drop">−3.6%</span>
+            </div>
+            <div class="cc-row">
+              <span class="cc-lbl">Output</span>
+              <span class="cc-old">$0.920</span>
+              <span>→</span>
+              <span class="cc-new drop">$0.890</span>
+              <span class="cc-delta d-drop">−3.3%</span>
+            </div>
+          </div>
+
+          <div class="cc-card drop">
+            <div class="cc-model">gemini-2.5-flash</div>
+            <div class="cc-vendor">Google</div>
+            <div class="cc-row">
+              <span class="cc-lbl">Input</span>
+              <span class="cc-old">$0.350</span>
+              <span>→</span>
+              <span class="cc-new drop">$0.300</span>
+              <span class="cc-delta d-drop">−14.3%</span>
+            </div>
+            <div class="cc-row">
+              <span class="cc-lbl">Output</span>
+              <span class="cc-old">$2.800</span>
+              <span>→</span>
+              <span class="cc-new drop">$2.500</span>
+              <span class="cc-delta d-drop">−10.7%</span>
+            </div>
+          </div>
+
+          <div class="cc-card new">
+            <div class="cc-model">gemini-3.1-pro</div>
+            <div class="cc-vendor">Google · New Catalog Entry</div>
+            <div class="cc-row">
+              <span class="cc-lbl">Input</span>
+              <span class="cc-new new">$2.000</span>
+              <span class="cc-delta d-new">NEW</span>
+            </div>
+            <div class="cc-row">
+              <span class="cc-lbl">Output</span>
+              <span class="cc-new new">$12.000</span>
+            </div>
+          </div>
+
+          <div class="cc-card new">
+            <div class="cc-model">gemini-3.1-flash</div>
+            <div class="cc-vendor">Google · New Catalog Entry</div>
+            <div class="cc-row">
+              <span class="cc-lbl">Input</span>
+              <span class="cc-new new">$1.000</span>
+              <span class="cc-delta d-new">NEW</span>
+            </div>
+            <div class="cc-row">
+              <span class="cc-lbl">Output</span>
+              <span class="cc-new new">$4.000</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mag-sec-title">💡 Cost Optimisation Opportunities</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="padding:14px;background:#f8f9ff;border-radius:10px;border:1px solid #e9ecef">
+            <div style="font-size:12px;font-weight:700;color:#0f3460;margin-bottom:6px">Replace gpt-4o for moderate tasks</div>
+            <div style="font-size:12px;color:#555;line-height:1.6">Switch to gemini-2.5-flash ($0.30/1M) or gpt-4.1-mini ($0.40/1M). Savings: <strong style="color:#16a34a">88% vs gpt-4o at $2.50/1M</strong></div>
+          </div>
+          <div style="padding:14px;background:#f8f9ff;border-radius:10px;border:1px solid #e9ecef">
+            <div style="font-size:12px;font-weight:700;color:#0f3460;margin-bottom:6px">Use gpt-oss-120b for simple classification</div>
+            <div style="font-size:12px;color:#555;line-height:1.6">At $0.039/1M input, it's 98% cheaper than claude-opus-4-6 for tasks not requiring deep reasoning.</div>
+          </div>
+        </div>
+      </div>
+      <div class="mag-footer">
+        <p>Prices verified via multi-source consensus · Next sync: April 13, 2026 02:00 UTC</p>
+        <a href="#subscribe">Subscribe to weekly reports →</a>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SUBSCRIBE -->
+<section class="sub-section" id="subscribe">
+  <div>
+    <h2>Get the weekly AI pricing report</h2>
+    <p>41 models tracked. Price drops surfaced. Savings opportunities identified. Free, forever.</p>
+    <form class="sub-form" id="sub-form" onsubmit="handleSub(event)">
+      <input type="email" id="sub-email" placeholder="you@company.com" required>
+      <button type="submit">Subscribe Free</button>
+    </form>
+    <p id="sub-note">No spam. Unsubscribe anytime via one-click link in any email.</p>
+    <p id="sub-msg"></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="f-brand">
+      <div class="logo">tidus<span>.</span></div>
+      <p>Self-hosted AI router. Enterprise-grade routing, pricing governance, and market intelligence — on your own infrastructure.</p>
+    </div>
+    <div class="f-col">
+      <h4>Product</h4>
+      <a href="#about">About</a>
+      <a href="#pillars">Pillars</a>
+      <a href="#pricing">Model Catalog</a>
+      <a href="#magazine">Weekly Report</a>
+    </div>
+    <div class="f-col">
+      <h4>Resources</h4>
+      <a href="https://github.com/kensterinvest/tidus">GitHub</a>
+      <a href="https://github.com/kensterinvest/tidus/blob/main/docs/configuration.md">Docs</a>
+      <a href="https://github.com/kensterinvest/tidus/blob/main/CHANGELOG.md">Changelog</a>
+      <a href="https://github.com/kensterinvest/tidus/issues">Issues</a>
+    </div>
+    <div class="f-col">
+      <h4>Contact</h4>
+      <a href="mailto:lapkei01@gmail.com">lapkei01@gmail.com</a>
+      <a href="https://github.com/kensterinvest">@kensterinvest</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Kenny Wong · MIT License · Built with ❤️ for enterprises that don't want to overpay for AI</p>
+    <p>Contact: <a href="mailto:lapkei01@gmail.com">lapkei01@gmail.com</a></p>
+  </div>
+</footer>
 
 <script>
-// ── DATA ──
-const CATS = ['Rings','Necklaces','Earrings','Bracelets','Anklets'];
-const CAT_IMGS = {
-  Rings:'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80',
-  Necklaces:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80',
-  Earrings:'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=400&q=80',
-  Bracelets:'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=400&q=80',
-  Anklets:'https://images.unsplash.com/photo-1594750018638-37ebe43ba90e?w=400&q=80'
-};
-const PROD_IMGS = [
-  'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80',
-  'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80',
-  'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80',
-  'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=600&q=80',
-  'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=600&q=80',
-  'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=600&q=80',
-  'https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?w=600&q=80',
-  'https://images.unsplash.com/photo-1601121141461-9d6647bef0a1?w=600&q=80',
-  'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80',
-  'https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=600&q=80',
+// Model data — all 41 models, sorted by input price descending
+const MODELS = [
+  {r:1,  id:"claude-opus-4-6",          v:"Anthropic",   t:1, i:15.00,  o:75.00},
+  {r:2,  id:"o3",                        v:"OpenAI",      t:1, i:10.00,  o:40.00},
+  {r:3,  id:"grok-3-fast",               v:"xAI",         t:1, i:5.00,   o:25.00},
+  {r:4,  id:"grok-3",                    v:"xAI",         t:1, i:3.00,   o:15.00},
+  {r:5,  id:"claude-sonnet-4-6",         v:"Anthropic",   t:1, i:3.00,   o:15.00},
+  {r:6,  id:"sonar-pro",                 v:"Perplexity",  t:1, i:3.00,   o:15.00},
+  {r:7,  id:"gpt-4o",                    v:"OpenAI",      t:1, i:2.50,   o:10.00},
+  {r:8,  id:"command-r-plus",            v:"Cohere",      t:2, i:2.50,   o:10.00},
+  {r:9,  id:"gpt-4.1",                   v:"OpenAI",      t:2, i:2.00,   o:8.00},
+  {r:10, id:"gemini-3.1-pro",            v:"Google",      t:2, i:2.00,   o:12.00},
+  {r:11, id:"mistral-large-3",           v:"Mistral",     t:2, i:2.00,   o:6.00},
+  {r:12, id:"o4-mini",                   v:"OpenAI",      t:2, i:1.10,   o:4.40},
+  {r:13, id:"qwen-max",                  v:"Alibaba",     t:2, i:1.04,   o:4.16},
+  {r:14, id:"gemini-2.5-pro",            v:"Google",      t:2, i:1.25,   o:10.00},
+  {r:15, id:"gpt-5-codex",               v:"OpenAI",      t:2, i:1.25,   o:10.00},
+  {r:16, id:"sonar",                     v:"Perplexity",  t:2, i:1.00,   o:1.00},
+  {r:17, id:"groq-deepseek-r1",          v:"Groq",        t:2, i:1.00,   o:3.00},
+  {r:18, id:"gemini-3.1-flash",          v:"Google",      t:2, i:1.00,   o:4.00},
+  {r:19, id:"claude-haiku-4-5",          v:"Anthropic",   t:2, i:0.80,   o:4.00},
+  {r:20, id:"codex-mini-latest",         v:"OpenAI",      t:2, i:0.75,   o:3.00},
+  {r:21, id:"kimi-k2.5",                 v:"Moonshot",    t:3, i:0.60,   o:2.50},
+  {r:22, id:"deepseek-r1",               v:"DeepSeek",    t:3, i:0.55,   o:2.19},
+  {r:23, id:"groq-llama4-maverick",      v:"Groq",        t:3, i:0.50,   o:1.50},
+  {r:24, id:"gpt-4.1-mini",              v:"OpenAI",      t:3, i:0.40,   o:1.60},
+  {r:25, id:"devstral",                  v:"Mistral",     t:3, i:0.40,   o:2.00},
+  {r:26, id:"mistral-medium",            v:"Mistral",     t:3, i:0.40,   o:2.00},
+  {r:27, id:"qwen-flash",                v:"Alibaba",     t:3, i:0.40,   o:1.20},
+  {r:28, id:"deepseek-v4",               v:"DeepSeek",    t:3, i:0.30,   o:0.50},
+  {r:29, id:"gemini-2.5-flash",          v:"Google",      t:3, i:0.30,   o:2.50},
+  {r:30, id:"deepseek-v3",               v:"DeepSeek",    t:3, i:0.27,   o:0.89},
+  {r:31, id:"together-llama4-maverick",  v:"Together AI", t:3, i:0.27,   o:0.85},
+  {r:32, id:"qwen-plus",                 v:"Alibaba",     t:3, i:0.26,   o:0.78},
+  {r:33, id:"codestral",                 v:"Mistral",     t:3, i:0.20,   o:0.60},
+  {r:34, id:"gpt-4o-mini",               v:"OpenAI",      t:3, i:0.15,   o:0.60},
+  {r:35, id:"mistral-nemo",              v:"Mistral",     t:3, i:0.15,   o:0.15},
+  {r:36, id:"command-r",                 v:"Cohere",      t:3, i:0.15,   o:0.60},
+  {r:37, id:"gpt-4.1-nano",              v:"OpenAI",      t:4, i:0.10,   o:0.40},
+  {r:38, id:"gemini-2.0-flash",          v:"Google",      t:4, i:0.10,   o:0.40},
+  {r:39, id:"devstral-small",            v:"Mistral",     t:4, i:0.10,   o:0.30},
+  {r:40, id:"mistral-small",             v:"Mistral",     t:4, i:0.10,   o:0.30},
+  {r:41, id:"gpt-oss-120b",              v:"OpenAI",      t:4, i:0.039,  o:0.10},
 ];
 
-const P = [
-  {id:1,cat:'Rings',name:'Celestial Halo Ring',price:185,mat:'Sterling Silver',desc:'A delicate halo of cubic zirconia surrounding a central moonstone. Inspired by the night sky, this ring brings a celestial glow to any occasion.',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9'],img:0},
-  {id:2,cat:'Rings',name:'Infinity Band',price:145,mat:'Sterling Silver',desc:'Sleek infinity band with micro-pavé diamond accents. Perfect alone or stacked.',metals:['Silver','Rose Gold'],sizes:['5','6','7','8','9','10'],img:1},
-  {id:3,cat:'Rings',name:'Floral Signet Ring',price:220,mat:'White Gold Plated',desc:'Artisan-crafted floral signet with hand-engraved petals. Vintage charm meets modern design.',metals:['White Gold','Silver'],sizes:['6','7','8'],img:1},
-  {id:4,cat:'Rings',name:'Moonstone Solitaire',price:265,mat:'Sterling Silver',desc:'Luminous moonstone set in a delicate four-prong sterling silver band.',metals:['Silver','White Gold'],sizes:['5','6','7','8'],img:0},
-  {id:5,cat:'Rings',name:'Art Deco Cocktail Ring',price:310,mat:'Rhodium Plated',desc:'Bold geometric art deco design with sparkling pavé stones.',metals:['Silver','White Gold'],sizes:['6','7','8','9'],img:1},
-  {id:6,cat:'Rings',name:'Eternity Band',price:240,mat:'Sterling Silver',desc:'A full circle of matched brilliant-cut stones for everlasting sparkle.',metals:['Silver','White Gold','Platinum'],sizes:['5','6','7','8','9','10'],img:0},
-  {id:7,cat:'Rings',name:'Rose Quartz Ring',price:155,mat:'Sterling Silver',desc:'Soft rose quartz cabochon wrapped in a delicate silver bezel.',metals:['Silver','Rose Gold'],sizes:['5','6','7','8'],img:1},
-  {id:8,cat:'Rings',name:'Sapphire Halo Ring',price:285,mat:'White Gold Plated',desc:'Deep blue lab-grown sapphire surrounded by a sparkling diamond halo.',metals:['White Gold','Platinum'],sizes:['5','6','7','8','9'],img:0},
-  {id:9,cat:'Necklaces',name:'Dainty Star Pendant',price:95,mat:'Sterling Silver',desc:'Minimalist sterling silver star pendant on a delicate 18" chain.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
-  {id:10,cat:'Necklaces',name:'Pearl Choker',price:165,mat:'Freshwater Pearl',desc:'Lustrous freshwater pearls set in a sterling silver choker.',metals:['Silver','Gold'],sizes:['14"','16"'],img:2},
-  {id:11,cat:'Necklaces',name:'Crescent Moon Pendant',price:108,mat:'Sterling Silver',desc:'Slender crescent moon with a dusting of pavé stones on a fine chain.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
-  {id:12,cat:'Necklaces',name:'Diamond Bar Necklace',price:198,mat:'White Gold Plated',desc:'Horizontal bar set with brilliant-cut diamonds. Clean and contemporary.',metals:['White Gold','Silver'],sizes:['16"','18"'],img:8},
-  {id:13,cat:'Necklaces',name:'Heart Locket',price:168,mat:'Sterling Silver',desc:'Polished heart locket that opens to hold two tiny photographs.',metals:['Silver','Rose Gold'],sizes:['16"','18"'],img:2},
-  {id:14,cat:'Necklaces',name:'Tennis Necklace',price:345,mat:'White Gold Plated',desc:'Continuous line of matched brilliant stones — the pinnacle of luxury.',metals:['White Gold','Silver'],sizes:['14"','16"','18"'],img:9},
-  {id:15,cat:'Necklaces',name:'Opal Pendant',price:198,mat:'Sterling Silver',desc:'Fiery Australian-style opal doublet in a delicate silver frame.',metals:['Silver','White Gold'],sizes:['16"','18"','20"'],img:2},
-  {id:16,cat:'Necklaces',name:'Layered Lariat',price:148,mat:'Sterling Silver',desc:'Elegant Y-lariat necklace with an adjustable double-layer chain.',metals:['Silver','Gold'],sizes:['18"','20"','24"'],img:8},
-  {id:17,cat:'Earrings',name:'Crystal Drop Earrings',price:110,mat:'Sterling Silver',desc:'Faceted crystal drops that catch the light beautifully. Ideal for evenings.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
-  {id:18,cat:'Earrings',name:'Hammered Hoops',price:88,mat:'Sterling Silver',desc:'Classic hoops with a subtle hammered texture that adds depth.',metals:['Silver','Gold'],sizes:['Small','Medium','Large'],img:3},
-  {id:19,cat:'Earrings',name:'Pearl Studs',price:95,mat:'Freshwater Pearl',desc:'Classic freshwater pearl studs in a sterling silver setting.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
-  {id:20,cat:'Earrings',name:'Chandelier Earrings',price:165,mat:'White Gold Plated',desc:'Multi-tier chandelier drops dripping with pavé stones.',metals:['White Gold','Silver'],sizes:['One Size'],img:3},
-  {id:21,cat:'Earrings',name:'Ear Climbers',price:118,mat:'Sterling Silver',desc:'Curved climber that follows the natural curve of the ear beautifully.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
-  {id:22,cat:'Earrings',name:'Baroque Pearl Drops',price:145,mat:'Sterling Silver',desc:'Irregular baroque pearls on a delicate drop wire for organic elegance.',metals:['Silver'],sizes:['One Size'],img:3},
-  {id:23,cat:'Earrings',name:'Mismatched Moon & Star',price:88,mat:'Sterling Silver',desc:'One moon, one star — an intentionally mismatched pair full of charm.',metals:['Silver','White Gold'],sizes:['One Size'],img:3},
-  {id:24,cat:'Earrings',name:'Cluster Drop Earrings',price:155,mat:'White Gold Plated',desc:'Multi-stone cluster drops for effortless evening glamour.',metals:['White Gold','Silver'],sizes:['One Size'],img:3},
-  {id:25,cat:'Bracelets',name:'Tennis Bracelet',price:245,mat:'Sterling Silver',desc:'A stunning row of brilliant cubic zirconia stones in sterling silver.',metals:['Silver','White Gold'],sizes:['6.5"','7"','7.5"'],img:4},
-  {id:26,cat:'Bracelets',name:'Charm Bracelet',price:130,mat:'Sterling Silver',desc:'Personalised sterling silver charm bracelet with botanical charms.',metals:['Silver'],sizes:['6.5"','7"','7.5"','8"'],img:4},
-  {id:27,cat:'Bracelets',name:'Pearl Strand Bracelet',price:155,mat:'Freshwater Pearl',desc:'Single strand of matched freshwater pearls with a silver clasp.',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"'],img:4},
-  {id:28,cat:'Bracelets',name:'Cuff Bangle',price:168,mat:'Sterling Silver',desc:'Open-ended solid cuff with a hammered texture. Bold and minimal.',metals:['Silver','Gold'],sizes:['Small','Medium','Large'],img:4},
-  {id:29,cat:'Bracelets',name:'Pavé Bangle',price:195,mat:'White Gold Plated',desc:'Full pavé-set bangle — pure sparkle all the way around.',metals:['White Gold','Silver'],sizes:['Small','Medium','Large'],img:5},
-  {id:30,cat:'Bracelets',name:'Herringbone Bracelet',price:178,mat:'Sterling Silver',desc:'Flat herringbone weave sits flush against the wrist.',metals:['Silver','Gold'],sizes:['6.5"','7"','7.5"'],img:4},
-  {id:31,cat:'Bracelets',name:'Moon Phase Bracelet',price:148,mat:'Sterling Silver',desc:'Seven moon phases etched on a fine silver bar bracelet.',metals:['Silver'],sizes:['Adjustable'],img:5},
-  {id:32,cat:'Bracelets',name:'Opal Inlay Bangle',price:278,mat:'Sterling Silver',desc:'Polished bangle with stunning inlaid opal segments.',metals:['Silver'],sizes:['Small','Medium','Large'],img:4},
-  {id:33,cat:'Anklets',name:'Delicate Chain Anklet',price:72,mat:'Sterling Silver',desc:'Feather-light sterling silver chain with a tiny star charm.',metals:['Silver','Gold'],sizes:['9"','10"'],img:6},
-  {id:34,cat:'Anklets',name:'Beaded Anklet',price:68,mat:'Silver & Gemstone',desc:'Iridescent freshwater pearls and silver beads on durable nylon.',metals:['Silver'],sizes:['9"','10"','Adjustable'],img:6},
-  {id:35,cat:'Anklets',name:'Butterfly Anklet',price:85,mat:'Sterling Silver',desc:'Tiny pavé butterfly charm floats delicately on a trace chain.',metals:['Silver','White Gold'],sizes:['9"','10"'],img:7},
-  {id:36,cat:'Anklets',name:'Pearl Drop Anklet',price:110,mat:'Freshwater Pearl',desc:'Three freshwater pearl drops spaced on a fine anklet chain.',metals:['Silver'],sizes:['9"','10"','10.5"'],img:6},
-  {id:37,cat:'Anklets',name:'Moon & Stars Anklet',price:88,mat:'Sterling Silver',desc:'Crescent moon and star charms scattered along a delicate chain.',metals:['Silver','White Gold'],sizes:['9"','10"'],img:7},
-  {id:38,cat:'Anklets',name:'Gold Vermeil Anklet',price:135,mat:'Gold Vermeil',desc:'Thick gold vermeil on sterling silver for lasting warmth.',metals:['Gold'],sizes:['9"','10"'],img:7},
-  {id:39,cat:'Anklets',name:'Charm Cluster Anklet',price:115,mat:'Sterling Silver',desc:'Five mixed charms — star, moon, heart, flower, key — on one chain.',metals:['Silver'],sizes:['9"','10"','Adjustable'],img:6},
-  {id:40,cat:'Anklets',name:'Layered Double Anklet',price:105,mat:'Sterling Silver',desc:'Two fine chains of slightly different lengths for an effortless layered look.',metals:['Silver','Gold'],sizes:['Adjustable'],img:7},
-];
+const TIER_LABELS = {1:"Premium", 2:"Advanced", 3:"Economy", 4:"Budget"};
+const TIER_CLASS  = {1:"t1",      2:"t2",       3:"t3",      4:"t4"};
 
-// ── STATE ──
-let cart=[], curCat=null, curProd=null, selMetal='', selSize='', curView='g';
-
-// ── HELPERS ──
-const g = id => document.getElementById(id);
-const sh = (id,h) => { const e=g(id); if(e) e.innerHTML=h; };
-const st = (id,t) => { const e=g(id); if(e) e.textContent=t; };
-const imgSrc = idx => PROD_IMGS[idx % PROD_IMGS.length];
-
-// ── LOADER ──
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    g('loader').classList.add('hide');
-    initHome();
-    initReveal();
-    initCounters();
-  }, 1900);
-});
-
-// ── NAV SCROLL ──
-window.addEventListener('scroll', () => {
-  g('nav').classList.toggle('solid', window.scrollY > 40);
-});
-
-// ── PAGE NAVIGATION ──
-function goPg(id) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  const t = g('pg-'+id);
-  if (!t) return;
-  t.classList.add('on','pg-anim');
-  setTimeout(() => t.classList.remove('pg-anim'), 500);
-  window.scrollTo({top:0, behavior:'smooth'});
+function fmt(n){
+  if(n < 0.1) return "$"+n.toFixed(3);
+  return "$"+n.toFixed(2);
 }
 
-function goShop(cat) {
-  curCat = cat;
-  goPg('shop');
-  // set title
-  const t = g('shopTitle');
-  if (t) t.innerHTML = cat ? `${cat}<br><em>Collection</em>` : `The<br><em>Collection</em>`;
-  // set pills
-  sh('shopPills', ['All',...CATS].map(c =>
-    `<button class="pill ${(!cat&&c==='All')||cat===c?'on':''}" onclick="filterCat(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
-  ).join(''));
-  renderShop();
-}
+(function renderTable(){
+  const tbody = document.getElementById("model-tbody");
+  tbody.innerHTML = MODELS.map(m => `
+    <tr>
+      <td class="col-rank">${m.r}</td>
+      <td class="col-model">${m.id}</td>
+      <td class="col-vendor">${m.v}</td>
+      <td><span class="tier-badge ${TIER_CLASS[m.t]}">T${m.t} · ${TIER_LABELS[m.t]}</span></td>
+      <td class="col-in">${fmt(m.i)}</td>
+      <td class="col-out">${fmt(m.o)}</td>
+    </tr>`).join("");
+})();
 
-function filterCat(cat) {
-  curCat = cat;
-  const t = g('shopTitle');
-  if (t) t.innerHTML = cat ? `${cat}<br><em>Collection</em>` : `The<br><em>Collection</em>`;
-  sh('shopPills', ['All',...CATS].map(c =>
-    `<button class="pill ${(!cat&&c==='All')||cat===c?'on':''}" onclick="filterCat(${c==='All'?'null':'"'+c+'"'})">${c}</button>`
-  ).join(''));
-  renderShop();
-}
-
-// ── HOME INIT ──
-function initHome() {
-  // Category tiles
-  sh('catsRow', CATS.map((c,i) => {
-    const n = P.filter(p=>p.cat===c).length;
-    return `<div class="cat-card rv" style="transition-delay:${i*0.07}s" onclick="goShop('${c}')">
-      <img src="${CAT_IMGS[c]}" alt="${c}" loading="lazy">
-      <div class="cat-n">${c}</div>
-      <div class="cat-c">${n} pieces</div>
-      <span class="cat-arr">→</span>
-    </div>`;
-  }).join(''));
-
-  // Featured grid
-  const fp = [P[0], P[9], P[17], P[24]];
-  sh('featRow', fp.map((p,i) => `
-    <div class="feat-card rv" style="transition-delay:${i*0.09}s" onclick="openDetail(${p.id})">
-      <img src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy">
-      <div class="feat-veil">
-        <button class="fv-btn" onclick="event.stopPropagation();qAdd(${p.id})">Quick Add</button>
-        <button class="fv-btn" onclick="event.stopPropagation();openDetail(${p.id})">View Details</button>
-      </div>
-      <div class="feat-foot">
-        <div class="feat-cat">${p.cat}</div>
-        <div class="feat-name">${p.name}</div>
-        <div class="feat-price">£${p.price.toFixed(2)}</div>
-      </div>
-    </div>`).join(''));
-
-  setTimeout(initReveal, 80);
-}
-
-// ── SCROLL REVEAL ──
-function initReveal() {
-  const obs = new IntersectionObserver(es => {
-    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }});
-  }, {threshold: 0.1});
-  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
-}
-
-// ── COUNTERS ──
-function initCounters() {
-  const obs = new IntersectionObserver(es => {
-    es.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target, target = +el.dataset.t, suffix = target>=1000?'+':target>=100?'+':'';
-      let cur=0; const step=Math.ceil(target/60);
-      const iv = setInterval(()=>{
-        cur = Math.min(cur+step, target);
-        el.textContent = (target>=1000 ? cur.toLocaleString() : cur) + suffix;
-        if(cur>=target) clearInterval(iv);
-      }, 22);
-      obs.unobserve(el);
+async function handleSub(e){
+  e.preventDefault();
+  const email = document.getElementById("sub-email").value.trim();
+  const msg   = document.getElementById("sub-msg");
+  msg.style.display = "block";
+  msg.className = "";
+  msg.textContent = "Subscribing…";
+  try {
+    const r = await fetch("/api/v1/subscribe", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({email})
     });
-  }, {threshold:0.5});
-  document.querySelectorAll('.st-num[data-t]').forEach(el => obs.observe(el));
-}
-
-// ── SHOP ──
-const HH = ['t','s','t','s','s','t','s','t'];
-
-function setView(v) {
-  curView = v;
-  const vg=g('vbGrid'), vl=g('vbList'), mw=g('masonWrap'), lw=g('listWrap');
-  if(vg) vg.classList.toggle('on', v==='g');
-  if(vl) vl.classList.toggle('on', v==='l');
-  if(mw) mw.style.display = v==='g' ? 'block' : 'none';
-  if(lw) lw.style.display = v==='l' ? 'block' : 'none';
-}
-
-function renderShop() {
-  let list = curCat ? P.filter(p=>p.cat===curCat) : [...P];
-  const s = g('sortS')?.value || 'd';
-  if(s==='asc')  list.sort((a,b)=>a.price-b.price);
-  if(s==='desc') list.sort((a,b)=>b.price-a.price);
-  if(s==='az')   list.sort((a,b)=>a.name.localeCompare(b.name));
-  st('shopCt', `${list.length} piece${list.length!==1?'s':''}`);
-
-  sh('shopGrid', list.map((p,i) => `
-    <div class="mc" onclick="openDetail(${p.id})">
-      <div class="mc-img ${HH[i%HH.length]}"><img src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy"></div>
-      <div class="mc-vl">
-        <div class="mc-vl-n">${p.name}</div>
-        <div class="mc-vl-p">£${p.price.toFixed(2)}</div>
-        <button class="mc-vl-b" onclick="event.stopPropagation();qAdd(${p.id})">Quick Add →</button>
-      </div>
-      <div class="mc-ft">
-        <div class="mc-cat">${p.cat}</div>
-        <div class="mc-n">${p.name}</div>
-        <div class="mc-p">£${p.price.toFixed(2)}</div>
-      </div>
-    </div>`).join(''));
-
-  sh('listWrap', list.map(p => `
-    <div class="li-row" onclick="openDetail(${p.id})">
-      <img class="li-thumb" src="${imgSrc(p.img)}" alt="${p.name}" loading="lazy">
-      <div>
-        <div class="li-cat">${p.cat}</div>
-        <div class="li-n">${p.name}</div>
-        <div class="li-m">${p.mat} · ${p.metals.join(', ')}</div>
-      </div>
-      <div class="li-p">£${p.price.toFixed(2)}</div>
-      <button class="li-b" onclick="event.stopPropagation();qAdd(${p.id})">Add to Cart</button>
-    </div>`).join(''));
-}
-
-// ── DETAIL ──
-function openDetail(id) {
-  const p = P.find(x=>x.id===id); if(!p) return;
-  curProd=p; selMetal=p.metals[0]; selSize=p.sizes[0];
-  goPg('detail');
-  const mi = g('detMainImg');
-  if(mi){ mi.src=imgSrc(p.img); mi.alt=p.name; }
-  sh('detThumbs', [p.img, (p.img+1)%PROD_IMGS.length, (p.img+2)%PROD_IMGS.length].map((idx,i) =>
-    `<div class="det-th ${i===0?'on':''}" onclick="swapImg(this,'${PROD_IMGS[idx%PROD_IMGS.length]}')"><img src="${PROD_IMGS[idx%PROD_IMGS.length]}" alt="view ${i+1}"></div>`
-  ).join(''));
-  st('detCat',p.cat); st('detN',p.name);
-  st('detP','£'+p.price.toFixed(2)); st('detD',p.desc);
-  const db = g('detBack'); if(db) db.onclick = ()=>goShop(p.cat);
-  st('oMetal',selMetal);
-  sh('metalOpts', p.metals.map(m =>
-    `<button class="opt ${m===selMetal?'on':''}" onclick="pickOpt(this,'m','${m}')">${m}</button>`
-  ).join(''));
-  st('oSize',selSize);
-  sh('sizeOpts', p.sizes.map(s =>
-    `<button class="opt ${s===selSize?'on':''}" onclick="pickOpt(this,'s','${s}')">${s}</button>`
-  ).join(''));
-  sh('detSpecs', `
-    <div class="sp-row"><dt>Material</dt><dd>${p.mat}</dd></div>
-    <div class="sp-row"><dt>Category</dt><dd>${p.cat}</dd></div>
-    <div class="sp-row"><dt>Metals</dt><dd>${p.metals.join(', ')}</dd></div>
-    <div class="sp-row"><dt>Shipping</dt><dd>Free UK delivery · 3–5 days</dd></div>
-    <div class="sp-row"><dt>Returns</dt><dd>30-day free returns</dd></div>
-  `);
-  const ab = g('detAddBtn'); if(ab) ab.onclick = ()=>addToCart(p);
-}
-
-function swapImg(el, src) {
-  document.querySelectorAll('.det-th').forEach(t=>t.classList.remove('on'));
-  el.classList.add('on');
-  const mi = g('detMainImg');
-  if(mi){ mi.style.opacity='0'; setTimeout(()=>{ mi.src=src; mi.style.opacity='1'; },220); }
-}
-
-function pickOpt(btn,type,val) {
-  btn.closest('.opts').querySelectorAll('.opt').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  if(type==='m'){ selMetal=val; st('oMetal',val); }
-  if(type==='s'){ selSize=val; st('oSize',val); }
-}
-
-// ── CART ──
-function addToCart(p) {
-  cart.push({...p, metal:selMetal, size:selSize, uid:Date.now()+Math.random()});
-  updateCart(); openCart(); toast(p.name+' added to cart');
-}
-function qAdd(id) {
-  const p=P.find(x=>x.id===id); if(!p) return;
-  cart.push({...p, metal:p.metals[0], size:p.sizes[0], uid:Date.now()+Math.random()});
-  updateCart(); toast(p.name+' added to cart');
-}
-function delItem(uid) { cart=cart.filter(i=>i.uid!==uid); updateCart(); }
-function updateCart() {
-  const b=g('cBadge');
-  if(b){ b.textContent=cart.length; b.style.display=cart.length?'flex':'none'; }
-  const bd=g('cdBody'); if(!bd) return;
-  if(!cart.length){ bd.innerHTML='<div class="cd-empty">Your cart is empty</div>'; st('cdTotal','£0.00'); return; }
-  let total=0;
-  bd.innerHTML = cart.map(item => {
-    total+=item.price;
-    return `<div class="cl">
-      <img class="cl-img" src="${imgSrc(item.img)}" alt="${item.name}">
-      <div class="cl-info">
-        <div class="cl-n">${item.name}</div>
-        <div class="cl-m">${item.metal} · ${item.size}</div>
-      </div>
-      <div class="cl-p">£${item.price.toFixed(2)}</div>
-      <button class="cl-rm" onclick="delItem(${item.uid})">×</button>
-    </div>`;
-  }).join('');
-  st('cdTotal','£'+total.toFixed(2));
-}
-function openCart()  { g('cmask')?.classList.add('on'); g('cdrawer')?.classList.add('on'); }
-function closeCart() { g('cmask')?.classList.remove('on'); g('cdrawer')?.classList.remove('on'); }
-function openAuth()  { const a=g('amask'); if(a) a.classList.add('on'); }
-function closeAuth() { const a=g('amask'); if(a) a.classList.remove('on'); }
-function toggleAuth(){
-  const l=g('aLogin'),r=g('aReg');
-  if(l) l.style.display=l.style.display==='none'?'block':'none';
-  if(r) r.style.display=r.style.display==='none'?'block':'none';
-}
-function doAuth(){ closeAuth(); toast('Welcome to Aynnor\'s Jewelry!'); }
-function toast(msg) {
-  const t=g('toastEl'); if(!t) return;
-  t.textContent=msg; t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),3000);
+    if(r.ok){
+      msg.className = "ok";
+      msg.textContent = "✓ You're subscribed! First report arrives Sunday 02:00 UTC.";
+      document.getElementById("sub-email").value = "";
+    } else {
+      const d = await r.json().catch(()=>({detail:"Unknown error"}));
+      msg.className = "err";
+      msg.textContent = "✗ " + (d.detail || "Subscription failed — try again.");
+    }
+  } catch(_){
+    // Fallback: open mailto
+    window.location.href = "mailto:lapkei01@gmail.com?subject=Subscribe%20to%20Tidus%20Magazine&body=Please%20subscribe%20me%20to%20the%20weekly%20Tidus%20pricing%20report.";
+    msg.className = "ok";
+    msg.textContent = "Opening your email client as a fallback…";
+  }
 }
 </script>
 </body>
